@@ -55,7 +55,7 @@
 
         <label for="end_date">วันที่สิ้นสุด:</label>
         <input type="date" id="end_date" name="end_date" value="{{ end_date|date:'Y-m-d' }}">
-
+        <button type="submit" class="text-red-500 bg-red-100 btn hover:text-white hover:bg-red-600 focus:text-white focus:bg-red-600 focus:ring focus:ring-red-100 active:text-white active:bg-red-600 active:ring active:ring-red-100 dark:bg-red-500/20 dark:text-red-500 dark:hover:bg-red-500 dark:hover:text-white dark:focus:bg-red-500 dark:focus:text-white dark:active:bg-red-500 dark:active:text-white dark:ring-red-400/20">Red</button>
         <button type="submit">กรอง</button>
     </form>
 
@@ -105,7 +105,7 @@
                     }
                 });
             }
-        }s
+        }
 
         formatDateInput('start_date');
         formatDateInput('end_date');

@@ -28,17 +28,35 @@
 
             <div class="flex flex-col gap-2 py-4 md:flex-row md:items-center print:hidden">
                 <div class="grow">
-                    <h5 class="text-16">รายการสินค้าใน Stock</h5>
+                    <h5 class="text-16">รายงานยอดขาย</h5>
                 </div>
                 <ul class="flex items-center gap-2 text-sm font-normal shrink-0">
                     <li class="relative before:content-['\ea54'] before:font-remix ltr:before:-right-1 rtl:before:-left-1  before:absolute before:text-[18px] before:-top-[3px] ltr:pr-4 rtl:pl-4 before:text-slate-400 dark:text-zink-200">
                         <a href="#!" class="text-slate-400 dark:text-zink-200">Dashboards</a>
                     </li>
                     <li class="text-slate-700 dark:text-zink-100">
-                        รายการสินค้าใน Stock
+                        รายงานยอดขาย
                     </li>
                 </ul>
+
+
+
             </div>
+
+
+          <!-- ฟอร์มกรองช่วงวันที่ -->
+                 <form method="GET" action="{% url 'ItemProduct' %}">
+                    
+                        <label for="start_date">วันที่เริ่มต้น:</label>
+                         <input type="date" id="start_date" name="start_date" value="{{ start_date|date:'Y-m-d' }}">
+
+                             <label for="end_date">วันที่สิ้นสุด:</label>
+                             <input type="date" id="end_date" name="end_date" value="{{ end_date|date:'Y-m-d' }}">
+                        <button type="submit" class="text-red-500 bg-red-100 btn hover:text-white hover:bg-red-600 focus:text-white focus:bg-red-600 focus:ring focus:ring-red-100 active:text-white active:bg-red-600 active:ring active:ring-red-100 dark:bg-red-500/20 dark:text-red-500 dark:hover:bg-red-500 dark:hover:text-white dark:focus:bg-red-500 dark:focus:text-white dark:active:bg-red-500 dark:active:text-white dark:ring-red-400/20">ค้นหา</button>
+                        
+                </form>
+          
+  
           
                
                
@@ -48,7 +66,8 @@
                         <div class="grid items-center grid-cols-1 gap-3 mb-5 xl:grid-cols-12">
                             <div class="xl:col-span-3">
                                 
-                                <h6 class="text-15">รายการสินค้าใน Stock</h6>
+                                <h6 class="text-15">รายงานยอดขาย</h6>
+                                <h3>ยอดขายรวม: {{ total_sum|floatformat:2|intcomma }} บาท</h3>
                             </div><!--end col-->
                             <div class="xl:col-span-3 xl:col-start-10">
                                 <div class="flex gap-3">
@@ -62,78 +81,38 @@
                         </div><!--end grid-->
                 
                         <div class="-mx-5 overflow-x-auto">
-                            <table class="w-full whitespace-nowrap">
-                                <thead class="ltr:text-left rtl:text-right bg-slate-100 text-slate-500 dark:text-zink-200 dark:bg-zink-600">
+
+
+                            <table>
+                                <thead>
                                     <tr>
-                                        <th class="px-3.5 py-2.5 first:pl-5 last:pr-5 font-semibold border-y border-slate-200 dark:border-zink-500 w-10">
-                                            <div class="flex items-center h-full">
-                                                <input id="productsCheckAll" class="size-4 cursor-pointer bg-white border border-slate-200 checked:bg-none dark:bg-zink-700 dark:border-zink-500 rounded-sm appearance-none arrow-none relative after:absolute after:content-['\eb7b'] after:top-0 after:left-0 after:font-remix after:leading-none after:opacity-0 checked:after:opacity-100 after:text-custom-500 checked:border-custom-500 dark:after:text-custom-500 dark:checked:border-custom-800" type="checkbox">
-                                            </div>
-                                        </th>
-                                        <th class="px-3.5 py-2.5 first:pl-5 last:pr-5 font-semibold border-y border-slate-200 dark:border-zink-500">ID</th>
-                                        <th class="px-3.5 py-2.5 first:pl-5 last:pr-5 font-semibold border-y border-slate-200 dark:border-zink-500">NAME</th>
-                                        <th class="px-3.5 py-2.5 first:pl-5 last:pr-5 font-semibold border-y border-slate-200 dark:border-zink-500">PRICE</th>
-                                        <th class="px-3.5 py-2.5 first:pl-5 last:pr-5 font-semibold border-y border-slate-200 dark:border-zink-500">IS TRENDING</th>
-                                        <th class="px-3.5 py-2.5 first:pl-5 last:pr-5 font-semibold border-y border-slate-200 dark:border-zink-500">STOCK</th>
-                                        <th class="px-3.5 py-2.5 first:pl-5 last:pr-5 font-semibold border-y border-slate-200 dark:border-zink-500">PROFIPRICE</th>
-                                        <th class="px-3.5 py-2.5 first:pl-5 last:pr-5 font-semibold border-y border-slate-200 dark:border-zink-500">IMAGE PREVIEW</th>
-                                        <th class="px-3.5 py-2.5 first:pl-5 last:pr-5 font-semibold border-y border-slate-200 dark:border-zink-500">ประเถทสินค้า</th>
-                                        <th class="px-3.5 py-2.5 first:pl-5 last:pr-5 font-semibold border-y border-slate-200 dark:border-zink-500">จัดการข้อมูลที่จะใช้งาน</th>
-                                     
+                                        <th>วันที่/เวลา</th>
+                                        <th>ยอดขายรวม (บาท)</th>
+                                        <th>สินค้า</th>
+                                        <th>จำนวน</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td class="px-3.5 py-2.5 first:pl-5 last:pr-5 border-y border-slate-200 dark:border-zink-500">
-                                            <div class="flex items-center h-full">
-                                                <input id="productsCheck1" class="size-4 cursor-pointer bg-white border border-slate-200 checked:bg-none dark:bg-zink-700 dark:border-zink-500 rounded-sm appearance-none arrow-none relative after:absolute after:content-['\eb7b'] after:top-0 after:left-0 after:font-remix after:leading-none after:opacity-0 checked:after:opacity-100 after:text-custom-500 checked:border-custom-500 dark:after:text-custom-500 dark:checked:border-custom-800" type="checkbox">
-                                            </div>
-                                        </td>
-                                        <td class="px-3.5 py-2.5 first:pl-5 last:pr-5 border-y border-slate-200 dark:border-zink-500">1</td>
-                                        <td class="px-3.5 py-2.5 first:pl-5 last:pr-5 border-y border-slate-200 dark:border-zink-500">เนื่อย่าง</td>
-                                        <td class="px-3.5 py-2.5 first:pl-5 last:pr-5 border-y border-slate-200 dark:border-zink-500">120 บาท</td>
-                                        <td class="px-3.5 py-2.5 first:pl-5 last:pr-5 border-y border-slate-200 dark:border-zink-500">
-                                            <div class="flex items-center h-full">
-                                                <input id="productsCheck1" class="size-4 cursor-pointer bg-white border border-slate-200 checked:bg-none dark:bg-zink-700 dark:border-zink-500 rounded-sm appearance-none arrow-none relative after:absolute after:content-['\eb7b'] after:top-0 after:left-0 after:font-remix after:leading-none after:opacity-0 checked:after:opacity-100 after:text-custom-500 checked:border-custom-500 dark:after:text-custom-500 dark:checked:border-custom-800" type="checkbox">
-                                            </div>
-                                        </td>
-                                        <td class="px-3.5 py-2.5 first:pl-5 last:pr-5 border-y border-slate-200 dark:border-zink-500">15.00</td>
-                                        <td class="px-3.5 py-2.5 first:pl-5 last:pr-5 border-y border-slate-200 dark:border-zink-500">2</td>
-                                        <td class="px-3.5 py-2.5 first:pl-5 last:pr-5 border-y border-slate-200 dark:border-zink-500">เป็นรูป</td>
-                                        <td class="px-3.5 py-2.5 first:pl-5 last:pr-5 border-y border-slate-200 dark:border-zink-500">เครื่องดื่ม </td>
-                                        <td class="px-3.5 py-2.5 first:pl-5 last:pr-5 border-y border-slate-200 dark:border-zink-500">
-                                            <span class="inline-flex items-center px-2.5 py-0.5 text-xs font-medium rounded border bg-green-100 border-transparent text-green-500 dark:bg-green-500/20 dark:border-transparent"><i data-lucide="check-circle-2" class="size-3 ltr:mr-1 rtl:ml-1"></i> Active</span>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="px-3.5 py-2.5 first:pl-5 last:pr-5 border-y border-slate-200 dark:border-zink-500">
-                                            <div class="flex items-center h-full">
-                                                <input id="productsCheck1" class="size-4 cursor-pointer bg-white border border-slate-200 checked:bg-none dark:bg-zink-700 dark:border-zink-500 rounded-sm appearance-none arrow-none relative after:absolute after:content-['\eb7b'] after:top-0 after:left-0 after:font-remix after:leading-none after:opacity-0 checked:after:opacity-100 after:text-custom-500 checked:border-custom-500 dark:after:text-custom-500 dark:checked:border-custom-800" type="checkbox">
-                                            </div>
-                                        </td>
-                                        <td class="px-3.5 py-2.5 first:pl-5 last:pr-5 border-y border-slate-200 dark:border-zink-500">2</td>
-                                        <td class="px-3.5 py-2.5 first:pl-5 last:pr-5 border-y border-slate-200 dark:border-zink-500">สันคอหมู</td>
-                                        <td class="px-3.5 py-2.5 first:pl-5 last:pr-5 border-y border-slate-200 dark:border-zink-500">165 บาท</td>
-                                        <td class="px-3.5 py-2.5 first:pl-5 last:pr-5 border-y border-slate-200 dark:border-zink-500">
-                                            <div class="flex items-center h-full">
-                                                <input id="productsCheck1" class="size-4 cursor-pointer bg-white border border-slate-200 checked:bg-none dark:bg-zink-700 dark:border-zink-500 rounded-sm appearance-none arrow-none relative after:absolute after:content-['\eb7b'] after:top-0 after:left-0 after:font-remix after:leading-none after:opacity-0 checked:after:opacity-100 after:text-custom-500 checked:border-custom-500 dark:after:text-custom-500 dark:checked:border-custom-800" type="checkbox">
-                                            </div>
-                                        </td>
-                                        <td class="px-3.5 py-2.5 first:pl-5 last:pr-5 border-y border-slate-200 dark:border-zink-500">20.00</td>
-                                        <td class="px-3.5 py-2.5 first:pl-5 last:pr-5 border-y border-slate-200 dark:border-zink-500">12</td>
-                                        <td class="px-3.5 py-2.5 first:pl-5 last:pr-5 border-y border-slate-200 dark:border-zink-500">เป็นรูป</td>
-                                        <td class="px-3.5 py-2.5 first:pl-5 last:pr-5 border-y border-slate-200 dark:border-zink-500">อาหารสด</td>
-                                        <td class="px-3.5 py-2.5 first:pl-5 last:pr-5 border-y border-slate-200 dark:border-zink-500">
-                                            <span class="inline-flex items-center px-2.5 py-0.5 text-xs font-medium rounded border bg-green-100 border-transparent text-green-500 dark:bg-green-500/20 dark:border-transparent"><i data-lucide="check-circle-2" class="size-3 ltr:mr-1 rtl:ml-1"></i>แก้ไข</span>
-                                        </td>
-                                    </tr>
-                                  
-                                  
-                                  
-                                
+                                    {% for record in records %}
+                                        {% for item in record.stock_adjustments %}
+                                        <tr>
+                                            {% if forloop.first %}
+                                                <td rowspan="{{ record.stock_adjustments|length }}">{{ record.timestamp|date:"d/m/Y H:i:s" }}</td>
+                                                <td rowspan="{{ record.stock_adjustments|length }}">{{ record.total_amount|intcomma }} บาท</td>
+                                            {% endif %}
+                                            <td>{{ item.product }}</td>
+                                            <td>{{ item.quantity|floatformat:2|intcomma }}</td>
+                                        </tr>
+                                        {% endfor %}
+                                    {% empty %}
+                                        <tr>
+                                            <td colspan="4" style="text-align: center;">ไม่มีข้อมูลการขาย</td>
+                                        </tr>
+                                    {% endfor %}
                                 </tbody>
                             </table>
                         </div>
+
                         <div class="flex flex-col items-center mt-5 md:flex-row">
                             <div class="mb-4 grow md:mb-0">
                                 <p class="text-slate-500 dark:text-zink-200">Showing <b>10</b> of <b>19</b> Results</p>
