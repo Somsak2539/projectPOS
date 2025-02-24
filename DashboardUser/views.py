@@ -70,8 +70,11 @@ def LayoutDashbords(request):
     print(f"Checking Group: {request.user.groups.all()}")
     
     ProductStock = Product1.objects.filter(stock__lt=10).values("id", "name", "stock","updated_at")
+    # ✅ ดึงสินค้าเฉพาะที่ stock < 10 และนับจำนวนสินค้าเหล่านั้น
+    total_product_count = Product1.objects.filter(stock__lt=10).count()
+    print ("การนับข้อมูล",total_product_count);
     print("ดึงค่ารายการมา",ProductStock);   
-    return render(request, "LayoutDashbords.html",{"ProductStock":ProductStock,})
+    return render(request, "LayoutDashbords.html",{"ProductStock":ProductStock,"total_product_count":total_product_count})
  
  
 def eror404(request):
