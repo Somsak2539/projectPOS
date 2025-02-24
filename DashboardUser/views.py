@@ -83,9 +83,8 @@ def Calender(request):
 @login_required(login_url='/eror404/')  #ถ้าคุณเข้าไปในตัวเว็บเพจเลยไปที่ url itemProductคุณจะไม่สามารถเรียกเข้าได้ คุณต้องผ่านการlogin ก่อนจึงสามารถที่จะทำการเข้าได้ ถ้าไม่ทำการ login ก็จะเข้าไปที่หน้า eror404
 @user_passes_test(is_special_admin,login_url='/eror404/')
 def ItemProduct(request):
-    print(f"User: {request.user}")  # Debuggings
     
-# รับค่าช่วงวันที่จาก GET request
+       # รับค่าช่วงวันที่จาก GET request
     bangkok_tz = pytz.timezone("Asia/Bangkok")
     start_date = request.GET.get('start_date', None)
     end_date = request.GET.get('end_date', None)
@@ -96,7 +95,7 @@ def ItemProduct(request):
     # ตรวจสอบว่าผู้ใช้กรอกวันที่ครบทั้งสองช่องหรือไม่
     if not start_date or not end_date:
         messages.error(request, "กรุณากรอกวันที่ให้ครบทั้งสองช่อง!")  # ✅ แจ้งเตือน
-        return render(request, "itemProduct.html", {
+        return render(request, "ItemProduct.html", {
             "records": [],
             "total_sum": 0,
             "start_date": start_date or "",
@@ -111,7 +110,7 @@ def ItemProduct(request):
         # ตรวจสอบว่าวันที่เริ่มต้นต้องไม่มากกว่าวันที่สิ้นสุด
         if start_date_obj > end_date_obj:
             messages.error(request, "วันที่เริ่มต้นต้องไม่มากกว่าวันที่สิ้นสุด!")
-            return render(request, "itemProduct.html", {
+            return render(request, "ItemProduct.html", {
                 "records": [],
                 "total_sum": 0,
                 "start_date": start_date,
@@ -126,19 +125,20 @@ def ItemProduct(request):
 
     except ValueError:
         messages.error(request, "รูปแบบวันที่ไม่ถูกต้อง! กรุณากรอกเป็น YYYY-MM-DD")
-        return render(request, "itemProduct.html", {
+        return render(request, "ItemProduct.html", {
             "records": [],
             "total_sum": 0,
             "start_date": start_date,
             "end_date": end_date
         })
 
-    return render(request, "itemProduct.html", {
+    return render(request, "ItemProduct.html", {
         "records": records,
         "total_sum": total_sum,
         "start_date": start_date_obj.strftime('%d/%m/%Y'),
         "end_date": end_date_obj.strftime('%d/%m/%Y')
     })
+
 
 
 

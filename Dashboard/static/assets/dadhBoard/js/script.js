@@ -1019,8 +1019,10 @@ fetch(apiUrl)
               method: "POST",
               headers: {
                 "Content-Type": "application/json",
-                "X-CSRFToken": csrfToken,  // ต้องเพิ่ม CSRF Token เพื่อความปลอดภัย
+                "X-CSRFToken": csrfToken,
+                  // ✅ ให้ส่ง session ไปกับ request  // ✅ เพิ่ม Token ตรงนี้  // ต้องเพิ่ม CSRF Token เพื่อความปลอดภัย
               },
+              credentials: "include",
               body: JSON.stringify(savedResults[savedResults.length - 1]), // ส่งข้อมูล JSON
             })
               .then(response => {
@@ -1110,7 +1112,7 @@ fetch(apiUrl)
     }
 
     const csrfToken = getCSRFToken();
-
+    console.log("CSRF Token:", csrfToken)
     //-----------------------------------------------สำหรับการลบแถวในตาราง------------------------------------------------- */
 
     function DeleteItem() {

@@ -19,6 +19,7 @@ class SaleRecord(models.Model):
     timestamp = models.DateTimeField()
     Pofitprice = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)       
     stock_adjustments = models.JSONField()  # ใช้ JSONField สำหรับบันทึกข้อมูล Array
+    cashier = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True, default=1)
     
     def get_stock_adjustment_by_index(self, index):
         """ดึงรายการ stock_adjustments ตามตำแหน่ง index"""

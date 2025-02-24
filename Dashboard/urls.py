@@ -4,6 +4,7 @@ from .views import UpdateStockAPIView,SaveSaleRecordAPIView,CleanDisplay
 
 from django.urls import path
 from .views import generate_promptpay_qr
+from .views import check_auth
 
 
 urlpatterns = [
@@ -13,5 +14,6 @@ urlpatterns = [
   path('save-sale-record/',SaveSaleRecordAPIView.as_view(), name='save_sale_record'),
   path('generate-promptpay-qr/', generate_promptpay_qr, name='generate_promptpay_qr'),
   path ('login_cover/?next=/indexDashboardUser//',views.CleanDisplay),
+  path('check-auth/', check_auth, name='check_auth'),
  
 ]

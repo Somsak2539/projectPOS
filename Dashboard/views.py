@@ -14,7 +14,7 @@ from django.utils.decorators import method_decorator
 from decimal import Decimal #ทำการแปลงค่าให้ตัวเลขอยู่ในรูปแบบทศนิยม
 
 from rest_framework.permissions import AllowAny
-
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication 
 #----------------------------------------------------importอันต่อไป---------------------------------
 
 from .models import SaleRecord
@@ -27,9 +27,30 @@ import base64
 from io import BytesIO
 from django.http import JsonResponse
 import io
-from django.contrib.auth.decorators import login_required,user_passes_test
+from django.contrib.auth.decorators import login_required,user_passes_test # สำหรับการส่งให้กับให้กับ user.ใน dashboard ต้องมีตัวนี้
+
+from django.utils.timezone import make_aware
+from django.utils import timezone  # ✅ นำเข้า timezone สำหรับจัดการโซนเวลา
 
 # Create your views here.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@login_required
+def check_auth(request):
+    return JsonResponse({"authenticated": True, "user": request.user.username})
 
 
 
@@ -102,23 +123,43 @@ class UpdateStockAPIView(APIView):
     
     
 class SaveSaleRecordAPIView(APIView):
+    
+    authentication_classes = [SessionAuthentication, BasicAuthentication]  # ✅ รองรับการใช้ session
+    permission_classes = [IsAuthenticated]  # ✅ บังคับให้ต้องล็อกอิน
     def post(self, request):
         try:
             data = request.data
+            
+           
+           
+            #✅ ตรวจสอบว่า stock_adjustments เป็น JSON หรือไม่
+            stock_adjustments = data.get("stockAdjustments")
+            if isinstance(stock_adjustments, str):
+                try:
+                    stock_adjustments = json.loads(stock_adjustments)
+                except json.JSONDecodeError:
+                    return Response({"error": "Invalid JSON format for stock_adjustments"}, status=status.HTTP_400_BAD_REQUEST)
+    
             SaleRecord.objects.create(
                 total_amount=data["totalAmount"],
                 entered_amount=data["enteredAmount"],
                 change=data["change"],
                 timestamp=datetime.fromisoformat(data["timestamp"]),
-                stock_adjustments=data["stockAdjustments"]
+                stock_adjustments=data["stockAdjustments"],
+                cashier=request.user
+                
             )
+            
+            
+            
             return Response({"message": "Sale record saved successfully!"}, status=status.HTTP_201_CREATED)
         except KeyError as e:
             return Response({"error": f"Missing key: {str(e)}"}, status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
-        
+    
+            
         
         
         

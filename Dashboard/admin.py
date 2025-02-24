@@ -10,7 +10,7 @@ from django.http import HttpResponse
 # Register your models here.
 
 class ProfitSele(admin.ModelAdmin):
-    list_display=["product","price","quantity","created","customer","Pofitprice"]
+    list_display=["product","price","quantity","created","customer","Pofitprice",]
       
 admin.site.register(OrderSele,ProfitSele)
 
@@ -18,7 +18,7 @@ admin.site.register(OrderSele,ProfitSele)
 
 
 class SaleRecordAdmin(admin.ModelAdmin):
-    list_display = ['id', 'total_amount', 'entered_amount', 'change', 'timestamp', 'all_stock_adjustments',]
+    list_display = ['id', 'total_amount', 'entered_amount', 'change', 'timestamp', 'all_stock_adjustments','cashier']
     list_filter = [('timestamp', DateRangeFilter)]  # ใช้ DateRangeFilter
     actions_on_top = True  # แสดง Actions ด้านบน
     actions_on_bottom = True  # แสดง Actions ด้านล่าง
