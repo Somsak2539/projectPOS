@@ -27,7 +27,7 @@ from django.contrib.auth.decorators import login_required,user_passes_test
 
 from django.contrib import messages,auth
 from itertools import groupby
-
+from django.utils import timezone
 #@user_passes_test(is_special_admin)
 
 
@@ -63,9 +63,15 @@ def DashboardUser(request):
 @login_required(login_url='/login_cover/')
 @user_passes_test(has_permission)
 def LayoutDashbords(request):
+    
+   
+
     print(f"User: {request.user}, Authenticated: {request.user.is_authenticated}")
     print(f"Checking Group: {request.user.groups.all()}")
-    return render(request, "LayoutDashbords.html")
+    
+    ProductStock = Product1.objects.filter(stock__lt=10).values("id", "name", "stock","updated_at")
+    print("ดึงค่ารายการมา",ProductStock);   
+    return render(request, "LayoutDashbords.html",{"ProductStock":ProductStock,})
  
  
 def eror404(request):
@@ -88,18 +94,20 @@ def ItemProduct(request):
     bangkok_tz = pytz.timezone("Asia/Bangkok")
     start_date = request.GET.get('start_date', None)
     end_date = request.GET.get('end_date', None)
-
+    #เพิ่มสำหรับการแจ้งเตือน
+    ProductStock = Product1.objects.filter(stock__lt=10).values("id", "name", "stock","updated_at")
     # ดึงข้อมูลทั้งหมดถ้าไม่มีการกรอง
     records = SaleRecord.objects.all().order_by('-timestamp')
 
     # ตรวจสอบว่าผู้ใช้กรอกวันที่ครบทั้งสองช่องหรือไม่
     if not start_date or not end_date:
-        messages.error(request, "กรุณากรอกวันที่ให้ครบทั้งสองช่อง!")  # ✅ แจ้งเตือน
+        #messages.error(request, "กรุณากรอกวันที่ให้ครบทั้งสองช่อง!")  # ✅ แจ้งเตือน
         return render(request, "ItemProduct.html", {
             "records": [],
             "total_sum": 0,
             "start_date": start_date or "",
-            "end_date": end_date or ""
+            "end_date": end_date or "",
+            "ProductStock":ProductStock,
         })
 
     try:
@@ -114,7 +122,8 @@ def ItemProduct(request):
                 "records": [],
                 "total_sum": 0,
                 "start_date": start_date,
-                "end_date": end_date
+                "end_date": end_date,
+                "ProductStock":ProductStock,
             })
 
         # ดึงข้อมูลที่อยู่ในช่วงวันที่ที่เลือก
@@ -129,14 +138,16 @@ def ItemProduct(request):
             "records": [],
             "total_sum": 0,
             "start_date": start_date,
-            "end_date": end_date
+            "end_date": end_date,
+            "ProductStock":ProductStock,
         })
 
     return render(request, "ItemProduct.html", {
         "records": records,
         "total_sum": total_sum,
         "start_date": start_date_obj.strftime('%d/%m/%Y'),
-        "end_date": end_date_obj.strftime('%d/%m/%Y')
+        "end_date": end_date_obj.strftime('%d/%m/%Y'),
+        "ProductStock":ProductStock,
     })
 
 
@@ -197,7 +208,8 @@ def EditAdd(request,id):
     filter2=Category.objects.all()
     product=Product1.objects.get(pk=id)
     
-    
+    #เพิ่มสำหรับการแจ้งเตือน
+    ProductStock = Product1.objects.filter(stock__lt=10).values("id", "name", "stock","updated_at")
     
     if request.method == "POST":
         print(request.POST)  # ✅ Debug ตรวจสอบข้อมูลที่ส่งมา
@@ -252,7 +264,7 @@ def EditAdd(request,id):
         return redirect("EditAdd", id=product.id)
     
     
-    return render (request,"EditAdd.html",{"product":product,"filter1":filter1,"filter2":filter2})
+    return render (request,"EditAdd.html",{"product":product,"filter1":filter1,"filter2":filter2,"ProductStock":ProductStock})
 
 
 
@@ -263,7 +275,9 @@ def ProductPreview(request):
     """
     แสดงรายการสินค้าทั้งหมด พร้อมตัวกรองและการเรียงลำดับ
     """
-
+    
+    # เพิ่มสำหรับการแจ้งเตือน
+    ProductStock = Product1.objects.filter(stock__lt=10).values("id", "name", "stock","updated_at")
     # ✅ ดึงสินค้ายอดนิยม (Trending Products)
     Products = Product1.objects.filter(is_trending=True)
 
@@ -323,6 +337,7 @@ def ProductPreview(request):
         "filter1": Product1.objects.all(),  # ✅ ข้อมูลสินค้าทั้งหมด
         "filter2": filter2,    # ✅ หมวดหมู่ทั้งหมด
         "categories": Category.objects.all(),  # ✅ หมวดหมู่ทั้งหมด (อีกตัว)
+        "ProductStock":ProductStock,
     })
 
 
@@ -337,9 +352,12 @@ def Circulation1(request):
     start_date = request.GET.get('start_date', None)
     end_date = request.GET.get('end_date', None)
 
+    #เพิ่มสำหรับการแจ้งเตือน
+    ProductStock = Product1.objects.filter(stock__lt=10).values("id", "name", "stock","updated_at")
     # ดึงข้อมูลทั้งหมดถ้าไม่มีการกรอง
     records = SaleRecord.objects.all().order_by('-timestamp')
-
+    # เพิ่มสำหรับการแจ้งแตือน
+    ProductStock = Product1.objects.filter(stock__lt=10).values("id", "name", "stock","updated_at")
     # ตรวจสอบว่าผู้ใช้กรอกวันที่ครบทั้งสองช่องหรือไม่
     if not start_date or not end_date:
         messages.error(request, "กรุณากรอกวันที่ให้ครบทั้งสองช่อง!")  # ✅ แจ้งเตือน
@@ -384,7 +402,8 @@ def Circulation1(request):
         "records": records,
         "total_sum": total_sum,
         "start_date": start_date_obj.strftime('%d/%m/%Y'),
-        "end_date": end_date_obj.strftime('%d/%m/%Y')
+        "end_date": end_date_obj.strftime('%d/%m/%Y'),
+        "ProductStock":ProductStock,
     })
 
 
@@ -392,6 +411,7 @@ def Circulation1(request):
 #@user_passes_test(is_special_admin,login_url='/eror404/')
 
 def Circulation2(request):
+    
     filter_type = request.GET.get("filter", "year")  
     today = now()  # ✅ ใช้ timezone-aware datetime
     bangkok_tz = pytz.timezone("Asia/Bangkok")
@@ -410,11 +430,12 @@ def Circulation2(request):
     else:  # "year"
         start_date = today - timedelta(days=365)
 
-
+    ProductStock = Product1.objects.filter(stock__lt=10).values("id", "name", "stock","updated_at")
     # ✅ รีเซ็ตเวลาเป็น 00:00:00 เพื่อให้ได้ข้อมูลตั้งแต่ต้นวัน
     start_date = start_date.replace(hour=0, minute=0, second=0, microsecond=0)
     end_date = today.replace(hour=23, minute=59, second=59, microsecond=999999)
 
+    
     print(f"🟢 filter_type: {filter_type}")
     print(f"🕒 start_date: {start_date} → end_date: {end_date}")
     print(f"🟢 filter_type: {filter_type}")
@@ -484,10 +505,10 @@ def Circulation2(request):
     #--------------------------------------------------------------------------------endingกราฟ-------------------------------------------------
     
     
+   
     
     
-    
-    
+     
     
     
 
@@ -607,11 +628,11 @@ def Circulation2(request):
     return render(request, "dashboards-analytics.html", {
         "records1": records1,
         "total_sum": total_sum,
-         
         "totalProfit": round(total_profit, 2),
         "TotalPrice": round(total_price, 2),
         "filter_type": filter_type,
-        "product_sales_json": product_sales_json
+        "product_sales_json": product_sales_json,
+        "ProductStock":ProductStock
        
     })
     
