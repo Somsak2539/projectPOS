@@ -118,8 +118,10 @@
 
 </style>
 <body>
-    <button class="print-btn" onclick="openModal()">🧾 ดูใบเสร็จ</button>
 
+
+    
+    <button class="print-btn" onclick="openModal()">🧾 ดูใบเสร็จ</button>
     <!-- Modal Popup -->
     <div id="receiptModal" class="modal">
         <div class="modal-content">
@@ -154,9 +156,8 @@
         </div>
     </div>
 
-    <script >
 
-
+    <script>
         function openModal() {
             document.getElementById("receiptModal").style.display = "flex";
             document.getElementById("modal-date").innerText = new Date().toLocaleDateString();
@@ -165,21 +166,17 @@
         function closeModal() {
             document.getElementById("receiptModal").style.display = "none";
         }
-        
+    
         function printReceipt() {
-            let modalContent = document.querySelector(".modal-content").innerHTML;
+            let printContent = document.getElementById("receiptModal").innerHTML; // ✅ พิมพ์เฉพาะ Modal
             let originalContent = document.body.innerHTML;
-        
-            document.body.innerHTML = modalContent;
+    
+            document.body.innerHTML = printContent;
             window.print();
             document.body.innerHTML = originalContent;
+    
+            window.location.reload(); // ✅ รีโหลดหน้าเพื่อป้องกันเนื้อหาหายไป
         }
-        
-
-
-
-
-        
     </script>
 </body>
 </html>

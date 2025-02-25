@@ -58,6 +58,9 @@ def is_special_admin(user):
     return user.is_authenticated and user.groups.filter(name='Dashboards').exists()
 
 
+
+
+
 @login_required(login_url='/login_cover/')
 @user_passes_test(is_special_admin)
 def ShowDashBoard(request): 
