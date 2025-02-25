@@ -1020,31 +1020,53 @@ fetch(apiUrl)
             });
 
 
-            fetch("http://127.0.0.1:8080/save-sale-record/", {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-                "X-CSRFToken": csrfToken,
-                  // ✅ ให้ส่ง session ไปกับ request  // ✅ เพิ่ม Token ตรงนี้  // ต้องเพิ่ม CSRF Token เพื่อความปลอดภัย
-              },
-              credentials: "include",
-              body: JSON.stringify(savedResults[savedResults.length - 1]), // ส่งข้อมูล JSON
+            setTimeout(() => {
+              fetch("http://127.0.0.1:8080/save-sale-record/", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": csrfToken,
+                },
+                credentials: "include",
+                body: JSON.stringify(savedResults[savedResults.length - 1]), // ส่งข้อมูล JSON
             })
-              .then(response => {
-                if (!response.ok) {
-                  throw new Error(`HTTP error! Status: ${response.status}`);
+            .then(response => response.json())
+            .then(data => {
+                console.log("✅ Data received:", data);  // ✅ Debug ข้อมูลที่ได้รับ
+            
+                // ✅ ตรวจสอบว่ามีค่า totalAmount หรือไม่
+                if (data.totalAmount) {
+                    document.getElementById("totalAmount").innerText = data.totalAmount + " บาท";
+                    document.getElementById("enteredAmount").innerText = data.enteredAmount + " บาท";
+                    document.getElementById("change").innerText = data.change + " บาท";
+                    document.getElementById("timestamp").innerText = "🕒 " + new Date(data.timestamp).toLocaleString("th-TH");
+            
+                    // ✅ วนลูปแสดงรายการสินค้า
+                    let stockList = document.getElementById("stockAdjustments");
+                    stockList.innerHTML = ""; // เคลียร์ข้อมูลเก่า
+                    data.stockAdjustments.forEach(item => {
+                        let row = `<tr>
+                            <td>${item.product}</td>
+                            <td>${item.quantity}</td>
+                            <td>${item.TotalPrice} บาท</td>
+                        </tr>`;
+                        stockList.innerHTML += row;
+                    });
+            
+                    console.log("✅ Updated UI successfully!");
+                } else {
+                    console.error("❌ No totalAmount found in response!");
                 }
-                return response.json();
-              })
-              .then(data => {
-                console.log("Sale record saved successfully:", data);
-              })
-              .catch(error => {
-                console.error("Error saving sale record:", error);
-              });
-
-            console.log("JSON to be sent:", JSON.stringify(savedResults[savedResults.length - 1]));
-
+            })
+            .catch(error => console.error("❌ Error fetching data:", error));
+            
+          }, 1000); // ✅ รอ 1 วินาทีก่อนดึงข้อมูล
+          
+          
+          
+          
+          console.log("JSON to be sent:", JSON.stringify(savedResults[savedResults.length - 1]));
+          
 
             //-------------------------------------ขอทำการโน็ตไว้ก่อนน่ะ
 

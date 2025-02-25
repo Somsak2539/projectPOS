@@ -14,7 +14,7 @@ from django.utils.decorators import method_decorator
 from decimal import Decimal #ทำการแปลงค่าให้ตัวเลขอยู่ในรูปแบบทศนิยม
 
 from rest_framework.permissions import AllowAny
-
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication 
 #----------------------------------------------------importอันต่อไป---------------------------------
 
 from .models import SaleRecord
@@ -27,18 +27,67 @@ import base64
 from io import BytesIO
 from django.http import JsonResponse
 import io
-
+from django.contrib.auth.decorators import login_required,user_passes_test # สำหรับการส่งให้กับให้กับ user.ใน dashboard ต้องมีตัวนี้
+import pytz
+from django.utils.timezone import make_aware
+from django.utils import timezone  # ✅ นำเข้า timezone สำหรับจัดการโซนเวลา
+import time
 
 # Create your views here.
 
-@csrf_exempt  # ❌ ปิดการตรวจสอบ CSRF (สำหรับ API เท่านั้น)
-def ShowDashBoard(request):
-   
-   all_product=Product1.objects.all().order_by("name") # ดึงข้อมูลทั้งหมดที่เป็น Product1 
-   return render(request,"Dashboard.html",{"all_product":all_product}) #ดึงค่าตัวแปรเพื่อทำการวนลูป
 
 
 
+
+
+
+
+
+def Recipe(request):
+    
+    return render(request,"Recipe.html")
+
+
+
+@login_required
+def check_auth(request):
+    return JsonResponse({"authenticated": True, "user": request.user.username})
+
+
+
+def is_special_admin(user):
+    return user.is_authenticated and user.groups.filter(name='Dashboards').exists()
+
+
+
+
+
+@login_required(login_url='/login_cover/')
+@user_passes_test(is_special_admin)
+def ShowDashBoard(request): 
+    # ✅ ดึง SaleRecord ทั้งหมดเรียงตาม timestamp ล่าสุด
+    ShowRecord = SaleRecord.objects.all().order_by("-timestamp")
+
+    # ✅ ดึง SaleRecord ล่าสุด (ถ้ามี)
+    latest_record = ShowRecord.first()
+
+    # ✅ ตรวจสอบว่ามีข้อมูลหรือไม่
+    if latest_record:
+        bangkok_tz = pytz.timezone("Asia/Bangkok")
+        timestamp_th = latest_record.timestamp.astimezone(bangkok_tz)
+    else:
+        timestamp_th = None
+
+    # ✅ Debug ค่าที่ดึงมา
+    print("✅ [DEBUG] Sale Records:", ShowRecord)
+    print(f"✅ [DEBUG] Sale Record ล่าสุด: {latest_record}")
+    print(f"✅ [DEBUG] Timestamp (TH): {timestamp_th if timestamp_th else 'ไม่มีข้อมูล'}")
+
+    return render(request, "Dashboard.html", {
+        "ShowRecord": ShowRecord,
+        "latest_record": latest_record,
+        "timestamp_th": timestamp_th
+    })
 
 def reduce_stock(request, product_id):
     if request.method == 'POST':
@@ -54,20 +103,24 @@ def reduce_stock(request, product_id):
 
 
 
-@method_decorator(csrf_exempt, name='dispatch') #การประกาศค่าสำหรับการอับเดท API View เมื่อการอับเดทรายการสินค้าก็จะเข้ามาอยู่ตรงนี้
+@method_decorator(csrf_exempt, name="dispatch")
 class UpdateStockAPIView(APIView):
- 
-    permission_classes = [AllowAny]
-    def put(self, request):
+    permission_classes = [AllowAny]  # ✅ ปิดการตรวจสอบสิทธิ์ (ใช้ AllowAny แทนได้)
+
+    def put(self, request, *args, **kwargs):
         updates = request.data.get("updates", [])
+
         if not updates:
             return Response({"error": "No updates provided"}, status=status.HTTP_400_BAD_REQUEST)
 
         response_data = []
         for update in updates:
             try:
-                product = Product1.objects.get(name=update["product"])  # ค้นหาจากชื่อสินค้า
-                product.stock -= Decimal(update["quantity"])  # แปลงค่า quantity เป็น Decimal
+                product = Product1.objects.filter(name=update["product"]).first()  # ✅ ใช้ `.filter().first()` ป้องกัน MultipleObjectsReturned
+                if not product:
+                    return Response({"error": f"Product {update['product']} not found"}, status=status.HTTP_404_NOT_FOUND)
+
+                product.stock -= Decimal(update["quantity"])  # ✅ แปลงเป็น Decimal product.stock=product.stock-quantity  เกิดจากการนำไปลบกัน
                 if product.stock < 0:
                     return Response(
                         {"error": f"Not enough stock for product {product.name}"},
@@ -78,34 +131,56 @@ class UpdateStockAPIView(APIView):
                     "product": product.name,
                     "updated_stock": product.stock,
                 })
-            except Product1.DoesNotExist:
-                return Response(
-                    {"error": f"Product {update['product']} not found"},
-                    status=status.HTTP_404_NOT_FOUND,
-                )
+
+            except Exception as e:
+                return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
         return Response({"updated": response_data}, status=status.HTTP_200_OK)
     
     
     
 class SaveSaleRecordAPIView(APIView):
+    
+    authentication_classes = [SessionAuthentication, BasicAuthentication]  # ✅ รองรับการใช้ session
+    permission_classes = [IsAuthenticated]  # ✅ บังคับให้ต้องล็อกอิน
     def post(self, request):
         try:
             data = request.data
+            
+           
+           
+            #✅ ตรวจสอบว่า stock_adjustments เป็น JSON หรือไม่
+            stock_adjustments = data.get("stockAdjustments")
+            if isinstance(stock_adjustments, str):
+                try:
+                    stock_adjustments = json.loads(stock_adjustments)
+                except json.JSONDecodeError:
+                    return Response({"error": "Invalid JSON format for stock_adjustments"}, status=status.HTTP_400_BAD_REQUEST)
+    
+    
+             # ✅ แปลงเวลาให้เป็นโซนไทย (Asia/Bangkok)
+          
             SaleRecord.objects.create(
                 total_amount=data["totalAmount"],
                 entered_amount=data["enteredAmount"],
                 change=data["change"],
                 timestamp=datetime.fromisoformat(data["timestamp"]),
-                stock_adjustments=data["stockAdjustments"]
+                stock_adjustments=data["stockAdjustments"],
+                cashier=request.user,
+               
+                
             )
+            
+            
+            time.sleep(1)  # ✅ หน่วงเวลาให้ Database Sync
             return Response({"message": "Sale record saved successfully!"}, status=status.HTTP_201_CREATED)
         except KeyError as e:
             return Response({"error": f"Missing key: {str(e)}"}, status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
-        
+    
+            
         
         
         

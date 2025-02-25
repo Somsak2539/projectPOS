@@ -461,40 +461,38 @@ td {
     
     <!-- ✅ ป๊อปอัปใบเสร็จ -->
     <div id="receiptModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal()">&times;</span>
-            <h5>🧾 ร้านค้าของคุณ</h5>
-            <h5>เลขที่ใบเสร็จ: <strong>#123456</strong></h5>
-            <h5>วันที่: <span id="modal-date"></span></h5>
-
-             <table class="receipt-table">
-                <thead>
-                    <tr>
-                        <th>สินค้า</th>
-                        <th class="price">จำนวน</th>
-                        <th class="price">ราคา</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr><td>สินค้า A</td><td class="price">2</td><td class="price">100 บาท</td></tr>
-                    <tr><td>สินค้า B</td><td class="price">1</td><td class="price">50 บาท</td></tr>
-                    <tr><td>สินค้า C</td><td class="price">3</td><td class="price">30 บาท</td></tr>
-                </tbody>
-                <tfoot>
-                    <tr class="total">
-                        <td colspan="2">รวม</td>
-                        <td class="price">180 บาท</td>
-                    </tr>
-                </tfoot>
-            </table>
-
-            </h2 class="thanks">🙏 ขอบคุณที่ใช้บริการร้านเหมยน่ะ 🙏<h2/>
-            <button class="print-btn" onclick="printReceipt()">พิมพ์ใบเสร็จ</button>
-
-        </div>
+      <div class="modal-content">
+          <span class="close" onclick="closeModal()">&times;</span>
+          <h5>🧾 ร้านค้าของคุณ</h5>
+          <h5><strong>เงินที่รับมา:</strong> <span id="enteredAmount">-</span></h5>
+          <h5><strong>เงินทอน:</strong> <span id="change">-</span></h5>
+          <h5><strong>เวลาที่บันทึก:</strong> <span id="timestamp">-</span></h5>
+    
+          <table class="receipt-table">
+              <thead>
+                  <tr>
+                      <th>สินค้า</th>
+                      <th class="price">จำนวน</th>
+                      <th class="price">ราคา</th>
+                  </tr>
+              </thead>
+              <tbody id="stockAdjustments">
+                <tr><td colspan="3">🔄 กำลังโหลดข้อมูล...</td></tr>
+            </tbody>
+            
+              <tfoot>
+                  <tr class="total">
+                      <td colspan="2">รวม</td>
+                      <td class="price" id="totalAmount">0 บาท</td>
+                  </tr>
+              </tfoot>
+          </table>
+    
+          <h2 class="thanks">🙏 ขอบคุณที่ใช้บริการร้านเหมยน่ะ 🙏</h2>
+          <button class="print-btn" onclick="printReceipt()">พิมพ์ใบเสร็จ</button>
+      </div>
     </div>
-   
-
+    
 
 
     <link rel="stylesheet" href="{% static "assets/dadhBoard/css/style.css"%}">

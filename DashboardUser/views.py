@@ -410,8 +410,8 @@ def Circulation1(request):
     })
 
 
-#@login_required(login_url='/login_cover/')
-#@user_passes_test(is_special_admin,login_url='/eror404/')
+@login_required(login_url='/login_cover/')
+@user_passes_test(is_special_admin,login_url='/eror404/')
 
 def Circulation2(request):
     
