@@ -15,5 +15,5 @@ urlpatterns = [
   path('generate-promptpay-qr/', generate_promptpay_qr, name='generate_promptpay_qr'),
   path ('login_cover/?next=/indexDashboardUser//',views.CleanDisplay),
   path('check-auth/', check_auth, name='check_auth'),
- 
+  path('Recipe',views.Recipe, name='Recipe'),
 ]

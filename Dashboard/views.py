@@ -42,9 +42,9 @@ from django.utils import timezone  # ✅ นำเข้า timezone สำห�
 
 
 
-
-
-
+def Recipe(request):
+    
+    return render(request,"Recipe.html")
 
 
 
