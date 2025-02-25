@@ -617,9 +617,9 @@ document.addEventListener("DOMContentLoaded", function () {
                 console.log(`✅ ข้อมูลที่ได้รับจาก API (${filterType}):`, data);
 
                 // ✅ อัปเดตค่า totalProfit ลงใน HTML
-                let totalProfitElement = document.getElementById("totalPrice");
+                let totalProfitElement = document.getElementById("total_sum");
                 if (totalProfitElement) {
-                    totalProfitElement.textContent = data.totalPrice1.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                    totalProfitElement.textContent = data.total_sum.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
                 } else {
                     console.error("❌ ไม่พบ <span id='total'> ใน DOM");
                 }
