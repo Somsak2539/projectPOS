@@ -1039,7 +1039,7 @@ fetch(apiUrl)
                     document.getElementById("totalAmount").innerText = data.totalAmount + " บาท";
                     document.getElementById("enteredAmount").innerText = data.enteredAmount + " บาท";
                     document.getElementById("change").innerText = data.change + " บาท";
-                    document.getElementById("timestamp").innerText = "🕒 " + new Date(data.timestamp).toLocaleString("th-TH");
+                    document.getElementById("timestamp").innerText = "" + new Date(data.timestamp).toLocaleString("th-TH");
             
                     // ✅ วนลูปแสดงรายการสินค้า
                     let stockList = document.getElementById("stockAdjustments");

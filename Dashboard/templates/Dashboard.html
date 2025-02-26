@@ -18,13 +18,13 @@
 
     /* ✅ ตั้งค่าหน้าตัวอักษรหลัก */
 body {
-    font-family: "Arial", sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background-color: #f5f5f5;
-    margin: 0;
+  font-family: "Arial", sans-serif;
+  font-size: 15px; /* ขนาดตัวอักษรเหมาะสม */
+ 
+  text-align: center;
+  background-color: white; /* ✅ พื้นหลังขาว */
+  margin: 0;
+  padding: 10px;
 }
 
 /* ✅ ตั้งค่าโครงสร้างของ Modal */
@@ -126,8 +126,8 @@ td {
 /* ✅ ปรับแต่งเมื่อพิมพ์ */
 @media print {
   @page {
-      size: 80mm auto; /* ปรับขนาดใบเสร็จ */
-      margin: 0;
+    size: 48mm 210mm; /* ✅ กำหนดขนาดกระดาษ */
+    margin: 0; /* ✅ ไม่มีขอบขาว */
   }
 
   body {
@@ -135,12 +135,12 @@ td {
       flex-direction: column;
       justify-content: center;
       text-align: center;
-      font-family: "Courier New", monospace;
-      font-size: 14px;
-      text-align: center;
-      background: none;
+      font-family: "TH Sarabun New", "Angsana New", "Courier New", monospace;
+      font-size: 14px; /* ขนาดตัวอักษรเหมาะสม */
+      text-align: left;
+      background-color: white; /* ✅ พื้นหลังขาว */
       margin: 0;
-      padding: 0;
+      padding: 10px;
   }
 
   .modal-content {
@@ -463,10 +463,10 @@ td {
     <div id="receiptModal" class="modal">
       <div class="modal-content">
           <span class="close" onclick="closeModal()">&times;</span>
-          <h5>🧾 ร้านค้าของคุณ</h5>
-          <h5><strong>เงินที่รับมา:</strong> <span id="enteredAmount">-</span></h5>
-          <h5><strong>เงินทอน:</strong> <span id="change">-</span></h5>
-          <h5><strong>เวลาที่บันทึก:</strong> <span id="timestamp">-</span></h5>
+          <h5> ร้านค้าของคุณ</h5>
+          <h5>รับมา: <span id="enteredAmount">-</span></h5>
+          <h5>ทอน: <span id="change">-</span></h5>
+          <h5>เวลาที่บันทึก:<span id="timestamp">-</span></h5>
     
           <table class="receipt-table">
               <thead>
@@ -488,7 +488,7 @@ td {
               </tfoot>
           </table>
     
-          <h2 class="thanks">🙏 ขอบคุณที่ใช้บริการร้านเหมยน่ะ 🙏</h2>
+          <h2 class="thanks">ขอบคุณที่ใช้บริการร้านเหมยน่ะ</h2>
           <button class="print-btn" onclick="printReceipt()">พิมพ์ใบเสร็จ</button>
       </div>
     </div>
@@ -518,13 +518,21 @@ td {
     }
     
     function printReceipt() {
-        let modalContent = document.querySelector(".modal-content").innerHTML;
-        let originalContent = document.body.innerHTML;
-    
-        document.body.innerHTML = modalContent;
-        window.print();
-        document.body.innerHTML = originalContent;
-    }
+      console.log("🖨️ กำลังเตรียมพิมพ์...");
+  
+      const printContent = document.querySelector(".modal-content").innerHTML;
+      const originalContent = document.body.innerHTML;
+  
+      document.body.innerHTML = printContent;
+  
+      setTimeout(() => {
+          window.print();
+          console.log("✅ พิมพ์ใบเสร็จสำเร็จ!");
+          document.body.innerHTML = originalContent;
+          location.reload(); // ✅ รีเฟรชหลังจากพิมพ์เสร็จ
+      }, 500);
+  }
+  
     
 
 
