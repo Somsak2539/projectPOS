@@ -1422,95 +1422,96 @@ fetch(apiUrl)
 
 
       if (selectedProduct && selectedProduct.currentTotal > 0) {
-          console.log(`🔍 Processing additional item: ${selectedProduct.product.name}`);
-          const tableBody = document.getElementById("itemTableBody");
-          const rows = tableBody.querySelectorAll("tr");
-          let found = false;
-           
-           // ทำการดึงค่าราคาออกมาใช้งาน 
-          let Price1=parseFloat(selectedProduct.product.price)
-          // ✅ ดึง profitprice
-          let profitprice = parseFloat(selectedProduct.product.profitprice);
-
-          // ✅ ดึง quantity ที่เพิ่มเข้ามา
-          let addedQuantity = parseFloat(calculatorDisplay.textContent);
-
-          // ✅ คำนวณกำไร = profitprice * quantity
-          let totalProfit = profitprice * addedQuantity;
-          // รวมราคาที่เราขายทั้งหมด Price1*addedQuantity
-          let TotalPrice=Price1*addedQuantity;
-
-
-    console.log(`💰 กำไรที่เพิ่มเข้ามา: ${totalProfit.toFixed(2)} บาท`);
-
-          rows.forEach((row) => {
-              const productCell = row.querySelector("td:nth-child(3)");
-              const quantityCell = row.querySelector("td:nth-child(5)");
-              const priceCell = row.querySelector("td:nth-child(6)");
-  
-              if (productCell && productCell.textContent === selectedProduct.product.name) {
-                  const currentQuantity = parseFloat(quantityCell.textContent.split(" ")[0]);
-                  const newQuantity = currentQuantity + parseFloat(calculatorDisplay.textContent);
-                  const newTotalPrice = newQuantity * selectedProduct.product.price;
-  
-                  quantityCell.textContent = `${newQuantity} `;
-                  priceCell.textContent = `${newTotalPrice.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} บาท`;
-  
-                  const adjustmentIndex = stockAdjustments.findIndex((item) => item.product === selectedProduct.product.name);
-                  if (adjustmentIndex > -1) {
-                      stockAdjustments[adjustmentIndex].quantity += parseFloat(calculatorDisplay.textContent);
-                  }
-  
-                  selectedProduct.totalItems.push(selectedProduct.currentTotal);
-                  found = true;
-              }
-          });
-  
-          if (!found) {
-              selectedProduct.totalItems.push(selectedProduct.currentTotal);
-              addRowToTable(
-                  itemtCouter,
-                  selectedProduct.product.barcode,
-                  selectedProduct.product.name,
-                  "kg",
-                  calculatorDisplay.textContent,
-                  selectedProduct.currentTotal,
-                  selectedProduct.product.stock
-              );
-  
-              stockAdjustments.push({
-                  product: selectedProduct.product.name,
-                  quantity: parseFloat(calculatorDisplay.textContent),
-                  totalProfit: totalProfit,
-                  TotalPrice:TotalPrice, // ✅ บันทึกกำไร
-
-              });
-          }
-
-
-          const grandTotalPrice = stockAdjustments.reduce((sum, item) => sum + item.TotalPrice, 0);
-          const grandTotalProfit = stockAdjustments.reduce((sum, item) => sum + item.totalProfit, 0);
-          const grandTotal = selectedProduct.totalItems.reduce((sum, item) => sum + item, 0);
-          document.getElementById("totalAmount").innerText = `${grandTotal.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} บาท`;
-           
-          console.log(`totl Items(${selectedProduct.product.barcode})`)
-          console.log(`📦 Total Items (${selectedProduct.key}):`, selectedProduct.totalItems);
-          console.log(`💰 Grand Total (${selectedProduct.key}):`, grandTotal);
-          console.log("📦 Stock Adjustments:", stockAdjustments);
-          console.log("แสดงกำไรต่อการขายแต่ล่ะครั้ง",grandTotalProfit);
-          console.log("รวมราคาเงินที่สามารถที่จะขายของได้",grandTotalPrice);
-  
-          selectedProduct.currentTotal = 0;
-      } else {
-          console.log("❌ ไม่พบสินค้าใน Product List แต่โค้ดยังคงทำงานต่อ...");
-          alert("❌ โปรดเลือกรายสินค้าก่อน");
-          console.log("โปรดทำการเพิ่มสินค้าในรายการ");
-      }
-
-      calculatorDisplay.textContent = "0"; // รีเซ็ตค่าแสดงผลเป็น 0
-      selectedItem = ""; // รีเซ็ตสถานะหลังจากเพิ่มรายการ
-  }
-  
+        console.log(`🔍 Processing additional item: ${selectedProduct.product.name}`);
+        const tableBody = document.getElementById("itemTableBody");
+        const rows = tableBody.querySelectorAll("tr");
+        let found = false;
+        
+        // ✅ คำนวณราคาและกำไร
+        let Price1 = parseFloat(selectedProduct.product.price);
+        let profitprice = parseFloat(selectedProduct.product.profitprice);
+        let addedQuantity = parseFloat(calculatorDisplay.textContent);
+        let totalProfit = profitprice * addedQuantity;
+        let TotalPrice = Price1 * addedQuantity;
+    
+        console.log(`💰 กำไรที่เพิ่มเข้ามา: ${totalProfit.toFixed(2)} บาท`);
+    
+        rows.forEach((row) => {
+            const productCell = row.querySelector("td:nth-child(3)");
+            const quantityCell = row.querySelector("td:nth-child(5)");
+            const priceCell = row.querySelector("td:nth-child(6)");
+    
+            if (productCell && productCell.textContent === selectedProduct.product.name) {
+                const currentQuantity = parseFloat(quantityCell.textContent.split(" ")[0]);
+                const newQuantity = currentQuantity + addedQuantity;
+                const newTotalPrice = newQuantity * Price1;
+    
+                quantityCell.textContent = `${newQuantity} `;
+                priceCell.textContent = `${newTotalPrice.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} บาท`;
+    
+                const adjustmentIndex = stockAdjustments.findIndex((item) => item.product === selectedProduct.product.name);
+                if (adjustmentIndex > -1) {
+                    stockAdjustments[adjustmentIndex].quantity += addedQuantity;
+                    stockAdjustments[adjustmentIndex].totalProfit += totalProfit;
+                    stockAdjustments[adjustmentIndex].TotalPrice += TotalPrice;
+                }
+    
+                selectedProduct.totalItems.push(selectedProduct.currentTotal);
+                found = true;
+            }
+        });
+    
+        if (!found) {
+            selectedProduct.totalItems.push(selectedProduct.currentTotal);
+            addRowToTable(
+                itemtCouter,
+                selectedProduct.product.barcode,
+                selectedProduct.product.name,
+                "kg",
+                calculatorDisplay.textContent,
+                selectedProduct.currentTotal,
+                selectedProduct.product.stock
+            );
+    
+            // ✅ ตรวจสอบว่ามีสินค้าชื่อเดียวกันอยู่ใน stockAdjustments หรือไม่
+            const existingItemIndex = stockAdjustments.findIndex(item => item.product === selectedProduct.product.name);
+            if (existingItemIndex !== -1) {
+                // ✅ หากมีแล้ว ให้อัปเดตจำนวนสินค้าและราคาที่รวมกัน
+                stockAdjustments[existingItemIndex].quantity += addedQuantity;
+                stockAdjustments[existingItemIndex].totalProfit += totalProfit;
+                stockAdjustments[existingItemIndex].TotalPrice += TotalPrice;
+            } else {
+                // ✅ ถ้ายังไม่มี ให้เพิ่มเป็นสินค้าใหม่
+                stockAdjustments.push({
+                    product: selectedProduct.product.name,
+                    quantity: addedQuantity,
+                    totalProfit: totalProfit,
+                    TotalPrice: TotalPrice
+                });
+            }
+        }
+    
+        // ✅ อัปเดตยอดรวม
+        const grandTotalPrice = stockAdjustments.reduce((sum, item) => sum + item.TotalPrice, 0);
+        const grandTotalProfit = stockAdjustments.reduce((sum, item) => sum + item.totalProfit, 0);
+        const grandTotal = selectedProduct.totalItems.reduce((sum, item) => sum + item, 0);
+        document.getElementById("totalAmount").innerText = `${grandTotal.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} บาท`;
+    
+        console.log(`📦 Stock Adjustments (Updated):`, stockAdjustments);
+        console.log("💰 รวมกำไรทั้งหมด", grandTotalProfit);
+        console.log("💵 รวมราคาทั้งหมด", grandTotalPrice);
+    
+        selectedProduct.currentTotal = 0;
+    } else {
+        console.log("❌ ไม่พบสินค้าใน Product List แต่โค้ดยังคงทำงานต่อ...");
+        alert("❌ โปรดเลือกรายสินค้าก่อน");
+        console.log("โปรดทำการเพิ่มสินค้าในรายการ");
+    }
+    
+    calculatorDisplay.textContent = "0"; // รีเซ็ตค่าแสดงผลเป็น 0
+    selectedItem = ""; // รีเซ็ตสถานะหลังจากเพิ่มรายการ
+    
+    }
   
     //-------------------------------------------------------- รายการต่อสำหรับการตัด stock -------------------------------------------------------------*
 
