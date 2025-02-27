@@ -29,6 +29,7 @@ admin.site.index_title="somsak sonngai"
 
 urlpatterns = [
     path('admin/', admin.site.urls,name='admin1'),
+    path('',include("DashboardUser.urls")),
     path('',include("productapp.urls")),
     path('', include('chat.urls')),
     path('',include("userapp.urls")),
@@ -38,7 +39,7 @@ urlpatterns = [
     path('',include(router.urls)) , # สำหรับการติดตั้ง rounter
     path('api/',include("productapp.urls")), #เป็นการเพิ่ม path สำหรับการอ้างอิงในโปรเจค ต้องไปตามที่  blogApp urls ว่ามอะไรบ้าง และurls ได้ทำการกำหนดอะไรบ้างใน urls นี้ก็คืออีกหนั่งอย่างสำหรับการตามหาที่อยู่ Urls โค้ดสำคัญเลยแหละ
     path('blog/',include("productapp.urls")),
-    path('',include("DashboardUser.urls")),
+    
    
     
    

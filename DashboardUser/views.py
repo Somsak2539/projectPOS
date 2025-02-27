@@ -60,12 +60,37 @@ def DashboardUser(request):
      return render (request,"dashboards-analytics.html") #ทำการดึงค่าตัวแปรมาเก็บไว้แล้ว Return กับไป
  
 
+
+def index(request):
+    if request.method == "POST":
+        username = request.POST.get("username")
+        password = request.POST.get("password")
+
+        if not username or not password:
+            messages.warning(request, "กรุณาใส่ข้อมูลให้ครบ")
+            return redirect("login_cover")
+
+        user = auth.authenticate(username=username, password=password)
+        if user is None:
+            messages.warning(request, "ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง")
+            return redirect("eror404")
+        
+        
+
+        auth.login(request, user)
+        return redirect("LayoutDashbords")  # เปลี่ยนเส้นทางไปยังหน้าแรก
+
+        
+        
+    return render(request, "index.html")
+ 
+
+
+
 @login_required(login_url='/login_cover/')
 @user_passes_test(has_permission)
 def LayoutDashbords(request):
     
-   
-
     print(f"User: {request.user}, Authenticated: {request.user.is_authenticated}")
     print(f"Checking Group: {request.user.groups.all()}")
     
@@ -75,6 +100,7 @@ def LayoutDashbords(request):
     print ("การนับข้อมูล",total_product_count);
     print("ดึงค่ารายการมา",ProductStock);   
     return render(request, "LayoutDashbords.html",{"ProductStock":ProductStock,"total_product_count":total_product_count})
+
  
  
 def eror404(request):
@@ -97,8 +123,18 @@ def ItemProduct(request):
     bangkok_tz = pytz.timezone("Asia/Bangkok")
     start_date = request.GET.get('start_date', None)
     end_date = request.GET.get('end_date', None)
+    
+    
+  
+  
+    ProductStock = Product1.objects.filter(stock__lt=10).values("id", "name", "stock","updated_at")
+    # ✅ ดึงสินค้าเฉพาะที่ stock < 10 และนับจำนวนสินค้าเหล่านั้น
+    total_product_count = Product1.objects.filter(stock__lt=10).count()
+    print ("การนับข้อมูล",total_product_count);
+    
     #เพิ่มสำหรับการแจ้งเตือน
     ProductStock = Product1.objects.filter(stock__lt=10).values("id", "name", "stock","updated_at")
+  
     # ดึงข้อมูลทั้งหมดถ้าไม่มีการกรอง
     records = SaleRecord.objects.all().order_by('-timestamp')
 
@@ -111,6 +147,7 @@ def ItemProduct(request):
             "start_date": start_date or "",
             "end_date": end_date or "",
             "ProductStock":ProductStock,
+            "total_product_count":total_product_count,
         })
 
     try:
@@ -127,6 +164,7 @@ def ItemProduct(request):
                 "start_date": start_date,
                 "end_date": end_date,
                 "ProductStock":ProductStock,
+                "total_product_count":total_product_count,
             })
 
         # ดึงข้อมูลที่อยู่ในช่วงวันที่ที่เลือก
@@ -143,6 +181,7 @@ def ItemProduct(request):
             "start_date": start_date,
             "end_date": end_date,
             "ProductStock":ProductStock,
+            "total_product_count":total_product_count,
         })
 
     return render(request, "ItemProduct.html", {
@@ -151,6 +190,7 @@ def ItemProduct(request):
         "start_date": start_date_obj.strftime('%d/%m/%Y'),
         "end_date": end_date_obj.strftime('%d/%m/%Y'),
         "ProductStock":ProductStock,
+        "total_product_count":total_product_count,
     })
 
 
@@ -211,6 +251,12 @@ def EditAdd(request,id):
     filter2=Category.objects.all()
     product=Product1.objects.get(pk=id)
     
+    
+    ProductStock = Product1.objects.filter(stock__lt=10).values("id", "name", "stock","updated_at")
+    # ✅ ดึงสินค้าเฉพาะที่ stock < 10 และนับจำนวนสินค้าเหล่านั้น
+    total_product_count = Product1.objects.filter(stock__lt=10).count()
+    print ("การนับข้อมูล",total_product_count);
+    
     #เพิ่มสำหรับการแจ้งเตือน
     ProductStock = Product1.objects.filter(stock__lt=10).values("id", "name", "stock","updated_at")
     
@@ -267,7 +313,7 @@ def EditAdd(request,id):
         return redirect("EditAdd", id=product.id)
     
     
-    return render (request,"EditAdd.html",{"product":product,"filter1":filter1,"filter2":filter2,"ProductStock":ProductStock})
+    return render (request,"EditAdd.html",{"product":product,"filter1":filter1,"filter2":filter2,"ProductStock":ProductStock,"total_product_count":total_product_count})
 
 
 
@@ -298,6 +344,14 @@ def ProductPreview(request):
 
     # ✅ ดึงข้อมูลสินค้าทั้งหมด
     products = Product1.objects.all()
+    
+    
+    #สำหรับการแจ้งเตือน
+    ProductStock = Product1.objects.filter(stock__lt=10).values("id", "name", "stock","updated_at")
+    # ✅ ดึงสินค้าเฉพาะที่ stock < 10 และนับจำนวนสินค้าเหล่านั้น
+    total_product_count = Product1.objects.filter(stock__lt=10).count()
+    print ("การนับข้อมูล",total_product_count);
+    
 
     # ✅ กรองสินค้าตามหมวดหมู่
     if category_id and category_id.isdigit():
@@ -341,6 +395,7 @@ def ProductPreview(request):
         "filter2": filter2,    # ✅ หมวดหมู่ทั้งหมด
         "categories": Category.objects.all(),  # ✅ หมวดหมู่ทั้งหมด (อีกตัว)
         "ProductStock":ProductStock,
+        "total_product_count":total_product_count,
     })
 
 
@@ -362,6 +417,14 @@ def Circulation1(request):
     # เพิ่มสำหรับการแจ้งแตือน
     ProductStock = Product1.objects.filter(stock__lt=10).values("id", "name", "stock","updated_at")
     # ตรวจสอบว่าผู้ใช้กรอกวันที่ครบทั้งสองช่องหรือไม่
+    
+    
+    #สำหรับการแจ้งเตือน
+    ProductStock = Product1.objects.filter(stock__lt=10).values("id", "name", "stock","updated_at")
+    # ✅ ดึงสินค้าเฉพาะที่ stock < 10 และนับจำนวนสินค้าเหล่านั้น
+    total_product_count = Product1.objects.filter(stock__lt=10).count()
+    print ("การนับข้อมูล",total_product_count);
+    
     if not start_date or not end_date:
         messages.error(request, "กรุณากรอกวันที่ให้ครบทั้งสองช่อง!")  # ✅ แจ้งเตือน
         return render(request, "Circulation.html", {
@@ -407,6 +470,7 @@ def Circulation1(request):
         "start_date": start_date_obj.strftime('%d/%m/%Y'),
         "end_date": end_date_obj.strftime('%d/%m/%Y'),
         "ProductStock":ProductStock,
+        "total_product_count":total_product_count,
     })
 
 
@@ -508,8 +572,11 @@ def Circulation2(request):
     #--------------------------------------------------------------------------------endingกราฟ-------------------------------------------------
     
     
-   
-    
+   # สำหรับการแสดงการแจ้งเตือน
+    ProductStock = Product1.objects.filter(stock__lt=10).values("id", "name", "stock","updated_at")
+    # ✅ ดึงสินค้าเฉพาะที่ stock < 10 และนับจำนวนสินค้าเหล่านั้น
+    total_product_count = Product1.objects.filter(stock__lt=10).count()
+    print ("การนับข้อมูล",total_product_count);
     
      
     
@@ -635,7 +702,8 @@ def Circulation2(request):
         "TotalPrice": round(total_price, 2),
         "filter_type": filter_type,
         "product_sales_json": product_sales_json,
-        "ProductStock":ProductStock
+        "ProductStock":ProductStock,
+        "total_product_count":total_product_count,
        
     })
     

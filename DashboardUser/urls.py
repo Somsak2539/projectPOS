@@ -7,7 +7,8 @@ from .views import Circulation2
 urlpatterns = [
 
 path("indexDashboardUser/",views.Circulation2,name="indexDashboardUser"),
-path("LayoutDashbords",views.LayoutDashbords,name="LayoutDashbords"), #1
+path("index",views.index,name="index"), #1
+path("LayoutDashbords",views.LayoutDashbords,name="LayoutDashbords"),
 path("LayoutDashbords1",views.LayoutDashbords1,name="LayoutDashbords1"),
 path ("Calender",views.Calender, name="Calender"),
 path ("ItemProduct",views.ItemProduct, name="ItemProduct"), #2
