@@ -9,10 +9,10 @@ from django.http import HttpResponse
 
 # Register your models here.
 
-class ProfitSele(admin.ModelAdmin):
-    list_display=["product","price","quantity","created","customer","Pofitprice",]
+#class ProfitSele(admin.ModelAdmin):
+#    list_display=["product","price","quantity","created","customer","Pofitprice",]
       
-admin.site.register(OrderSele,ProfitSele)
+#admin.site.register(OrderSele,ProfitSele)
 
 
 

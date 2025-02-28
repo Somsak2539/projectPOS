@@ -21,6 +21,18 @@ class SaleRecord(models.Model):
     stock_adjustments = models.JSONField()  # ใช้ JSONField สำหรับบันทึกข้อมูล Array
     cashier = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True, default=1)
     
+    
+    
+    
+    
+    
+    class Meta:
+        verbose_name = "รายการสินค้าที่บันทึก"  # เปลี่ยนชื่อที่แสดงใน Admin
+        verbose_name_plural = "บันทึกรายการสำหรับการขาย"  # ชื่อพหูพจน์ใน Admin
+
+    def __str__(self):
+        return f"{self.product} ({self.quantity} ชิ้น)"
+    
     def get_stock_adjustment_by_index(self, index):
         """ดึงรายการ stock_adjustments ตามตำแหน่ง index"""
         try:
