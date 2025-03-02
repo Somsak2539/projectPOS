@@ -51,7 +51,7 @@
   
     margin-left: -70px;
     
-  }p{
+  }.p1{
     display: flex;
     box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
      color: #ffffff;
@@ -78,7 +78,7 @@
     text-align: center;
     justify-content: center;
     align-items: center;
-    margin-top: -10px;
+    margin-top: -30px;
   
     border-radius: 15px;
   }
@@ -93,17 +93,19 @@
       width: 185px;
       border-radius: 15px;
       overflow: hidden;
-      margin-top: -15px;
+      margin-top: 5px;
       margin-right: 100px;
     
   
     }.imgMangae{
   
+  
       display: flex;
       flex-direction: column;
-      gap:2.1 px;
+      gap:3.1 px;
       color: rgb(36, 36, 35);
-      padding-left: 10px;
+      margin-top: 15px;
+      padding-left: 20px;
       text-align: center;
       justify-content: center;
     }
@@ -131,7 +133,7 @@
     display: flex;
     flex-direction: column;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* เส้นเบลอรอบกล่อง */
-    margin-top: -103px;
+    margin-top: -50px;
     margin-right: 575px;
     
     
@@ -309,7 +311,7 @@
     width: 100%;
     max-height: 200px; /* กำหนดความสูงสูงสุดของคอนเทนเนอร์ */
     overflow-y: auto; /* เพิ่มแถบเลื่อนแนวตั้งเมื่อเนื้อหาเกิน */
-    overflow-x: auto; /* เพิ่มแถบเลื่อนแนวนอนเมื่อเนื้อหาเกิน */
+    /*overflow-x: auto; /* เพิ่มแถบเลื่อนแนวนอนเมื่อเนื้อหาเกิน */
     border: 1px solid #ddd; /* เส้นขอบรอบคอนเทนเนอร์ */
     margin: 25px 0;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
@@ -319,22 +321,35 @@
   .styled-table {
     width: 100%;
     border-collapse: collapse;
-    font-size: 10px;
+    font-size: 5px;
     min-width: 400px;
   }
   
   .styled-table thead tr {
     position: sticky;
     top: 0;
-    background-color: #009879;
+    background-color: #ddedea;
     border-radius: 15px;
     color: #ffffff;
     text-align: center;
     z-index: 1; /* ทำให้ส่วนหัวอยู่ด้านบนสุด */
   }
   
-  .styled-table th,
+  .styled-table th{
+
+    color: #000000;
+    font-size: 8px;
+    padding: 12px 15px;
+    text-align: center;      /* จัดข้อความกึ่งกลางในแนวนอน */
+    vertical-align: middle;  /* จัดข้อความกึ่งกลางในแนวตั้ง */
+
+  }
+
+
   .styled-table td {
+
+    color: #020af9;
+    font-size: 8px;
     padding: 12px 15px;
     text-align: center;      /* จัดข้อความกึ่งกลางในแนวนอน */
     vertical-align: middle;  /* จัดข้อความกึ่งกลางในแนวตั้ง */
@@ -366,8 +381,6 @@
     margin-top: -30px;
     width: 720px;
     height: 245px;
-   
-  
     color: #010101;
    
   }
@@ -407,8 +420,8 @@
   
   
   .manageImg2{
+
     display: flex;
-    
     height: 140px;
     width: 150px;
   
@@ -424,24 +437,28 @@
   
     position:relative;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* เส้นเบลอรอบกล่อง */
-    margin-top: 1px;
+    margin-top: 10px;
     border-radius: 15px;
     overflow: hidden;
-    top:-13px;
+    top:-5px;
   }img2 img{
   
     width: 100%;
   }
   
   
-  h6{
-  
+  h6 {
     position: relative;
-    left: 160px;
-    
-    top:-80px;
-    width:150px;
-    color: #000000;
+    left: 150px;
+    text-align: center;
+    justify-content: center;
+    font-size: 12px;
+    top: -100px;
+    width: 150px;
+    color: #030303; /* สีแดง */
+    -webkit-text-stroke: 0.2px #ff1313; /* ขอบสีดำ หนา 1px */
+    font-weight: bold; /* ทำให้ตัวอักษรหนาขึ้น */
+
     
     
   
@@ -914,7 +931,7 @@
   .contlrolBox2-btn {
   
     position: relative;
-    top: 15px;
+    top: 10px;
     background-color: #e9a001; /* สีพื้นหลัง */
     border: none; /* ไม่มีขอบ */
     color: white; /* สีตัวอักษร */
@@ -937,14 +954,14 @@
   
   .contlrolBox2-opption {
    
-      display: none;
+       display: none;
        position: relative;
-       top: 170px;
+       top: 180px;
        right: -105px;
        background-color: white;
        box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
        z-index: 2;
-       margin-top: -250px;
+       margin-top: -200px;
        min-width: 60px;
        margin-right: -250px;
        font-size: 20px;
@@ -1021,7 +1038,7 @@
    
       display: none;
        position: relative;
-       top:80px;
+       top:90px;
        right: -105px;
        background-color: white;
        box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
@@ -1080,7 +1097,7 @@
   .contlrolBox4-btn {
   
     position: relative;
-    top: 15px;
+    top:25px;
     background-color: #e9a001; /* สีพื้นหลัง */
     border: none; /* ไม่มีขอบ */
     color: white; /* สีตัวอักษร */
@@ -1105,12 +1122,12 @@
    
       display: none;
        position: relative;
-       top:15px;
+       top:50px;
        right: -105px;
        background-color: white;
        box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
        z-index: 5;
-       margin-top: -250px;
+       margin-top: -275px;
        min-width: 60px;
        margin-right: -250px;
        font-size: 20px;
@@ -1155,7 +1172,7 @@
   .contlrolBox5-btn {
   
     position: relative;
-    top: 15px;
+    top: 30px;
     background-color: #e9a001; /* สีพื้นหลัง */
     border: none; /* ไม่มีขอบ */
     color: white; /* สีตัวอักษร */
@@ -1180,12 +1197,12 @@
    
       display: none;
        position: relative;
-       top:15px;
+       top:60px;
        right: -105px;
        background-color: white;
        box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
        z-index: 2;
-       margin-top: -160px;
+       margin-top: -150px;
        min-width: 60px;
        margin-right: -250px;
        height: 150px;
@@ -1233,7 +1250,7 @@
   .contlrolBox6-btn {
   
     position: relative;
-    top: 15px;
+    top: 30px;
     background-color: #e9a001; /* สีพื้นหลัง */
     border: none; /* ไม่มีขอบ */
     color: white; /* สีตัวอักษร */
@@ -1257,22 +1274,21 @@
   .contlrolBox6-opption {
    
   
-      display: none;
+       display: none;
        position: relative;
-       top:20px;
+       top:150px;
        right: -105px;
        background-color: white;
        box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
        z-index: 2;
-       margin-top: -250px;
+       margin-top: -320px;
        min-width: 60px;
        margin-right: -250px;
        font-size: 20px;
        border-radius: 25px;
   
   
-     margin-top: -290px;
-  
+     
   
   
   }
@@ -1306,7 +1322,7 @@
   .contlrolBox7-btn {
   
     position: relative;
-    top: 15px;
+    top: 30px;
     background-color: #e9a001; /* สีพื้นหลัง */
     border: none; /* ไม่มีขอบ */
     color: white; /* สีตัวอักษร */

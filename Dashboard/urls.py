@@ -16,4 +16,8 @@ urlpatterns = [
   path ('login_cover/?next=/indexDashboardUser//',views.CleanDisplay),
   path('check-auth/', check_auth, name='check_auth'),
   path('Recipe',views.Recipe, name='Recipe'),
+  path('ShowForDisplay',views.ShowForDisplay, name='ShowForDisplay'),
+  
+  
+  
 ]

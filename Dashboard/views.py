@@ -1,5 +1,5 @@
 from django.shortcuts import render,redirect
-from productapp.models import Product1
+from productapp.models import Product1,Category
 from django.shortcuts import get_object_or_404
 from django.http import JsonResponse
 
@@ -35,11 +35,9 @@ from django.utils import timezone  # ✅ นำเข้า timezone สำห�
 # Create your views here.
 
 
-
-
-
-
-
+def ShowForDisplay(request):
+    
+    return render(request,"ShowForDisplay.html")
 
 
 def Recipe(request):
@@ -67,12 +65,92 @@ def ShowDashBoard(request):
     print(f"User: {request.user}, Authenticated: {request.user.is_authenticated}")
     print(f"Checking Group: {request.user.groups.all()}")
 
+    # เพิ่มสำหรับการแจ้งเตือน
+    ProductStock = Product1.objects.filter(stock__lt=10).values("id", "name", "stock","updated_at")
+    Products = Product1.objects.filter(is_trending=True)
+
+    # ดึงข้อมูลวนลูบสำหรับหารายการสินค้า  
     all_product = Product1.objects.all().order_by("name")  # ดึงข้อมูลทั้งหมดที่เป็น Product1 
     print(f"Total Products: {all_product.count()}")  # Debug จำนวนสินค้า
+    
+    # ✅ ดึงสินค้าเฉพาะที่ stock < 10 และนับจำนวนสินค้าเหล่านั้น
+    total_product_count = Product1.objects.filter(stock__lt=10).count()
+    print ("การนับข้อมูล",total_product_count);
+    
+    # ✅ ดึงข้อมูลหมวดหมู่ทั้งหมด
+    filter2 = Category.objects.all()
+    
+      # ✅ รับค่าพารามิเตอร์จาก `GET` Request
+    categories = Category.objects.all()
+    category_id = request.GET.get('category', None)
+    
+    min_price = request.GET.get('min_price', None)
+    max_price = request.GET.get('max_price', None)
+    sort_by = request.GET.get('sort', 'default')
 
-    return render(request, "Dashboard.html", {"all_product": all_product})  # ✅ ควรไม่มี `redirect()` ตรงนี้
+    print(f"🟢 Category ID: {category_id}, Min Price: {min_price}, Max Price: {max_price}, Sort: {sort_by}")
+    
+    
+    # ✅ ดึงข้อมูลสินค้าทั้งหมด
+    products = Product1.objects.all()
+    
+    
+    
+     # ✅ กรองสินค้าตามหมวดหมู่
+    if category_id and category_id.isdigit():
+        products = products.filter(category_id=int(category_id))
+    
+        print(f"✅ Filtered by Category ({category_id}): {products.count()} items found")
 
+    if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+        return render(request, 'product_list_ajax.html', {'products': products})  # ✅ แก้โค้ดปิด {} ค่อยมาไหล่ดูอีกทีหนึ่งแล้วกัน
+    
+    
+    # ✅ กรองสินค้าตามช่วงราคา (ตรวจสอบค่าก่อนแปลงเป็น `float`)
+    try:
+        if min_price:
+            min_price = float(min_price)
+            products = products.filter(price__gte=min_price)
+            print(f"✅ Filtered by Min Price ({min_price}): {products.count()} items found")
 
+        if max_price:
+            max_price = float(max_price)
+            products = products.filter(price__lte=max_price)
+            print(f"✅ Filtered by Max Price ({max_price}): {products.count()} items found")
+
+    except ValueError:
+        print("⚠️ Warning: ราคาไม่ใช่ตัวเลขที่ถูกต้อง")
+
+    # ✅ เรียงลำดับสินค้าตามตัวเลือก
+    if sort_by == 'highest':
+        products = products.order_by('-price')  # ราคาสูงไปต่ำ
+        print("✅ Sorted by Highest Price")
+    elif sort_by == 'lowest':
+        products = products.order_by('price')  # ราคาต่ำไปสูง
+        print("✅ Sorted by Lowest Price")
+    elif sort_by == 'newest':
+        products = products.order_by('-created_at')  # สินค้าใหม่สุด
+        print("✅ Sorted by Newest")
+
+    # ✅ Debug: ตรวจสอบจำนวนสินค้าหลังจากกรอง
+    print(f"🔵 Total Products After Filtering: {products.count()}")
+    
+    
+    
+    return render(request, 
+                  "Dashboard.html", 
+                  { "all_product": all_product,
+                    "filter1": Product1.objects.all(),
+                    "categories": Category.objects.all(),
+                    "filter2": filter2,
+                    "ProductStock":ProductStock,
+                    "total_product_count":total_product_count,
+                    "products": products,
+                    "categories":categories, 
+                
+                                         
+                                     
+                 })  # ✅ ควรไม่มี `redirect()` ตรงนี้
 
 
 def reduce_stock(request, product_id):

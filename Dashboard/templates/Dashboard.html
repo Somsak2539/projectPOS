@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
   {% load static %}
@@ -11,6 +13,34 @@
     <title>Document</title>
     <link rel="stylesheet" href="{% static 'font-forweb/css/all.css' %}" />
    
+
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+   <!-- Favicon -->
+   <link rel="icon" type="image/x-icon" href="{% static 'favicon.png' %}">
+
+   <!-- Google Fonts -->
+   <link rel="preconnect" href="https://fonts.googleapis.com">
+   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+   
+   <!-- CSS Files -->
+   <link rel="stylesheet" type="text/css" media="screen" href="{% static 'assets/css/perfect-scrollbar.min.css' %}">
+   <link rel="stylesheet" href="{% static 'assets/css/highlight.min.css' %}">
+
+   <link rel="stylesheet" href="{% static 'assets/css/swiper-bundle.min.css' %}">
+   <link rel="stylesheet" type="text/css" media="screen" href="{% static 'assets/css/style.css' %}">
+   <link defer rel="stylesheet" type="text/css" media="screen" href="{% static 'assets/css/animate.css' %}">
+   
+   <!-- JavaScript Files -->
+   <script src="{% static 'assets/js/perfect-scrollbar.min.js' %}"></script>
+   <script defer src="{% static 'assets/js/popper.min.js' %}"></script>
+   <script defer src="{% static 'assets/js/tippy-bundle.umd.min.js' %}"></script>
+   <script defer src="{% static 'assets/js/sweetalert.min.js' %}"></script>
+     
+
+
+
     
   </head>
  
@@ -186,8 +216,10 @@ td {
 
   <body>
     <div class="tapbar">
+
+
       <div class="contlrolBox2">
-        <button class="contlrolBox2-btn">
+        <button ype="button" class="contlrolBox2-btn">
           <i class="fa-solid fa-user"></i>
         </button>
         <div class="contlrolBox2-opption" id="dropdownMenu">
@@ -198,16 +230,236 @@ td {
         </div>
       </div>
 
+
+
       <div class="contlrolBox3">
-        <button class="contlrolBox3-btn">
+
+        <div x-data="modal">
+        <button type="button" class="contlrolBox3-btn" @click="toggle">
           <i class="fa-solid fa-cart-shopping"></i>
         </button>
-        <div class="contlrolBox3-opption" id="dropdownMenu">
-          <a href="/admin/productapp/product1/" target="_blank">จำนวณสินค้าคงเหลือ</a>
-          <a href="{% url 'product1' %} " target="_blank">สินค้าใกล้หมด Stock</a>
-          <a href="{% url 'product1' %}">สินค้าขายดี</a>
-        </div>
+
+        <div class="fixed inset-0 z-[999] hidden overflow-y-auto bg-[black]/60"
+        :class="open && '!block'">
+      <div class="flex min-h-screen items-start justify-center px-4"
+          @click.self="open = false">
+          <div x-show="open" x-transition="" x-transition.duration.300=""
+              class="panel my-8 w-full max-w-lg overflow-hidden rounded-lg border-0 p-0">
+              <div
+                  class="flex items-center justify-between bg-[#fbfbfb] px-5 py-3 dark:bg-[#121c2c]">
+                  <h5 class="text-lg font-bold">กรุณาเลือกรายการสินค้า</h5>
+                  <button type="button" class="text-white-dark hover:text-dark"
+                      @click="toggle">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24px"
+                          height="24px" viewbox="0 0 24 24" fill="none"
+                          stroke="currentColor" stroke-width="1.5"
+                          stroke-linecap="round" stroke-linejoin="round"
+                          class="h-6 w-6">
+                          <line x1="18" y1="6" x2="6" y2="18"></line>
+                          <line x1="6" y1="6" x2="18" y2="18"></line>
+                      </svg>
+                  </button>
+              </div>
+              <div class="p-5">
+                  <div class="mb-5" x-data="{tab: 'home'}">
+                      <div>
+                          <ul
+                              class="mt-3 flex flex-wrap border-b border-white-light dark:border-[#191e3a]">
+                              <li>
+                                  <a href="javascript:;"
+                                      class="-mb-[1px] block border border-transparent p-3.5 py-2 hover:text-primary dark:hover:border-b-black"
+                                      :class="{'!border-white-light !border-b-white  text-primary dark:!border-[#e2a03f] dark:!border-b-black' : tab  === 'home'}"
+                                      @click="tab = 'home'">
+
+
+                                      <!-- placeholder -->
+                                      <form id="searchForm">
+                                        <select id="categorySelect" name="category" class="selectize">
+                                        <option value="">-- ทุกหมวดหมู่ --</option>
+                                        {% for category in categories %}
+                                            <option value="{{ category.id }}" {% if request.GET.category == category.id|stringformat:"s" %}selected{% endif %}>
+                                                {{ category.name }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                         <button type="submit" class="btn btn-success mt-3">ค้นหา</button>
+                                  </form>
+                                    
+
+
+                                  </a>
+                              </li>
+                              <li>
+                                  <a href="javascript:;"
+                                      class="-mb-[1px] block border border-transparent p-3.5 py-2 hover:text-primary dark:hover:border-[#191e3a] dark:hover:border-b-black"
+                                      :class="{'!border-white-light !border-b-white text-primary dark:!border-[#191e3a] dark:!border-b-black' : tab  === 'profile'}"
+                                      @click="tab = 'profile'">พิมพ์ใบกำกับภาษี</a>
+                              </li>
+
+                          </ul>
+                      </div>
+                      <div class="flex-1 pt-5 text-sm">
+
+                        <template x-if="tab === 'home'">
+                          <div class="active">
+                              <h3 class="mb-6 text-sm font-bold md:text-base">รายการสินค้าตามประเภทที่เลือก</h3>
+                      
+                              <!-- Grid ครอบสินค้าทั้งหมด -->
+                              <div id="productList" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
+
+                                     {% for Product1 in products %}
+                                  <div x-data="{ open: false }">
+                                      <div class="space-y-1 rounded-md border border-white-light bg-white p-3 shadow-md dark:border-[#1B2E4B] dark:bg-black">
+                                          <!-- คลิกที่รูปเพื่อเปิด Pop-up -->
+                                          <div class="max-h-40 overflow-hidden rounded-md cursor-pointer" @click="open = true">
+                                              <img src="{{ Product1.image.url }}" alt="..." class="w-full object-cover">
+                                          </div>
+                                          <p class="text-xs dark:text-white"><span class="font-bold">{{ Product1.name }}</span></p>
+                                          <p class="text-xs dark:text-white"><span class="font-bold">ราคา</span> {{ Product1.price }} บาท</p>
+                                          <p class="text-xs dark:text-white"><span class="font-bold">Stock</span> {{ Product1.stock }}</p>
+                                          <p class="text-xs dark:text-white"><span class="font-bold">Barcode</span> : {{ Product1.barcode }}</p>
+                                      </div>
+                      
+                                      <!-- Pop-up ที่จะเปิดขึ้นเมื่อคลิกรูป -->
+                                      <div class="fixed inset-0 z-50 hidden bg-black/60 flex items-center justify-center" :class="open && '!block'">
+                                          <div class="bg-white p-5 rounded-lg shadow-lg w-full max-w-md">
+                                              <div class="flex justify-between">
+                                                  <h5 class="text-lg font-bold">รายละเอียดสินค้า</h5>
+                                                  <button @click="open = false" class="text-gray-500">✖</button>
+                                              </div>
+                                              <div class="mt-4">
+                                                  <img src="{{ Product1.image.url }}" alt="..." class="w-full object-cover rounded-md">
+                                                  <div>
+                                                      <h3 class="mt-3 text-sm"><span class="font-bold">{{ Product1.name }}</span></h3>
+                                                      <h3 class="text-sm"><span class="font-bold">ราคา</span> {{ Product1.price }} บาท</h3>
+                                                      <h3 class="text-sm"><span class="font-bold">Stock</span> {{ Product1.stock }}</h3>
+                                                      <h3 class="text-sm"><span class="font-bold">Barcode</span> : {{ Product1.barcode }}</h3>
+                                                  </div>
+                                                  <form>
+                                                      <div class="mb-5">
+                                                          <div class="flex">
+                                                              <div class="bg-[#eee] flex justify-center items-center ltr:rounded-l-md rtl:rounded-r-md px-3 font-semibold border ltr:border-r-0 rtl:border-l-0 border-[#e0e6ed] dark:border-[#17263c] dark:bg-[#1b2e4b]">
+                                                                  Bath
+                                                              </div>
+                                                              <div class="bg-[#eee] flex justify-center items-center rounded-none px-3 font-semibold border ltr:border-r-0 rtl:border-l-0 border-[#e0e6ed] dark:border-[#17263c] dark:bg-[#1b2e4b]">
+                                                                  ใส่จำนวนสินค้า
+                                                              </div>
+                                                              <input type="text" placeholder="" class="form-input ltr:rounded-l-none rtl:rounded-r-none flex-1" />
+                                                          </div>
+                                                      </div>
+                                                  </form>
+                                              </div>
+                                              <button type="button" class="btn btn-secondary" @click="showAlert()">เพิ่มรายการสินค้า</button>
+                                          </div>
+                                      </div>
+                                  </div>
+                                  {% empty %}
+                                          <p class="text-center text-red-500">ไม่พบสินค้าในหมวดหมู่นี้</p>
+                                  {% endfor %}
+                              </div>
+
+
+
+
+
+
+                          
+
+
+
+
+
+
+
+
+
+
+                              
+                              <script>
+                                  async function showAlert() {
+                                      new window.Swal({
+                                          icon: 'success',
+                                          title: 'คุณได้ทำการเพิ่มสินค้าเรียบร้อยแล้ว',
+                                          text: 'SOMSAK!',
+                                          padding: '2em',
+                                      });
+                                  }
+                              </script>
+                          </div>
+                      </template>
+                      
+                      
+
+
+                          <template x-if="tab === 'profile'">
+                              <div>
+                                  <div class="flex items-start">
+                                      <div
+                                          class="h-20 w-20 flex-none ltr:mr-4 rtl:ml-4">
+                                          <img src="{% static 'assets/images/settings-dark.svg' %}"
+                                              alt="image"
+                                              class="m-0 h-20 w-20 rounded-full object-cover ring-4 ring-[#ebedf2] dark:ring-white-dark">
+                                      </div>
+
+                                      <div class="flex-auto">
+                                          <h5 class="mb-4 text-xl font-medium">
+                                              รายการที่จะต้องพิมพ์ใบกำกับภาษี</h5>
+                                          <p
+                                              class="text-white-dark dark:text-white-dark/70">
+                                              Cras sit amet nibh libero, in
+                                              gravida nulla. Nulla vel metus
+                                              scelerisque
+                                              ante sollicitudin. Cras purus odio,
+                                              vestibulum in vulputate at, tempus
+                                              viverra turpis. Fusce condimentum
+                                              nunc ac nisi vulputate fringilla.
+                                              Donec lacinia congue felis in
+                                              faucibus.
+                                          </p>
+                                      </div>
+                                  </div>
+                              </div>
+                          </template>
+                          <template x-if="tab === 'contact'">
+                              <div>
+                                  <p>
+                                      Lorem ipsum dolor sit amet, consectetur
+                                      adipisicing elit, sed do eiusmod tempor
+                                      incididunt ut labore et dolore magna aliqua.
+                                      Ut enim ad minim veniam, quis
+                                      nostrud exercitation ullamco laboris nisi ut
+                                      aliquip ex ea commodo consequat.
+                                      Duis aute irure dolor in reprehenderit in
+                                      voluptate velit esse cillum dolore eu
+                                      fugiat nulla pariatur. Excepteur sint
+                                      occaecat cupidatat non proident, sunt in
+                                      culpa qui officia deserunt mollit anim id
+                                      est laborum.
+                                  </p>
+                              </div>
+                          </template>
+                          <div style="display: none">Disabled</div>
+                      </div>
+                  </div>
+                  <div class="mt-8 flex items-center justify-end">
+                      <button type="button" class="btn btn-outline-danger"
+                          @click="toggle">Discard</button>
+                      <button type="button"
+                          class="btn btn-primary ltr:ml-4 rtl:mr-4"
+                          @click="toggle">Save</button>
+                       
+                  </div>
+              </div>
+          </div>
       </div>
+  </div>
+</div>
+      </div>
+
+
+
+
+
 
       <div class="contlrolBox4">
         <button class="contlrolBox4-btn">
@@ -229,7 +481,7 @@ td {
         <div class="contlrolBox5-opption" id="dropdownMenu">
           <a href="{% url 'product1' %}">แจ้งเตือนสินค้าคงเหลือใกล้หมด</a>
           <a href="{% url 'product1' %}">แจ้งเตือนการคืนสินค้า</a>
-          <a href="{% url 'product1' %}">แจ้งเตือนคำสั่งซื้อที่รอดำเนินการ</a>
+          
         </div>
       </div>
 
@@ -266,6 +518,8 @@ td {
     <div class="grid-container">
       <div class="box">
         <div class="A">
+
+
           <div class="imgMangae">
             <h4>สแกนเพื่อชำระเงิน</h4>
             <div class="img1">
@@ -283,16 +537,16 @@ td {
           </div>
           <div class="aa1">
             <div class="aa2">
-              <p>เวลา : <span id="time"></span></p>
-              <p>วันที่ : <span id="current-datetime"></span></p>
-              <p>สาขา โพนทอง</p>
-              <p>ระหัสเครื่อง: 15252</p>
+              <p class="p1">เวลา : <span id="time"></span></p>
+              <p class="p1">วันที่ : <span id="current-datetime"></span></p>
+              <p class="p1">สาขา โพนทอง</p>
+              <p class="p1">ระหัสเครื่อง: 15252</p>
             </div>
 
             <div class="aa3">
-              <p>แคลชเชีย: Demo</p>
-              <p>เลขที่ใบเสร็จ: 45165</p>
-              <p>พนักงานขาย: มยุรี ศรีสุเลิส</p>
+              <p class="p1">แคลชเชีย: Demo</p>
+              <p class="p1">เลขที่ใบเสร็จ: 45165</p>
+              <p class="p1">พนักงานขาย: มยุรี ศรีสุเลิส</p>
             </div>
           </div>
         </div>
@@ -376,48 +630,75 @@ td {
         </div>
       </div>
 
+
+
+
+
+
+
+
+          
+
+
+
+
+
+
+
+
+
+
+
+
       <div class="box">
         <div class="b21">
           <div class="result-box">0</div>
           <i id="currency">บาท</i>
         </div>
 
-        <div class="b23">
-          <div class="manageImg2" id="product-container">
-          
-                  
-                <div class="img2">
-                     <img src="https://images.unsplash.com/photo-1736197531185-f53783de893a?q=80&w=1935&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="{{ product.name }}" />
-                </div>
-          </div>
 
+
+
+
+            <div class="b23">
+
+
+              <div class="manageImg2" id="product-container">
+                    <div class="img2">
+                       <img src="{% static "assets/images/out_stock.jpg" %}" alt="{{ product.name }}" />
+                     </div>
+              </div>
 
         
-            <div class="Text" id="product-container1">
+              <div class="Text1" id="product-container1">   <!-- ถ้าต้องการที่จะทำการเปลี่ยนขนาดตัวหนังสือต้องเข้าไปที่  h6-->
                  <h6>
                      -สินค้าใน stock : 1 pcs <br />
                      -ชื่อสินค้า : เหล้าขาว <br />
                      -รายระเอียดสินค่า : สีเขียว<br />
                      -ราคาสินค้าต่อหน่วย : 15 บาท <br />
                  </h6>
-          </div>
+              </div>
            
 
           
-          <div class="bb26">
-            <div class="bb27">
-              <button class="custom-button4">รับเงิน</button>
-            </div>
+              <div class="bb26">
+                      <div class="bb27">
+                         <button class="custom-button4">รับเงิน</button>
+                      </div>
 
-            <div class="bb28">
-              <button class="custom-button5" value="remove">ลบรายการ</button>
-            </div>
+                      <div class="bb28">
+                        <button class="custom-button5" value="remove">ลบรายการ</button>
+                      </div>
 
-            <div class="bb29">
-              <button class="custom-button6" value="add">เพิ่มรายการ</button>
-            </div>
+                      <div class="bb29">
+                        <button class="custom-button6" value="add">เพิ่มรายการ</button>
+                      </div>
+              </div>
+
           </div>
-        </div>
+
+
+
 
         <div class="b22">
           <div class="b22_1">
@@ -451,6 +732,20 @@ td {
         </div>
       </div>
     </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
        <!--เรียกใช้สำหรับfuntion ดูใบเสร็จ -->
 
@@ -495,7 +790,7 @@ td {
     
 
 
-    <link rel="stylesheet" href="{% static "assets/dadhBoard/css/style.css"%}">
+    <link rel="stylesheet" href="{% static "assets/dadhBoard/css/style1.css"%}">
     <script src="{% static 'assets/dadhBoard/js/script.js' %}"></script>
 
   
@@ -533,12 +828,53 @@ td {
       }, 500);
   }
   
-    
-
-
-
 
     
 </script>
+
+
+
+
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+      document.getElementById("searchForm").addEventListener("submit", function(event) {
+          event.preventDefault(); // ✅ ป้องกันหน้าเว็บรีโหลด
+  
+          var categorySelect = document.getElementById("categorySelect");
+          if (!categorySelect) {
+              console.error("⚠️ ไม่พบ element ที่มี id='categorySelect'");
+              return;
+          }
+  
+          var categoryId = categorySelect.value; // ✅ ดึงค่าหมวดหมู่ที่เลือก
+          var productList = document.getElementById("productList"); // ✅ พื้นที่แสดงสินค้า
+  
+          fetch(`/Dashboard/?category=${categoryId}`, {
+              headers: { "X-Requested-With": "XMLHttpRequest" } // ✅ แจ้ง Django ว่าเป็น AJAX Request
+          })
+          .then(response => response.text()) 
+          .then(data => {
+              productList.innerHTML = data; // ✅ อัปเดตรายการสินค้าแบบ Real-Time
+          })
+          .catch(error => console.error("เกิดข้อผิดพลาด: ", error));
+      });
+  });
+  </script>
+  
+  
+   
+   <!-- JavaScript Files -->
+   <script src="{% static 'assets/js/swiper-bundle.min.js' %}"></script>
+   <script src="{% static 'assets/js/highlight.min.js' %}"></script>
+   <script src="{% static 'assets/js/alpine-collaspe.min.js' %}"></script>
+   <script src="{% static 'assets/js/alpine-persist.min.js' %}"></script>
+   <script defer src="{% static 'assets/js/alpine-ui.min.js' %}"></script>
+   <script defer src="{% static 'assets/js/alpine-focus.min.js' %}"></script>
+   <script defer src="{% static 'assets/js/alpine.min.js' %}"></script>
+   <script src="{% static 'assets/js/custom.js' %}"></script>
+   
+
+
 
 </html>

@@ -236,13 +236,9 @@
                                     <h6 class="mb-4 text-16">Notifications <span class="inline-flex items-center justify-center w-5 h-5 ml-1 text-[11px] font-medium border rounded-full text-white bg-orange-500 border-orange-500">{{ total_product_count|default:"0" }}</span></h6>
                                   
                                     <ul class="flex flex-wrap w-full p-1 mb-2 text-sm font-medium text-center rounded-md filter-btns text-slate-500 bg-slate-100 nav-tabs dark:bg-zink-500 dark:text-zink-200" data-filter-target="notification-list">
-                                        <li class="grow">
-                                            <a href="javascript:void(0);" data-filter="all" class="inline-block nav-link px-1.5 w-full py-1 text-xs transition-all duration-300 ease-linear rounded-md text-slate-500 border border-transparent [&.active]:bg-white [&.active]:text-custom-500 hover:text-custom-500 active:text-custom-500 dark:text-zink-200 dark:hover:text-custom-500 dark:[&.active]:bg-zink-600 -mb-[1px] active">View All</a>
-                                        </li>
+                                        
                                        
-                                        <li class="grow">
-                                            <a href="javascript:void(0);" data-filter="follower" class="inline-block nav-link px-1.5 w-full py-1 text-xs transition-all duration-300 ease-linear rounded-md text-slate-500 border border-transparent [&.active]:bg-white [&.active]:text-custom-500 hover:text-custom-500 active:text-custom-500 dark:text-zink-200 dark:hover:text-custom-500 dark:[&.active]:bg-zink-600 -mb-[1px]">รายกสินค้าขายดีแต่ละวัน</a>
-                                        </li>
+                                        
                                         <li class="grow">
                                             <a href="javascript:void(0);" data-filter="invite" class="inline-block nav-link px-1.5 w-full py-1 text-xs transition-all duration-300 ease-linear rounded-md text-slate-500 border border-transparent [&.active]:bg-white [&.active]:text-custom-500 hover:text-custom-500 active:text-custom-500 dark:text-zink-200 dark:hover:text-custom-500 dark:[&.active]:bg-zink-600 -mb-[1px]">สินค้าใกล้จะหมด</a>
                                         </li>
@@ -578,8 +574,8 @@
 <div id="customizerButton" drawer-end="" class="fixed inset-y-0 flex flex-col w-full transition-transform duration-300 ease-in-out transform bg-white shadow ltr:right-0 rtl:left-0 md:w-96 z-drawer show dark:bg-zink-600">
     <div class="flex justify-between p-4 border-b border-slate-200 dark:border-zink-500">
         <div class="grow">
-            <h5 class="mb-1 text-16">starcode Theme Customizer</h5>
-            <p class="font-normal text-slate-500 dark:text-zink-200">Choose your themes & layouts etc.</p>
+            <h5 class="mb-1 text-16">ชื่อผู้ใช้งาน {{request.user.username}}</h5>
+            <p class="font-normal text-slate-500 dark:text-zink-200">เลือกธีม & และการจัดวางของคุณ .</p>
         </div>
         <div class="shrink-0">
             <button data-drawer-close="customizerButton" class="transition-all duration-150 ease-linear text-slate-500 hover:text-slate-800 dark:text-zink-200 dark:hover:text-zink-50"><i data-lucide="x" class="w-4 h-4"></i></button>
@@ -587,7 +583,7 @@
     </div>
     <div class="h-full p-6 overflow-y-auto">
         <div>
-            <h5 class="mb-3 underline capitalize text-15">Choose Layouts</h5>
+            <h5 class="mb-3 underline capitalize text-15">เลือกรูปแบบการจัดวาง</h5>
             <div class="grid grid-cols-1 mb-5 gap-7 sm:grid-cols-2">
                 <div class="relative">
                     <input id="layout-one" name="dataLayout" class="absolute w-4 h-4 border rounded-full appearance-none cursor-pointer ltr:right-2 rtl:left-2 top-2 vertical-menu-btn bg-slate-100 border-slate-300 checked:bg-custom-500 checked:border-custom-500 dark:bg-zink-400 dark:border-zink-500" type="radio" value="vertical" checked="">
@@ -609,7 +605,7 @@
                             </span>
                         </span>
                     </label>
-                    <h5 class="mt-2 text-center text-15">Vertical</h5>
+                    <h5 class="mt-2 text-center text-15">แนวตั้ง</h5>
                 </div>
 
                 <div class="relative">
@@ -625,7 +621,7 @@
                             <span class="block p-1 mt-auto bg-slate-100 dark:bg-zink-500"></span>
                         </span>
                     </label>
-                    <h5 class="mt-2 text-center text-15">Horizontal</h5>
+                    <h5 class="mt-2 text-center text-15">แนวนอน</h5>
                 </div>
             </div>
 
@@ -635,14 +631,14 @@
                         <input type="checkbox" name="customDefaultSwitch" value="dark" id="customDefaultSwitch" class="absolute block w-5 h-5 transition duration-300 ease-linear border-2 rounded-full appearance-none cursor-pointer border-slate-200 bg-white/80 peer/published checked:bg-white checked:right-0 checked:border-custom-500 arrow-none dark:border-zink-500 dark:bg-zink-500 dark:checked:bg-zink-400 checked:bg-none">
                         <label for="customDefaultSwitch" class="block h-5 overflow-hidden transition duration-300 ease-linear border rounded-full cursor-pointer border-slate-200 bg-slate-200 peer-checked/published:bg-custom-500 peer-checked/published:border-custom-500 dark:border-zink-500 dark:bg-zink-600"></label>
                     </div>
-                    <label for="customDefaultSwitch" class="inline-block text-base font-medium">Semi Dark (Sidebar & Header)</label>
+                    <label for="customDefaultSwitch" class="inline-block text-base font-medium">เปลี่ยนเป็นโหมดมืด (Sidebar & Header)</label>
                 </div>
             </div>
         </div>
 
         <div class="mt-6">
             <!-- data-skin="" -->
-            <h5 class="mb-3 underline capitalize text-15">Skin Layouts</h5>
+            <h5 class="mb-3 underline capitalize text-15">สีพื้นหลัง</h5>
             <div class="grid grid-cols-1 mb-5 gap-7 sm:grid-cols-2">
                 <div class="relative">
                     <input id="layoutSkitOne" name="dataLayoutSkin" class="absolute w-4 h-4 border rounded-full appearance-none cursor-pointer ltr:right-2 rtl:left-2 top-2 vertical-menu-btn bg-slate-100 border-slate-300 checked:bg-custom-500 checked:border-custom-500 dark:bg-zink-400 dark:border-zink-500" type="radio" value="default">
@@ -664,7 +660,7 @@
                             </span>
                         </span>
                     </label>
-                    <h5 class="mt-2 text-center text-15">Default</h5>
+                    <h5 class="mt-2 text-center text-15">กำหนดค่าเริ่มต้น</h5>
                 </div>
         
                 <div class="relative">
@@ -694,10 +690,10 @@
         
         <div class="mt-6">
             <!-- data-mode="" -->
-            <h5 class="mb-3 underline capitalize text-15">Light & Dark</h5>
+            <h5 class="mb-3 underline capitalize text-15">สว่าง & มืด</h5>
             <div class="flex gap-3">
-                <button type="button" id="dataModeOne" name="dataMode" value="light" class="transition-all duration-200 ease-linear bg-white border-dashed text-slate-500 btn border-slate-200 hover:text-slate-500 hover:bg-slate-50 hover:border-slate-200 [&.active]:text-custom-500 [&.active]:bg-custom-50 [&.active]:border-custom-200 dark:bg-zink-600 dark:text-zink-200 dark:border-zink-400 dark:hover:bg-zink-600 dark:hover:text-zink-100 dark:hover:border-zink-400 dark:[&.active]:bg-custom-500/10 dark:[&.active]:border-custom-500/30 dark:[&.active]:text-custom-500 active">Light Mode</button>
-                <button type="button" id="dataModeTwo" name="dataMode" value="dark" class="transition-all duration-200 ease-linear bg-white border-dashed text-slate-500 btn border-slate-200 hover:text-slate-500 hover:bg-slate-50 hover:border-slate-200 [&.active]:text-custom-500 [&.active]:bg-custom-50 [&.active]:border-custom-200 dark:bg-zink-600 dark:text-zink-200 dark:border-zink-400 dark:hover:bg-zink-600 dark:hover:text-zink-100 dark:hover:border-zink-400 dark:[&.active]:bg-custom-500/10 dark:[&.active]:border-custom-500/30 dark:[&.active]:text-custom-500">Dark Mode</button>
+                <button type="button" id="dataModeOne" name="dataMode" value="light" class="transition-all duration-200 ease-linear bg-white border-dashed text-slate-500 btn border-slate-200 hover:text-slate-500 hover:bg-slate-50 hover:border-slate-200 [&.active]:text-custom-500 [&.active]:bg-custom-50 [&.active]:border-custom-200 dark:bg-zink-600 dark:text-zink-200 dark:border-zink-400 dark:hover:bg-zink-600 dark:hover:text-zink-100 dark:hover:border-zink-400 dark:[&.active]:bg-custom-500/10 dark:[&.active]:border-custom-500/30 dark:[&.active]:text-custom-500 active">โหมดสว่าง</button>
+                <button type="button" id="dataModeTwo" name="dataMode" value="dark" class="transition-all duration-200 ease-linear bg-white border-dashed text-slate-500 btn border-slate-200 hover:text-slate-500 hover:bg-slate-50 hover:border-slate-200 [&.active]:text-custom-500 [&.active]:bg-custom-50 [&.active]:border-custom-200 dark:bg-zink-600 dark:text-zink-200 dark:border-zink-400 dark:hover:bg-zink-600 dark:hover:text-zink-100 dark:hover:border-zink-400 dark:[&.active]:bg-custom-500/10 dark:[&.active]:border-custom-500/30 dark:[&.active]:text-custom-500">โหมดมืด</button>
             </div>
         </div>
 
@@ -764,7 +760,7 @@
     </div>
     <div class="flex items-center justify-between gap-3 p-4 border-t border-slate-200 dark:border-zink-500">
         <button type="button" id="reset-layout" class="w-full transition-all duration-200 ease-linear text-slate-500 btn bg-slate-200 border-slate-200 hover:text-slate-600 hover:bg-slate-300 hover:border-slate-300 focus:text-slate-600 focus:bg-slate-300 focus:border-slate-300 focus:ring focus:ring-slate-100">Reset</button>
-        <a href="#!" class="w-full text-white transition-all duration-200 ease-linear bg-red-500 border-red-500 btn hover:text-white hover:bg-red-600 hover:border-red-600 focus:text-white focus:bg-red-600 focus:border-red-600 focus:ring focus:ring-red-100 active:text-white active:bg-red-600 active:border-red-600 active:ring active:ring-red-100">Buy Now</a>
+        
     </div>
 </div>
 <script src="{% static 'assets/libs/choices.js/public/assets/scripts/choices.min.js' %}"></script>

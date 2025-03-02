@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html lang="en">
+  {% load static %}
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+
+    <title>Document</title>
+    <link rel="stylesheet" href="{% static 'font-forweb/css/all.css' %}" />
+   
+
+
+
+
+
+        <!--สำหรับการโหลดstatic-->
+
+   
+ 
+   
+   <!-- CSS Files -->
+<link rel="stylesheet" href="{% static 'assets/css/perfect-scrollbar.min.css' %}">
+<link rel="stylesheet" href="{% static 'assets/css/highlight.min.css' %}">
+<link rel="stylesheet" href="{% static 'assets/css/swiper-bundle.min.css' %}">
+<link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+<link defer rel="stylesheet" href="{% static 'assets/css/animate.css' %}">
+
+<!-- JavaScript Files -->
+<script src="{% static 'assets/js/perfect-scrollbar.min.js' %}"></script>
+<script defer src="{% static 'assets/js/popper.min.js' %}"></script>
+<script defer src="{% static 'assets/js/tippy-bundle.umd.min.js' %}"></script>
+<script defer src="{% static 'assets/js/sweetalert.min.js' %}"></script>
+
+<!-- รูปภาพ -->
+<img src="{% static 'assets/images/logo.png' %}" alt="Logo">
+
+
+
+
+
+
+
+
+
+
+
+    
+  </head>
+ 
+  <style>
+
+    /* ✅ ตั้งค่าหน้าตัวอักษรหลัก */
+body {
+  font-family: font-family: "Angsana New" ;
+  font-size: 15px; /* ขนาดตัวอักษรเหมาะสม */
+ 
+  text-align: center;
+  background-color: white; /* ✅ พื้นหลังขาว */
+  margin: 0;
+  padding: 10px;
+}
+
+/* ✅ ตั้งค่าโครงสร้างของ Modal */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+}
+
+/* ✅ ปรับแต่งเนื้อหา Modal */
+.modal-content {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    width: 320px;
+    text-align: center;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    position: relative;
+}
+
+/* ✅ ปุ่มปิด */
+.close {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 20px;
+    color: red;
+    cursor: pointer;
+}
+
+/* ✅ หัวข้อ */
+h5 {
+    
+    margin: 5px 0;
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+}
+
+/* ✅ ตั้งค่าโครงสร้างตาราง */
+table {
+   
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+/* ✅ ตั้งค่าหัวข้อของตาราง */
+th {
+
+    
+    border-bottom: 2px solid black;
+    padding: 8px;
+   
+    font-size: 14px;
+    color: #555;
+}
+
+/* ✅ ตั้งค่ารายการสินค้า */
+td {
+    padding: 8px;
+    font-size: 14px;
+    color: #333;
+    border-bottom: 1px solid #ccc;  /* ✅ เส้นขีดล่างทุกแถว */
+}
+
+/* ✅ ปรับแต่งส่วนท้าย */
+.total {
+    font-weight: bold;
+    background-color: #f8f8f8;
+}
+
+/* ✅ ปุ่มพิมพ์ */
+.print-btn {
+    margin-top: 15px;
+    padding: 8px 12px;
+    background: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    border-radius: 4px;
+}
+
+.print-btn:hover {
+    background: #0056b3;
+}
+
+/* ✅ ปรับแต่งเมื่อพิมพ์ */
+@media print {
+  @page {
+    size: 48mm 210mm; /* ✅ กำหนดขนาดกระดาษ */
+    margin: 0; /* ✅ ไม่มีขอบขาว */
+  }
+
+  body {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      text-align: center;
+      font-family: "TH Sarabun New", "Angsana New", "Courier New", monospace;
+      font-size: 14px; /* ขนาดตัวอักษรเหมาะสม */
+      text-align: left;
+      background-color: white; /* ✅ พื้นหลังขาว */
+      margin: 0;
+      padding: 10px;
+  }
+
+  .modal-content {
+      width: 80mm;
+      padding: 10px;
+      margin: 0 auto;
+      text-align: left;
+      border: none;
+  }
+
+  .receipt-table {
+      width: 100%;
+      border-collapse: collapse;
+  }
+
+  .receipt-table th, .receipt-table td {
+      padding: 5px;
+      border-bottom: 1px solid black;
+  }
+
+  .total {
+      font-weight: bold;
+      border-top: 2px solid black;
+  }
+
+  .thanks {
+      text-align: center;
+      font-weight: bold;
+      margin-top: 10px;
+  }
+
+  .print-btn, .close {
+      display: none; /* ซ่อนปุ่มเมื่อพิมพ์ */
+  }
+}
+
+
+    
+    
+    
+    </style>
+
+
+  <body>
+    <div class="tapbar">
+      <div class="contlrolBox2">
+        <button class="contlrolBox2-btn">
+          <i class="fa-solid fa-user"></i>
+        </button>
+        <div class="contlrolBox2-opption" id="dropdownMenu">
+          <a href="{% url 'login.html' %}" target="_blank" >ชื่อสมาชิก</a>
+          <a href="{% url 'login.html' %}" target="_blank" >ระหัสสมาชิก</a>
+          <a href="{% url 'login.html' %}" target="_blank" >รายงานพนักงานที่อยู่ขณะนี้</a>
+          <a href="{% url 'login.html' %}" target="_blank" >การล็อกอินเข้าสู่พนักงาน</a>
+        </div>
+      </div>
+
+      <div class="contlrolBox3">
+        <button class="contlrolBox3-btn">
+          <i class="fa-solid fa-cart-shopping"></i>
+        </button>
+        <div class="contlrolBox3-opption" id="dropdownMenu">
+          <a href="/admin/productapp/product1/" target="_blank">รายการสินค้าที่จะขาย </a>
+          <a href="{% url 'product1' %} " target="_blank">สินค้าใกล้หมด Stock</a>
+          <a href="{% url 'product1' %}">สินค้าขายดี</a>
+        </div>
+      </div>
+
+      <div class="contlrolBox4">
+        <button class="contlrolBox4-btn">
+          <i class="fa-solid fa-calendar-days"></i>
+        </button>
+        <div class="contlrolBox4-opption" id="dropdownMenu">
+          <a href="{% url 'indexDashboardUser' %}" target="_blank">ยอดขายประจำวัน</a>
+          <a href="{% url 'indexDashboardUser' %}" target="_blank">ยอดขายประจำเดือน</a>
+          <a href="{% url 'indexDashboardUser' %}" target="_blank">จำนวณบิลที่ขายได้</a>
+          <a href="{% url 'indexDashboardUser' %}" target="_blank">ยอดขายเฉลี่ยต่อบิล</a>
+          <a href="{% url 'indexDashboardUser' %}" target="_blank">กราฟยอดขายรายวัน และรายเดือน</a>
+        </div>
+      </div>
+
+      <div class="contlrolBox5">
+        <button class="contlrolBox5-btn">
+          <i class="fa-regular fa-bell"></i>
+        </button>
+        <div class="contlrolBox5-opption" id="dropdownMenu">
+          <a href="{% url 'product1' %}">แจ้งเตือนสินค้าคงเหลือใกล้หมด</a>
+          <a href="{% url 'product1' %}">แจ้งเตือนการคืนสินค้า</a>
+          <a href="{% url 'product1' %}">แจ้งเตือนคำสั่งซื้อที่รอดำเนินการ</a>
+        </div>
+      </div>
+
+      <div class="contlrolBox6">
+        <button class="contlrolBox6-btn">
+          <i class="fa-solid fa-clipboard"></i>
+        </button>
+        <div class="contlrolBox6-opption" id="dropdownMenu">
+          <a href="{% url 'product1' %}">รายงานยอดขายรายวัน</a>
+          <a href="{% url 'product1' %}">รายงานยอดขายรายเดือน</a>
+          <a href="{% url 'product1' %}">ดูรายการสินค้า</a>
+          <a href="{% url 'product1' %}">จัดการลูกค้า</a>
+          <a href="{% url 'product1' %}">จัดการพนักงาน</a>
+          <a href="{% url 'product1' %}">ดูรายงาน</a>
+        </div>
+      </div>
+
+      <div class="contlrolBox7">
+        <button class="contlrolBox7-btn">
+          <i class="fa-solid fa-gear"></i>
+        </button>
+        <div class="contlrolBox7-opption" id="dropdownMenu">
+          <a href="{% url 'product1' %}">เพื่มรายการสินค้า</a>
+          <a href="{% url 'product1' %}">ดูรายการสินค้า</a>
+          <a href="{% url 'product1' %}">ดูจักการพนักงาน</a>
+          <a href="{% url 'product1' %}">ดูรายงาน</a>
+          <a href="{% url 'product1' %}"
+            >การตั้งค่าร้านค้า ชื้อร้านค้า สกุลเงิน</a
+          >
+        </div>
+      </div>
+    </div>
+
+    <div class="grid-container">
+      <div class="box">
+        <div class="A">
+          <div class="imgMangae">
+            <h4>สแกนเพื่อชำระเงิน</h4>
+            <div class="img1">
+                <img
+                    id="qrCodeImage"
+                    src=""
+                    alt="PromptPay QR Code"
+                    style="display: none;" 
+                />
+            </div>
+       
+
+            <!--src="{% static 'assets/dadhBoard/img/S__32989197.jpg' %}"-->
+          
+          </div>
+          <div class="aa1">
+            <div class="aa2">
+              <p>เวลา : <span id="time"></span></p>
+              <p>วันที่ : <span id="current-datetime"></span></p>
+              <p>สาขา โพนทอง</p>
+              <p>ระหัสเครื่อง: 15252</p>
+            </div>
+
+            <div class="aa3">
+              <p>แคลชเชีย: Demo</p>
+              <p>เลขที่ใบเสร็จ: 45165</p>
+              <p>พนักงานขาย: มยุรี ศรีสุเลิส</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="box">
+        <div class="removeBox1">
+          <div class="box2ControlBotom0">
+            <div class="box2ControlBotom1">
+              <div class="result-box4">Total</div>
+              <div class="result-box5">รับเงิน</div>
+              <div class="result-box6">ทอนเงิน</div>
+            </div>
+
+            <div class="box2ControlBotom">
+              <div class="result-box7" id="totalAmount">0</div>
+              <div class="result-box8" id="getMonney">0</div>
+              <div class="result-box9" id="withDraw">0</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="box">
+        <div class="box3">
+          <div class="controlTable">
+            <div class="table-container">
+              <table class="styled-table" id="itemTable">
+                <thead>
+                  <tr>
+                    <th>รายการ</th>
+                    <th>barcode</th>
+                    <th>ชื่อสินค้า</th>
+                    <th>หน่อยนับ</th>
+                    <th>จำนวณ</th>
+                    <th>ราคา</th>
+                    <th>สินค้าที่คงเหลือใน Stock</th>
+                  </tr>
+                </thead>
+                <tbody id="itemTableBody">
+                 
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="b1_1">
+            <div class="b1_1_1">
+              <button class="custom-button2" id="row11">หมูกระทะ</button>
+              <button class="custom-button2" id="row12">คอหมูย่าง</button>
+              <button class="custom-button2" id="row13">ไส้อ่อน</button>
+              <button class="custom-button2" id="row14">ไส่ใหญ่</button>
+              <button class="custom-button2" id="row15">ซีกโครงหมู</button>
+              <button class="custom-button3" id="row16">Barcode</button>
+            </div>
+          </div>
+
+          <div class="b1_1_1">
+            <div class="contlrolBox1">
+              <button class="contlrolBox1-btn">
+                <i class="fa-brands fa-product-hunt"></i>
+              </button>
+              <div class="contlrolBox1-opption" id="dropdownMenu">
+                <div class="controlButton1">
+                  <button class="custom-button2" id="">ไหล่หมู</button>
+                  <button class="custom-button2" id="">สันนอก</button>
+                  <button class="custom-button2" id="">น้ำแข็ง</button>
+                  <button class="custom-button2" id="">ตับอ่อน</button>
+                  <button class="custom-button2" id="">ผัก</button>
+                  <button class="custom-button2" id="">ขนมปั่ง</button>
+                </div>
+              </div>
+            </div>
+            <button class="custom-button2" id="row17">ไหล่หมู</button>
+            <button class="custom-button2" id="row18">สันนอก</button>
+            <button class="custom-button2" id="row19">สามชั้น</button>
+            <button class="custom-button2" id="row20">กระดูกหมูชูป</button>
+            <button class="custom-button2" id="row21">หมูบด</button>
+            <button class="custom-button2" id="row22">Clean</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="box">
+        <div class="b21">
+          <div class="result-box">0</div>
+          <i id="currency">บาท</i>
+        </div>
+
+        <div class="b23">
+          <div class="manageImg2" id="product-container">
+          
+                  
+                <div class="img2">
+                     <img src="https://images.unsplash.com/photo-1736197531185-f53783de893a?q=80&w=1935&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="{{ product.name }}" />
+                </div>
+          </div>
+
+
+        
+            <div class="Text" id="product-container1">
+                 <h6>
+                     -สินค้าใน stock : 1 pcs <br />
+                     -ชื่อสินค้า : เหล้าขาว <br />
+                     -รายระเอียดสินค่า : สีเขียว<br />
+                     -ราคาสินค้าต่อหน่วย : 15 บาท <br />
+                 </h6>
+          </div>
+           
+
+          
+          <div class="bb26">
+            <div class="bb27">
+              <button class="custom-button4">รับเงิน</button>
+            </div>
+
+            <div class="bb28">
+              <button class="custom-button5" value="remove">ลบรายการ</button>
+            </div>
+
+            <div class="bb29">
+              <button class="custom-button6" value="add">เพิ่มรายการ</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="b22">
+          <div class="b22_1">
+            <div class="bb24">
+              <button class="custom-button calulator" value="7">7</button>
+              <button class="custom-button calulator" value="8">8</button>
+              <button class="custom-button calulator" value="9">9</button>
+            </div>
+            <div class="bb24">
+              <button class="custom-button calulator" value="4">4</button>
+              <button class="custom-button calulator" value="5">5</button>
+              <button class="custom-button calulator" value="6">6</button>
+            </div>
+            <div class="bb25">
+              <button class="custom-button calulator" value="1">1</button>
+              <button class="custom-button calulator" value="2">2</button>
+              <button class="custom-button calulator" value="3">3</button>
+            </div>
+            <div class="bb25">
+              <button class="custom-button calulator" value="0">0</button>
+              <button class="custom-button operrator1 operrator2" value=".">
+                .
+              </button>
+              <!--ทำการประกาศ class อีกตัวเลยสามารถทำให้โปรแกรมรันตามความต้องการ เพราะมันเป็น class ที่3 -->
+
+              <button class="custom-button delete" id="clear-btn" value="c">
+                c
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+       <!--เรียกใช้สำหรับfuntion ดูใบเสร็จ -->
+
+
+
+       <button id="receiptBtn" class="print-btn" onclick="openModal()" style="display: none;">
+       </button>
+    
+    <!-- ✅ ป๊อปอัปใบเสร็จ -->
+    <div id="receiptModal" class="modal">
+      <div class="modal-content">
+          <span class="close" onclick="closeModal()">&times;</span>
+          <h5> ร้านค้าของคุณ</h5>
+          <h5>รับมา: <span id="enteredAmount">-</span></h5>
+          <h5>ทอน: <span id="change">-</span></h5>
+          <h5>เวลาที่บันทึก:<span id="timestamp">-</span></h5>
+    
+          <table class="receipt-table">
+              <thead>
+                  <tr>
+                      <th>สินค้า</th>
+                      <th class="price">จำนวน</th>
+                      <th class="price">ราคา</th>
+                  </tr>
+              </thead>
+              <tbody id="stockAdjustments">
+                <tr><td colspan="3">🔄 กำลังโหลดข้อมูล...</td></tr>
+            </tbody>
+            
+              <tfoot>
+                  <tr class="total">
+                      <td colspan="2">รวม</td>
+                      <td class="price" id="totalAmount">0 บาท</td>
+                  </tr>
+              </tfoot>
+          </table>
+    
+          <h2 class="thanks">ขอบคุณที่ใช้บริการร้านเหมยน่ะ</h2>
+          <button class="print-btn" onclick="printReceipt()">พิมพ์ใบเสร็จ</button>
+      </div>
+    </div>
+    
+
+
+    <link rel="stylesheet" href="{% static "assets/dadhBoard/css/style.css"%}">
+    <script src="{% static 'assets/dadhBoard/js/script.js' %}"></script>
+
+  
+
+
+  </body>
+
+
+   
+  <script >
+
+
+    function openModal() {
+        document.getElementById("receiptModal").style.display = "flex";
+        document.getElementById("modal-date").innerText = new Date().toLocaleDateString();
+    }
+    
+    function closeModal() {
+        document.getElementById("receiptModal").style.display = "none";
+    }
+    
+    function printReceipt() {
+      console.log("🖨️ กำลังเตรียมพิมพ์...");
+  
+      const printContent = document.querySelector(".modal-content").innerHTML;
+      const originalContent = document.body.innerHTML;
+  
+      document.body.innerHTML = printContent;
+  
+      setTimeout(() => {
+          window.print();
+          console.log("✅ พิมพ์ใบเสร็จสำเร็จ!");
+          document.body.innerHTML = originalContent;
+          location.reload(); // ✅ รีเฟรชหลังจากพิมพ์เสร็จ
+      }, 500);
+  }
+  
+    
+
+
+
+
+    
+</script>
+
+
+
+
+ <!-- tabs -->
+ <div x-data="modal">
+    <button type="button" class="btn btn-info" @click="toggle">Tabs</button>
+    <div class="fixed inset-0 z-[999] hidden overflow-y-auto bg-[black]/60"
+        :class="open && '!block'">
+        <div class="flex min-h-screen items-start justify-center px-4"
+            @click.self="open = false">
+            <div x-show="open" x-transition="" x-transition.duration.300=""
+                class="panel my-8 w-full max-w-lg overflow-hidden rounded-lg border-0 p-0">
+                <div
+                    class="flex items-center justify-between bg-[#fbfbfb] px-5 py-3 dark:bg-[#121c2c]">
+                    <h5 class="text-lg font-bold">กรุณาเลือกรายการสินค้า</h5>
+                    <button type="button" class="text-white-dark hover:text-dark"
+                        @click="toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24px"
+                            height="24px" viewbox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="1.5"
+                            stroke-linecap="round" stroke-linejoin="round"
+                            class="h-6 w-6">
+                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                        </svg>
+                    </button>
+                </div>
+                <div class="p-5">
+                    <div class="mb-5" x-data="{tab: 'home'}">
+                        <div>
+                            <ul
+                                class="mt-3 flex flex-wrap border-b border-white-light dark:border-[#191e3a]">
+                                <li>
+                                    <a href="javascript:;"
+                                        class="-mb-[1px] block border border-transparent p-3.5 py-2 hover:text-primary dark:hover:border-b-black"
+                                        :class="{'!border-white-light !border-b-white  text-primary dark:!border-[#e2a03f] dark:!border-b-black' : tab  === 'home'}"
+                                        @click="tab = 'home'">
+
+
+                                        <!-- placeholder -->
+                                        <select class="selectize"
+                                            placeholder="Choose...">
+                                            <option value="orange">เครื่องดื่ม
+                                            </option>
+                                            <option value="White">อาหารสด</option>
+                                            <option value="Purple">
+                                                ผลิตภัฒเครื่องครัว</option>
+                                            <option value="Purple">
+                                                อาหารแปรสำหรับเร็จรูป</option>
+                                            <option value="Purple">อาหแห้ง</option>
+                                            <option value="Purple">เครื่องดื่มสุรา
+                                            </option>
+                                        </select></a>
+                                </li>
+                                <li>
+                                    <a href="javascript:;"
+                                        class="-mb-[1px] block border border-transparent p-3.5 py-2 hover:text-primary dark:hover:border-[#191e3a] dark:hover:border-b-black"
+                                        :class="{'!border-white-light !border-b-white text-primary dark:!border-[#191e3a] dark:!border-b-black' : tab  === 'profile'}"
+                                        @click="tab = 'profile'">พิมพ์ใบกำกับภาษี</a>
+                                </li>
+
+                            </ul>
+                        </div>
+                        <div class="flex-1 pt-5 text-sm">
+                            <template x-if="tab === 'home'">
+                                <div class="active">
+
+
+
+
+
+                                    <h3 class="mb-6 text-sm font-bold md:text-base">
+                                        รายการสินค้าตามประเภทที่เหลือก</h3>
+                                    <div
+                                        class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
+
+
+                                    
+
+
+
+                                        <div
+                                            class="space-y-1 rounded-md border border-white-light bg-white p-3 shadow-md dark:border-[#1B2E4B] dark:bg-black">
+                                            <div
+                                                class="max-h-40 overflow-hidden rounded-md">
+                                                <img src="assets/images/knowledge/image-1.jpg"
+                                                    alt="..."
+                                                    class="w-full object-cover">
+                                            </div>
+                                            <p class="text-xs dark:text-white"><span
+                                                    class="font-bold">ปลากระป๋อง</span>
+                                            </p>
+                                            <p class="text-xs dark:text-white"><span
+                                                    class="font-bold">ราคา</span>
+                                                150 บาท</p>
+                                            <p class="text-xs dark:text-white"><span
+                                                    class="font-bold">Stock</span>
+                                                15</p>
+                                            <p class="text-xs dark:text-white"><span
+                                                    class="font-bold">Barcode</span>
+                                                : 022256565626</p>
+                                        </div>
+
+
+
+
+                                        <!-- ใช้ Alpine.js ควบคุม Modal -->
+                                        <div x-data="{ open: false }">
+                                            <div
+                                                class="space-y-1 rounded-md border border-white-light bg-white p-3 shadow-md dark:border-[#1B2E4B] dark:bg-black">
+                                                <!-- คลิกที่รูปเพื่อเปิด Pop-up -->
+                                                <div class="max-h-40 overflow-hidden rounded-md cursor-pointer"
+                                                    @click="open = true">
+                                                    <img src="assets/images/knowledge/image-1.jpg"
+                                                        alt="..."
+                                                        class="w-full object-cover">
+                                                </div>
+                                                <p class="text-xs dark:text-white">
+                                                    <span
+                                                        class="font-bold">ปลากระป๋อง</span>
+                                                </p>
+                                                <p class="text-xs dark:text-white">
+                                                    <span
+                                                        class="font-bold">ราคา</span>
+                                                    150 บาท</p>
+                                                <p class="text-xs dark:text-white">
+                                                    <span
+                                                        class="font-bold">Stock</span>
+                                                    15</p>
+                                                <p class="text-xs dark:text-white">
+                                                    <span
+                                                        class="font-bold">Barcode</span>
+                                                    : 022256565626</p>
+                                            </div>
+
+                                            <!-- Pop-up ที่จะเปิดขึ้นเมื่อคลิกรูป -->
+                                            <div class="fixed inset-0 z-50 hidden bg-black/60 flex items-center justify-center"
+                                                :class="open && '!block'">
+                                                <div
+                                                    class="bg-white p-5 rounded-lg shadow-lg w-full max-w-md">
+                                                    <div
+                                                        class="flex justify-between">
+                                                        <h5
+                                                            class="text-lg font-bold">
+                                                            รายละเอียดสินค้า</h5>
+                                                        <button
+                                                            @click="open = false"
+                                                            class="text-gray-500">✖</button>
+                                                    </div>
+                                                    <div class="mt-4">
+                                                        <img src="assets/images/knowledge/image-1.jpg"
+                                                            alt="..."
+                                                            class="w-full object-cover rounded-md">
+                                                        <div>
+                                                            <p class="mt-3 text-sm">
+                                                                <span
+                                                                    class="font-bold">ปลากระป๋อง</span>
+                                                            </p>
+                                                            <p class="text-sm"><span
+                                                                    class="font-bold">ราคา</span>
+                                                                150 บาท</p>
+                                                            <p class="text-sm"><span
+                                                                    class="font-bold">Stock</span>
+                                                                15</p>
+                                                            <p class="text-sm"><span
+                                                                    class="font-bold">Barcode</span>
+                                                                : 022256565626</p>
+                                                        </div>
+                                                        <div>
+                                                            <form>
+                                                                <div class="mb-5">
+                                                                    <div
+                                                                        class="flex">
+                                                                        <div
+                                                                            class="bg-[#eee] flex justify-center items-center ltr:rounded-l-md rtl:rounded-r-md px-3 font-semibold border ltr:border-r-0 rtl:border-l-0 border-[#e0e6ed] dark:border-[#17263c] dark:bg-[#1b2e4b]">
+                                                                            Bath
+                                                                        </div>
+                                                                        <div
+                                                                            class="bg-[#eee] flex justify-center items-center rounded-none px-3 font-semibold border ltr:border-r-0 rtl:border-l-0 border-[#e0e6ed] dark:border-[#17263c] dark:bg-[#1b2e4b]">
+                                                                          ใส่จำนวณสินค้า
+                                                                        </div>
+                                                                        <input
+                                                                            type="text"
+                                                                            placeholder=""
+                                                                            class="form-input ltr:rounded-l-none rtl:rounded-r-none flex-1" />
+                                                                    </div>
+                                                                </div>
+
+                                                            </form>
+                                                        </div>
+
+                                                    </div>
+                                                    <button type="button" class="btn btn-secondary" @click="showAlert()">เพิ่มรายการสินค้า</button>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+
+                                        <script>
+                                            async function showAlert() {
+                                                new window.Swal({
+                                                    icon: 'success',
+                                                    title: 'คุณได้ทำการเพิ่มสินค้าเรียบร้อยแล้ว',
+                                                    text: 'SOMSAK!',
+                                                    padding: '2em',
+                                                });
+                                            }
+                                        </script>
+
+
+
+
+                                    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                </div>
+                            </template>
+                            <template x-if="tab === 'profile'">
+                                <div>
+                                    <div class="flex items-start">
+                                        <div
+                                            class="h-20 w-20 flex-none ltr:mr-4 rtl:ml-4">
+                                            <img src="assets/images/settings-dark.svg"
+                                                alt="image"
+                                                class="m-0 h-20 w-20 rounded-full object-cover ring-4 ring-[#ebedf2] dark:ring-white-dark">
+                                        </div>
+
+                                        <div class="flex-auto">
+                                            <h5 class="mb-4 text-xl font-medium">
+                                                รายการที่จะต้องพิมพ์ใบกำกับภาษี</h5>
+                                            <p
+                                                class="text-white-dark dark:text-white-dark/70">
+                                                Cras sit amet nibh libero, in
+                                                gravida nulla. Nulla vel metus
+                                                scelerisque
+                                                ante sollicitudin. Cras purus odio,
+                                                vestibulum in vulputate at, tempus
+                                                viverra turpis. Fusce condimentum
+                                                nunc ac nisi vulputate fringilla.
+                                                Donec lacinia congue felis in
+                                                faucibus.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </template>
+                            <template x-if="tab === 'contact'">
+                                <div>
+                                    <p>
+                                        Lorem ipsum dolor sit amet, consectetur
+                                        adipisicing elit, sed do eiusmod tempor
+                                        incididunt ut labore et dolore magna aliqua.
+                                        Ut enim ad minim veniam, quis
+                                        nostrud exercitation ullamco laboris nisi ut
+                                        aliquip ex ea commodo consequat.
+                                        Duis aute irure dolor in reprehenderit in
+                                        voluptate velit esse cillum dolore eu
+                                        fugiat nulla pariatur. Excepteur sint
+                                        occaecat cupidatat non proident, sunt in
+                                        culpa qui officia deserunt mollit anim id
+                                        est laborum.
+                                    </p>
+                                </div>
+                            </template>
+                            <div style="display: none">Disabled</div>
+                        </div>
+                    </div>
+                    <div class="mt-8 flex items-center justify-end">
+                        <button type="button" class="btn btn-outline-danger"
+                            @click="toggle">Discard</button>
+                        <button type="button"
+                            class="btn btn-primary ltr:ml-4 rtl:mr-4"
+                            @click="toggle">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- JavaScript Files -->
+<script src="{% static 'assets/js/swiper-bundle.min.js' %}"></script>
+<script src="{% static 'assets/js/highlight.min.js' %}"></script>
+<script src="{% static 'assets/js/alpine-collaspe.min.js' %}"></script>
+<script src="{% static 'assets/js/alpine-persist.min.js' %}"></script>
+<script defer src="{% static 'assets/js/alpine-ui.min.js' %}"></script>
+<script defer src="{% static 'assets/js/alpine-focus.min.js' %}"></script>
+<script defer src="{% static 'assets/js/alpine.min.js' %}"></script>
+<script src="{% static 'assets/js/custom.js' %}"></script>
+
+
+</html>
