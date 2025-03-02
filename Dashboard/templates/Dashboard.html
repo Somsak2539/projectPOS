@@ -153,6 +153,79 @@ td {
     background: #0056b3;
 }
 
+
+
+
+
+
+
+
+
+/*ทำเพื่อให้ scrol ได้สำหรับใบเสร็จ*/
+
+
+.scrollable-tbody {
+  max-height: 250px; /* ✅ กำหนดความสูงที่สามารถเลื่อน Scroll */
+  overflow-y: auto; /* ✅ อนุญาตให้มีการ Scroll */
+  display: block;
+  border-bottom: 1px solid #ccc;
+}
+
+/* ✅ ทำให้ตารางดูดีขึ้น */
+.scrollable-tbody table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.scrollable-tbody tbody tr {
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+}
+
+.receipt-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.receipt-table th, .receipt-table td {
+  padding: 8px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.modal-content {
+  width: 90%;
+  max-width: 500px;
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 /* ✅ ปรับแต่งเมื่อพิมพ์ */
 @media print {
   @page {
@@ -359,21 +432,6 @@ td {
                               </div>
 
 
-
-
-
-
-                          
-
-
-
-
-
-
-
-
-
-
                               
                               <script>
                                   async function showAlert() {
@@ -386,6 +444,23 @@ td {
                                   }
                               </script>
                           </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+                          
+
+
+
                       </template>
                       
                       
@@ -755,38 +830,38 @@ td {
        </button>
     
     <!-- ✅ ป๊อปอัปใบเสร็จ -->
-    <div id="receiptModal" class="modal">
-      <div class="modal-content">
-          <span class="close" onclick="closeModal()">&times;</span>
-          <h5> ร้านค้าของคุณ</h5>
-          <h5>รับมา: <span id="enteredAmount">-</span></h5>
-          <h5>ทอน: <span id="change">-</span></h5>
-          <h5>เวลาที่บันทึก:<span id="timestamp">-</span></h5>
-    
-          <table class="receipt-table">
-              <thead>
-                  <tr>
-                      <th>สินค้า</th>
-                      <th class="price">จำนวน</th>
-                      <th class="price">ราคา</th>
-                  </tr>
-              </thead>
-              <tbody id="stockAdjustments">
-                <tr><td colspan="3">🔄 กำลังโหลดข้อมูล...</td></tr>
-            </tbody>
-            
-              <tfoot>
-                  <tr class="total">
-                      <td colspan="2">รวม</td>
-                      <td class="price" id="totalAmount">0 บาท</td>
-                  </tr>
-              </tfoot>
-          </table>
-    
-          <h2 class="thanks">ขอบคุณที่ใช้บริการร้านเหมยน่ะ</h2>
-          <button class="print-btn" onclick="printReceipt()">พิมพ์ใบเสร็จ</button>
-      </div>
-    </div>
+<!-- ✅ ป๊อปอัปใบเสร็จ -->
+<div id="receiptModal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal()">&times;</span>
+    <h5> ร้านค้าของคุณ</h5>
+    <h5>รับมา: <span id="enteredAmount">-</span></h5>
+    <h5>ทอน: <span id="change">-</span></h5>
+    <h5>เวลาที่บันทึก: <span id="timestamp">-</span></h5>
+
+    <table class="receipt-table">
+      <thead>
+        <tr>
+          <th>สินค้า</th>
+          <th class="price">จำนวน</th>
+          <th class="price">ราคา</th>
+        </tr>
+      </thead>
+      <tbody id="stockAdjustments">
+        <tr><td colspan="3">🔄 กำลังโหลดข้อมูล...</td></tr>
+      </tbody>
+      <tfoot>
+        <tr class="total">
+          <td colspan="2">รวม</td>
+          <td class="price" id="TotalAmount1">0.00 บาท</td>
+        </tr>
+      </tfoot>
+    </table>
+
+    <h2 class="thanks">ขอบคุณที่ใช้บริการร้านเหมยน่ะ</h2>
+    <button class="print-btn" onclick="printReceipt()">พิมพ์ใบเสร็จ</button>
+  </div>
+</div>
     
 
 
@@ -821,6 +896,8 @@ td {
       document.body.innerHTML = printContent;
   
       setTimeout(() => {
+
+        
           window.print();
           console.log("✅ พิมพ์ใบเสร็จสำเร็จ!");
           document.body.innerHTML = originalContent;
@@ -835,6 +912,31 @@ td {
 
 
 
+
+
+<table id="cart-table" class="w-full border-collapse border border-gray-300 mt-4">
+  <thead>
+      <tr class="bg-gray-200">
+          <th class="border p-2">รหัสสินค้า</th>
+          <th class="border p-2">ชื่อสินค้า</th>
+          <th class="border p-2">ราคา</th>
+          <th class="border p-2">จำนวน</th>
+          <th class="border p-2">รวม</th>
+          <th class="border p-2">ลบ</th>
+      </tr>
+  </thead>
+  <tbody id="cart-body">
+      <!-- สินค้าจะถูกเพิ่มตรงนี้ -->
+  </tbody>
+</table>
+
+
+
+
+
+
+
+<!--สำหรับการเรียกใช้ pop up เข้ามาทำงานในนี้-->
 
 <script>
   document.addEventListener("DOMContentLoaded", function() {
@@ -863,7 +965,26 @@ td {
   </script>
   
   
-   
+
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+   <script defer src="{% static 'js/script.js' %}"></script>
+    <script defer src="{% static 'js/ajax.js' %}"></script>
    <!-- JavaScript Files -->
    <script src="{% static 'assets/js/swiper-bundle.min.js' %}"></script>
    <script src="{% static 'assets/js/highlight.min.js' %}"></script>

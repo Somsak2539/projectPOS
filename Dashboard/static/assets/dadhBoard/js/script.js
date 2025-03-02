@@ -1174,7 +1174,7 @@ fetch(apiUrl)
             });
 
 
-            setTimeout(() => {
+            setTimeout(() => { 
               fetch("http://127.0.0.1:8080/save-sale-record/", {
                 method: "POST",
                 headers: {
@@ -1182,44 +1182,58 @@ fetch(apiUrl)
                   "X-CSRFToken": csrfToken,
                 },
                 credentials: "include",
-                body: JSON.stringify(savedResults[savedResults.length - 1]), // ส่งข้อมูล JSON
+                body: JSON.stringify(savedResults[savedResults.length - 1]), 
               })
-                .then(response => response.json())
-                .then(data => {
-                  console.log("✅ Data received:", data);  // ✅ Debug ข้อมูลที่ได้รับ
+              .then(response => response.json())
+              .then(data => {
+                
 
-                  // ✅ ตรวจสอบว่ามีค่า totalAmount หรือไม่
-                  if (data.totalAmount) {
-                    document.getElementById("totalAmount").innerText = data.totalAmount + " บาท";
-                    document.getElementById("enteredAmount").innerText = data.enteredAmount + " บาท";
-                    document.getElementById("change").innerText = data.change + " บาท";
-                    document.getElementById("timestamp").innerText = "" + new Date(data.timestamp).toLocaleString("th-TH");
+                console.log("✅ Data received:", data);  
+            
+                if (data.totalAmount) {
+                  
+                  console.log("✅ totalAmount:", data.totalAmount);
+                  console.log("✅ enteredAmount:", data.enteredAmount);
+                  console.log("✅ change:", data.change);
+                  console.log("✅ totalAmount:", data.totalAmount);
+            
+                  let enteredAmount = parseFloat(data.enteredAmount || 0);
+                  let change = parseFloat(data.change || 0);
+                  let totalAmount = parseFloat(data.totalAmount || 0);
+            
+                  // ✅ อัปเดตค่าบน UI
+                  document.getElementById("totalAmount").innerText = totalAmount.toFixed(2) + " บาท";
+                  document.getElementById("enteredAmount").innerText = enteredAmount.toFixed(2) + " บาท";
+                  document.getElementById("change").innerText = change.toFixed(2) + " บาท";
+                  document.getElementById("timestamp").innerText = new Date(data.timestamp).toLocaleString("th-TH");
+            
+                  // ✅ แก้ไขการคำนวณให้ถูกต้อง
+                  let calculatedTotal = enteredAmount - change;
+                  document.getElementById("TotalAmount1").innerText = calculatedTotal.toFixed(2) + " บาท";
 
-                    // ✅ วนลูปแสดงรายการสินค้า
-                    let stockList = document.getElementById("stockAdjustments");
-                    stockList.innerHTML = ""; // เคลียร์ข้อมูลเก่า
-                    data.stockAdjustments.forEach(item => {
-                      let row = `<tr>
-                            <td>${item.product}</td>
-                            <td>${item.quantity}</td>
-                            <td>${item.TotalPrice} บาท</td>
-                        </tr>`;
-                      stockList.innerHTML += row;
-                    });
-
-                    console.log("✅ Updated UI successfully!");
-                  } else {
-                    console.error("❌ No totalAmount found in response!");
-                  }
-                })
-                .catch(error => console.error("❌ Error fetching data:", error));
-
-            }, 1000); // ✅ รอ 1 วินาทีก่อนดึงข้อมูล
-
-
-
-
-            console.log("JSON to be sent:", JSON.stringify(savedResults[savedResults.length - 1]));
+                  console.log("✅ Calculated TotalAmount1:", calculatedTotal);
+            
+                  // ✅ วนลูปแสดงรายการสินค้า
+                  let stockList = document.getElementById("stockAdjustments");
+                  stockList.innerHTML = ""; // เคลียร์ข้อมูลเก่า
+                  data.stockAdjustments.forEach(item => {
+                    let row = `<tr>
+                          <td>${item.product}</td>
+                          <td>${parseFloat(item.quantity).toFixed(2)}</td>
+                          <td>${parseFloat(item.TotalPrice).toFixed(2)} บาท</td>
+                      </tr>`;
+                    stockList.innerHTML += row;
+                  });
+            
+                  console.log("✅ Updated UI successfully!");
+                } else {
+                  console.error("❌ No totalAmount found in response!");
+                }
+              })
+              .catch(error => console.error("❌ Error fetching data:", error));
+            
+            }, 1000); 
+            
 
 
             //-------------------------------------ขอทำการโน็ตไว้ก่อนน่ะ
@@ -1232,6 +1246,8 @@ fetch(apiUrl)
             // ✅ เปิดป๊อปอัปอัตโนมัติ
             openModal();
             console.log("✅ ผ่านเงื่อนไข แสดงป๊อปอัปใบเสร็จ");
+
+
 
 
             //-------------------------------------ขอทำการโน็ตไว้ก่อนน่ะ

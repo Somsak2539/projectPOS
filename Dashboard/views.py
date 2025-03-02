@@ -56,7 +56,15 @@ def is_special_admin(user):
     return user.is_authenticated and user.groups.filter(name='Dashboards').exists()
 
 
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+import json
 
+
+
+def get_product_list(request):
+    products = list(Product1.objects.values("id", "name", "price", "stock", "barcode"))
+    return JsonResponse({"products": products})
 
 
 @login_required(login_url='/login_cover/')

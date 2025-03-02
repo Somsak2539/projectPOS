@@ -17,6 +17,7 @@ urlpatterns = [
   path('check-auth/', check_auth, name='check_auth'),
   path('Recipe',views.Recipe, name='Recipe'),
   path('ShowForDisplay',views.ShowForDisplay, name='ShowForDisplay'),
+  path("get-product-list/", views.get_product_list, name="get_product_list"),
   
   
   

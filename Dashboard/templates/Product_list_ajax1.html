@@ -7,20 +7,10 @@
         <div class="max-h-40 overflow-hidden rounded-md cursor-pointer" @click="open = true">
             <img src="{{ Product1.image.url }}" alt="..." class="w-full object-cover">
         </div>
-        <p class="text-xs dark:text-white">
-            <span class="font-bold" data-product-name="{{ Product1.id }}">{{ Product1.name }}</span>
-        </p>
-        <p class="text-xs dark:text-white">
-            <span class="font-bold">ราคา</span> 
-            <span data-product-price="{{ Product1.id }}">{{ Product1.price }}</span> บาท
-        </p>
-        <p class="text-xs dark:text-white">
-            <span class="font-bold">Stock</span> {{ Product1.stock }}
-        </p>
-        <p class="text-xs dark:text-white">
-            <span class="font-bold">Barcode</span> : {{ Product1.barcode }}
-        </p>
-        
+        <p class="text-xs dark:text-white"><span class="font-bold">{{ Product1.name }}</span></p>
+        <p class="text-xs dark:text-white"><span class="font-bold">ราคา</span> {{ Product1.price }} บาท</p>
+        <p class="text-xs dark:text-white"><span class="font-bold">Stock</span> {{ Product1.stock }}</p>
+        <p class="text-xs dark:text-white"><span class="font-bold">Barcode</span> : {{ Product1.barcode }}</p>
     </div>
 
     <!-- Pop-up ที่จะเปิดขึ้นเมื่อคลิกรูป -->
@@ -47,15 +37,12 @@
                             <div class="bg-[#eee] flex justify-center items-center rounded-none px-3 font-semibold border ltr:border-r-0 rtl:border-l-0 border-[#e0e6ed] dark:border-[#17263c] dark:bg-[#1b2e4b]">
                                 ใส่จำนวนสินค้า
                             </div>
-                            <input type="number" id="quantity-{{ Product1.id }}" value="1" min="1">
+                            <input type="text" placeholder="" class="form-input ltr:rounded-l-none rtl:rounded-r-none flex-1" />
                         </div>
                     </div>
                 </form>
             </div>
-            <button type="button" class="btn btn-secondary add-to-cart-btn" 
-            data-product-id="{{ Product1.id }}">
-              เพิ่มรายการสินค้า
-             </button>
+            <button type="button" class="btn btn-secondary" id="custom-button12" @click="showAlert()">เพิ่มรายการสินค้า</button>
         </div>
     </div>
 </div>
@@ -65,3 +52,19 @@
 </div>
 
 
+
+<script>
+   
+    const inputSelect = document.getElementById("custom-button7");
+
+    function AddProduct() {
+        console.log("✅ ปุ่มเพิ่มรายการสินค้าถูกกด!");
+    }
+    
+    if (inputSelect) {  // ✅ ใช้ตัวแปร inputSelect ที่เก็บปุ่มไว้
+        inputSelect.addEventListener("click", AddProduct);  // ✅ ส่งฟังก์ชันตรง ๆ ไม่ต้อง `()`
+    }
+    
+
+</script>
+    
