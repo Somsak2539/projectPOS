@@ -26,8 +26,7 @@ fetch("http://127.0.0.1:8080/blog/list/")
     })
     .catch(error => console.error("❌ Error fetching data:", error));
 
-
-
+// ✅ Event Listener สำหรับกดปุ่ม Add to Cart
 document.addEventListener("click", function (event) {
     if (event.target.classList.contains("add-to-cart-btn")) {
         const productId = event.target.dataset.productId;
@@ -47,22 +46,9 @@ document.addEventListener("click", function (event) {
 
         console.log("✅ เพิ่มสินค้า AJAX:", product.name);
 
-        // ✅ หาค่า `<input>` ที่เกี่ยวข้องกับสินค้าที่ถูกกด
-        const inputField = document.getElementById(`quantity-${productId}`); 
-
-        if (!inputField) {
-            console.error(`❌ ไม่พบ input field id="quantity-${productId}"`);
-            return;
-        }
-
-        let addedQuantity =  parseFloat(inputField.value, 10) || 1; // ถ้าไม่มีค่ากำหนดให้เป็น 1
-
-        if (addedQuantity < 1) {
-            console.warn("⚠️ จำนวนสินค้าต้องมากกว่า 0");
-            return;
-        }
-
-        // ✅ คำนวณราคา
+        // ✅ คำนวณราคา และจำนวนสินค้า
+        
+        let addedQuantity = 1;
         let totalProfit = product.profitprice * addedQuantity;
         let totalPrice = product.price * addedQuantity;
 
@@ -105,17 +91,13 @@ document.addEventListener("click", function (event) {
         }
 
         // ✅ รีเซ็ตค่าแสดงผล
-        const calculatorDisplay = document.getElementById("calculatorDisplay");
         if (calculatorDisplay) {
             calculatorDisplay.textContent = "0";
-        } else {
-            console.error("❌ ไม่พบ element calculatorDisplay ใน HTML");
         }
 
         selectedItem = "";
     }
 });
-
 
 // ✅ ฟังก์ชันเพิ่มสินค้าเข้าไปในตาราง
 function updateCartTable(product, quantity) {
@@ -127,7 +109,7 @@ function updateCartTable(product, quantity) {
         let quantityCell = existingRow.querySelector(".cart-quantity");
         let totalCell = existingRow.querySelector(".cart-total");
 
-        let newQuantity =  parseFloat(quantityCell.innerText, 10) + quantity;
+        let newQuantity = parseInt(quantityCell.innerText, 10) + quantity;
         quantityCell.innerText = newQuantity;
         totalCell.innerText = (newQuantity * product.price).toFixed(2);
     } else {
@@ -136,14 +118,14 @@ function updateCartTable(product, quantity) {
         row.setAttribute("data-product-id", product.id);
         let price = parseFloat(product.price) || 0;
         row.innerHTML = `
-              <td class="1border p-2">${product.id}</td>
-              <td class="1border p-2">${product.barcode}</td>
-              <td class="1border p-2">${product.name}</td>
-              <td class="1border p-2">Kg/pcs</td>
-              <td class="1border p-2 cart-quantity">${quantity}</td>
-              <td class="1border p-2">${product.stock}</td>
-              <td class="1border p-2 cart-total">${(price * quantity).toFixed(2)}</td>
-              <td class="1border p-2">
+              <td class="border p-2">${product.id}</td>
+              <td class="border p-2">${product.barcode}</td>
+              <td class="border p-2">${product.name}</td>
+              <td class="border p-2">Kg/pcs</td>
+              <td class="border p-2 cart-quantity">${quantity}</td>
+              <td class="border p-2">${product.stock}</td>
+              <td class="border p-2 cart-total">${(price * quantity).toFixed(2)}</td>
+              <td class="border p-2">
                   <button type="button" class="btn btn-danger remove-item">ลบข้อมูล</button>
               </td>
           `;

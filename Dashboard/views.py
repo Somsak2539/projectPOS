@@ -62,6 +62,11 @@ import json
 
 
 
+def product_list_ajax(request):
+    
+    return render(request,"product_list_ajax.html")
+
+
 def get_product_list(request):
     products = list(Product1.objects.values("id", "name", "price", "stock", "barcode"))
     return JsonResponse({"products": products})
