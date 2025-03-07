@@ -4,6 +4,10 @@
 const productContainer = document.getElementById("product-container");
 const productContainer1 = document.getElementById("product-container1");
 const inputBtn1 = document.querySelector(".add-to-cart-btn");
+let stockAdjustments = []; // เก็บสินค้าที่เพิ่มเข้าไปในตะกร้า
+let blogArray = []; // เก็บข้อมูลสินค้าจาก API
+const inputBtn3 = document.querySelector(".custom-button4"); // สำหรับปุ่มรับเงิน
+
 
 if (!productContainer || !productContainer1) {
     console.error(
@@ -60,9 +64,7 @@ document.addEventListener("click", function (event) {
         let totalPrice = product.price * addedQuantity;
 
         // ✅ ตรวจสอบว่ามีสินค้าอยู่ใน stockAdjustments หรือไม่
-        let existingProduct = stockAdjustments.find(
-            (item) => item.product === product.name
-        );
+        let existingProduct = stockAdjustments.find((item) => item.product === product.name);
 
         if (existingProduct) {
             existingProduct.quantity += addedQuantity;
@@ -71,18 +73,15 @@ document.addEventListener("click", function (event) {
         } else {
             stockAdjustments.push({
                 product: product.name,
-                quantity: Number(addedQuantity),
-                totalProfit: Number(totalProfit),
-                TotalPrice: Number(totalPrice),
+                quantity: addedQuantity,
+                totalProfit: totalProfit,
+                TotalPrice: totalPrice
             });
         }
 
-        localStorage.setItem("stockAdjustments", JSON.stringify(stockAdjustments));
-        // ✅ ส่ง Event ไปให้ script.js
-        document.dispatchEvent(
-            new CustomEvent("updateStock", { detail: stockAdjustments })
-        );
-        console.log("📦 stockAdjustments ปัจจุบัน:", stockAdjustments);
+
+       
+        
 
         // ✅ อัปเดตตารางสินค้า
         updateCartTable(product, addedQuantity);
@@ -118,15 +117,21 @@ document.addEventListener("click", function (event) {
 
 
 
+// ✅ ฟังก์ชันเพิ่มสินค้าเข้าไปในตาราง
 function updateCartTable(product, quantity) {
+
     console.log("🔍 ตรวจสอบค่า product:", product); // เพิ่มบรรทัดนี้
+    
+
     if (!product) {
         console.error("❌ Error: ไม่พบข้อมูลสินค้า!");
         return;
     }
 
     const cartBody = document.getElementById("itemTableBody");
-    let existingRow = document.querySelector(`#itemTableBody tr[data-product-id="${product.id}"]`);
+    let existingRow = document.querySelector(
+        `#itemTableBody tr[data-product-id="${product.id}"]`
+    );
 
     if (existingRow) {
         console.log("🟢 อัปเดตจำนวนสินค้าในตาราง");
@@ -134,7 +139,7 @@ function updateCartTable(product, quantity) {
         let totalCell = existingRow.querySelector(".cart-total");
 
         let newQuantity = parseFloat(quantityCell.innerText, 10) + quantity;
-        quantityCell.innerText = newQuantity.toFixed(2);
+        quantityCell.innerText = newQuantity;
         totalCell.innerText = (newQuantity * product.price).toFixed(2);
     } else {
         console.log("🆕 เพิ่มสินค้าใหม่ลงในตาราง");
@@ -143,12 +148,13 @@ function updateCartTable(product, quantity) {
         let price = parseFloat(product.price) || 0;
         row.innerHTML = `
               <td class="1border p-2">${product.id}</td>
-              <td class="1border p-2">${product.barcode || "ไม่มีข้อมูล"}</td>
+              <td class="1border p-2">${product.barcode}</td>
               <td class="1border p-2">${product.name}</td>
               <td class="1border p-2">Kg/pcs</td>
-              <td class="1border p-2 cart-quantity">${parseFloat(quantity).toFixed(2)}</td>
-              <td class="1border p-2">${product.stock}</td>
+              <td class="1border p-2 cart-quantity">${quantity}</td>
               <td class="1border p-2 cart-total">${(price * quantity).toFixed(2)}</td>
+              <td class="1border p-2">${product.stock}</td>
+             
               <td class="1border p-2">
                   <button type="button" class="btn btn-danger remove-item">ลบข้อมูล</button>
               </td>
@@ -156,10 +162,8 @@ function updateCartTable(product, quantity) {
         cartBody.appendChild(row);
     }
 
-    addRemoveEvent();
+    addRemoveEvent(); // ✅ อัปเดต Event Listener
 }
-
-
 
 // ✅ ฟังก์ชันคำนวณยอดรวม
 function updateTotalAmount() {
@@ -180,77 +184,68 @@ function addRemoveEvent() {
     document.querySelectorAll(".remove-item").forEach((button) => {
         button.addEventListener("click", function () {
             let row = this.closest("tr");
-            let productId = row.getAttribute("data-product-id");
             let productName = row.querySelector("td:nth-child(3)").innerText;
 
+            // ลบแถวออกจากตาราง
+            row.remove();
+
+            // ลบข้อมูลออกจาก stockAdjustments
+            console.log("ก่อนลบ:", stockAdjustments);
             stockAdjustments = stockAdjustments.filter(
                 (item) => item.product !== productName
             );
+            console.log("หลังลบ:", stockAdjustments);
 
-            row.remove();
-            updateTotalAmount(); // คำนวณยอดรวมใหม่
+            // ------------------------------อัปเดต LocalStorage ส่งข้ามไฟค์---------------------------------
+            localStorage.setItem("stockAdjustments", JSON.stringify(stockAdjustments));
+            // ส่ง Event ไปให้ไฟล์อื่น (ถ้าจำเป็น)
+            document.dispatchEvent(new CustomEvent("updateStock", { detail: stockAdjustments }));
+
+            // คำนวณยอดรวมใหม่
+            updateTotalAmount();
         });
     });
 }
+
+
+//**************************************************************************************** */
+
+let ValueSelect = [];  // ✅ เปลี่ยนจาก const เป็น let
+
+    // ✅ รับ Event จาก ajax.js และอัปเดต stockAdjustments
+    document.addEventListener("updateStock", function (event) {
+      stockAdjustments = event.detail;
+      console.log("📦 stockAdjustments ที่ได้รับใน ajax.js:", stockAdjustments);
+
+      ValueSelect = [...stockAdjustments]; // ✅ ทำสำเนา stockAdjustments ไปยัง ValueSelect
+      console.log("📌 ประกาศตัวแปร Global of aJax.js:", ValueSelect);
+
+      if (stockAdjustments.length === 0) {
+        console.warn("⚠️ ไม่มีสินค้าใน stockAdjustments");
+        return;
+      }
+
+      updateCartTable(); // ✅ อัปเดตตารางสินค้า
+
+      // ✅ ทำให้แน่ใจว่า stockAdjustments มีค่า ก่อนอัปเดต Stock
+      setTimeout(() => {
+        updateStockAPI();
+      }, 500); // หน่วงเวลา 0.5 วินาที
+    });
+
+
+//**************************************************************************************** */
+
+
+    console.log("📤 กำลังส่งข้อมูลไป API:", JSON.stringify({ updates: stockAdjustments }));
+    console.log("📦 ค่า stockAdjustments ก่อนส่ง:", stockAdjustments);
+
 
 // ------------------------------------------------------------------------สำหรับการแอด update Stock-------------------------------------
 
 
 
-window.stockAdjustments = [];
-let stockAdjustments = []; // เก็บสินค้าที่เพิ่มเข้าไปในตะกร้า
-let blogArray = []; // เก็บข้อมูลสินค้าจาก API
-const inputBtn3 = document.querySelector(".custom-button4"); // สำหรับปุ่มรับเงิน
-
-
-// ✅ ส่ง stockAdjustments ไปให้ script.js
-document.dispatchEvent(new CustomEvent("updateStock", { detail: stockAdjustments }));
-console.log("📤 ส่ง stockAdjustments จาก ajax.js:", stockAdjustments);
-console.log("📤 ส่งข้อมูล stockAdjustments:", stockAdjustments);
-
-
-
-document.addEventListener("click", function (event) {
-    if (event.target.classList.contains("add-to-cart-btn")) {
-        const productId = event.target.dataset.productId;
-
-        if (blogArray.length === 0) {
-            console.warn("⚠️ API ยังไม่โหลดข้อมูล");
-            return;
-        }
-
-        const product = blogArray.find(item => item.id == productId);
-        if (!product) {
-            console.error("❌ ไม่พบสินค้า ID:", productId);
-            return;
-        }
-
-        console.log("✅ เพิ่มสินค้ารายการ:", product.name);
-
-        let existingProduct = stockAdjustments.find(item => item.product === product.name);
-        if (existingProduct) {
-            existingProduct.quantity += 1;
-        } else {
-            stockAdjustments.push({
-                product: product.name,
-                quantity: 1,
-                totalPrice: product.price
-            });
-        }
-
-        console.log("📦 stockAdjustments ใน ajax.js:", stockAdjustments);
-
-        // ✅ ส่ง Event ไปให้ script.js
-        document.dispatchEvent(new CustomEvent("updateStock", { detail: stockAdjustments }));
-    }
-});
-
-
 //********************************************************************* */
-
-
-
-
 
 // ✅ โหลดข้อมูลสินค้าจาก API
 fetch("http://127.0.0.1:8080/blog/list/")

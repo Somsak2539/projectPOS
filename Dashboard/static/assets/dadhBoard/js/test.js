@@ -1,9 +1,12 @@
+
+
 // ------------------------------------------------------------------------------การทดสอบ Api------------------------------------------------
-
-
-
-
 const apiUrl = "http://127.0.0.1:8080/blog/list/";
+
+
+
+
+
 
 fetch(apiUrl)
   .then((response) => {
@@ -31,11 +34,15 @@ fetch(apiUrl)
     const firstBlog11 = blogArray.find((blog) => blog.id === 11); // สันคอ
     const firstBlog12 = blogArray.find((blog) => blog.id === 12); // ยังไม่ระบุ
 
+    const firstBlog13 = blogArray.find((blog) => blog.name);
+
+
     //----------------------------------------------การเพื่มรายการสำหรับการยิงบาร์โค้ด------------------------------- 
 
 
- 
-    
+
+
+
 
 
     //-------------------------------------------------การเพิ่มรายกานสำหรับการยิงบาร์โค้ด----------------------------
@@ -246,6 +253,8 @@ fetch(apiUrl)
 
 
 
+
+
     //-----------------------------------------------------------------สำหรับเก็บค่ารวม------------------------------------
 
     let currentTotal = 0; //หมูกระทะ
@@ -336,161 +345,308 @@ fetch(apiUrl)
     //---------------------------------------รายการควบคุมต่างๆๆ-----------------------------------------------------
     // ฟังก์ชันแสดงตัวเลข
 
-  
+
     //let scannedBarcode =8850382001087 ;
-   // let scannedBarcode1 =1234567891012;
+    // let scannedBarcode1 =1234567891012;
 
-   //let barcodeList = [scannedBarcode, scannedBarcode1];
-
-   
-  // API Data
-
-  //let allBarcodes = blogArray.map(product => product.barcode);
-  //  console.log("แสดงค่า Barcode",allBarcodes);
-  //let scannedBarcode = 8850382001087; // รับค่าบาร์โค้ดจากช่องแสดงผล
-  
-  
-   //scannedBarcode = calculatorDisplay.textContent.trim(); // รับค่าที่พิมพ์
-   //foundProduct = blogArray.find(product => product.barcode === scannedBarcode ||product.barcode ===1234567891012); // ค้นหาสินค้าใหม่
+    //let barcodeList = [scannedBarcode, scannedBarcode1];
 
 
-      
+    // API Data
 
-          // เก็บบาร์โค้ดทั้งหมดในอาร์เรย์
+    //let allBarcodes = blogArray.map(product => product.barcode);
+    //  console.log("แสดงค่า Barcode",allBarcodes);
+    //let scannedBarcode = 8850382001087; // รับค่าบาร์โค้ดจากช่องแสดงผล
 
 
-// รับค่าบาร์โค้ดที่พิมพ์
-//let scannedBarcode = 1234567891012;
+    //scannedBarcode = calculatorDisplay.textContent.trim(); // รับค่าที่พิมพ์
+    //foundProduct = blogArray.find(product => product.barcode === scannedBarcode ||product.barcode ===1234567891012); // ค้นหาสินค้าใหม่
 
-// 🔥 ต้องกำหนดค่าเริ่มต้นของ `foundProduct` ก่อนใช้
-//let foundProduct = blogArray.find(product => product.barcode === scannedBarcode);
 
-// 🔍 ตรวจสอบว่าพบสินค้าหรือไม่
-//if (!foundProduct) {
+
+
+    // เก็บบาร์โค้ดทั้งหมดในอาร์เรย์
+
+
+    // รับค่าบาร์โค้ดที่พิมพ์
+    //let scannedBarcode = 1234567891012;
+
+    // 🔥 ต้องกำหนดค่าเริ่มต้นของ `foundProduct` ก่อนใช้
+    //let foundProduct = blogArray.find(product => product.barcode === scannedBarcode);
+
+    // 🔍 ตรวจสอบว่าพบสินค้าหรือไม่
+    //if (!foundProduct) {
     //console.log("❌ ไม่พบสินค้าในระบบ! กรุณาตรวจสอบบาร์โค้ดอีกครั้ง");
     //alert("❌ ไม่พบสินค้าในระบบ! กรุณาตรวจสอบบาร์โค้ดอีกครั้ง");
-//} else {
-  //  console.log("✅ พบสินค้าแล้ว!", foundProduct);
-   // console.log("📌 ชื่อสินค้า:", foundProduct.name);
-   // console.log("📌 ราคา:", foundProduct.price);
+    //} else {
+    //  console.log("✅ พบสินค้าแล้ว!", foundProduct);
+    // console.log("📌 ชื่อสินค้า:", foundProduct.name);
+    // console.log("📌 ราคา:", foundProduct.price);
     //console.log("📌 บาร์โค้ด:", foundProduct.barcode);
-//}
+    //}
 
 
 
 
 
 
-   
-   
-   function setNumberValue(number) {
-   
-   
-   const displayVlave = calculatorDisplay.textContent; // เก็บตัวแปรการแสดงผลข้อมูลไว้ที่ displayValue
-   calculatorDisplay.textContent =
-     displayVlave === "0" ? number : displayVlave + number; //ตั้งค่าเป็น 0 เริ่มต้นเมื่อมีการกดก็จะทำการบวกตัวแปรนับเบอร์เข้าไป
-   
-   console.log("Current number:", calculatorDisplay.textContent);
-   
-   
-   
-   
-   }
-   
-   //การควบคุมเกี่ยวกับจุดทศนิยมถ้ากด "."เมื่อทำการกดก็จะให้ตัวเลข 0 มันมาอยู่ข้างหน้า
-   function addDecimal() {
-   if (!calculatorDisplay.textContent.includes(".")) {
-     // สามารถทำการกดจุดได้แค่ครั้งเดียวไม่สามารถทำการกดจุดได้อีกแล้ว
-     calculatorDisplay.textContent = `${calculatorDisplay.textContent}.`;
-   }
-   console.log("addDeciml :", calculatorDisplay.textContent);
-   }
-   
-   // ฟังก์ชันจัดการโอเปอเรเตอร์
-   function callperator(call) {
-   console.log(call);
-   }
-   
-   function Delete() {
-   console.log("Display cleared"); // ตรวจสอบเมื่อมีการรีเซ็ตค่า
-   calculatorDisplay.textContent = "0"; // รีเซ็ตหน้าจอเป็น 0
-   }
-   
-   // เพิ่ม Event Listener ให้กับปุ่มทั้งหมด
-   inputBtn.forEach((input) => {
-   if (input.classList.length === 2) {
-     //ลองเช็คตัวจำนวณของ class ว่ามีทั้งหมดกี่ class แล้วทำการเรียกใช้ class ที่ 2
-     input.addEventListener("click", () => setNumberValue(input.value)); // ต้องเป็น.value
-   } else if (input.classList.contains("operrator")) {
-     input.addEventListener("click", () => callperator(input.value));
-   } else if (input.classList.contains("delete")) {
-     input.addEventListener("click", () => Delete());
-   } else if (input.classList.contains("operrator1")) {
-     input.addEventListener("click", () => addDecimal());
-   }
-   
-   console.log(input.classList); // ทำการตรวจสอบclass ที่ประกาศในตัวแปรinput ว่ามันมีทั้งกี่ตัวสำหรับการเรียกใช้งาน input
-   console.log(input.classList.length); // ทำการเรียกดูว่ามีclass ที่ความยาว 3 มีทั้้งหมดกี่ตัว
-   });
-   
-   // ปุ่ม Clear
-   clearBtn.addEventListener("click", () => Delete()); // ลบข้อมูลทั้งหมดเมื่อกดปุ่ม Clear
-   
-   //--------------------------function สำหรับการเรียกใช้งานใน Keybord----------------------------------------------------
-   
-   document.addEventListener("keydown", (event) => {
-   const key = event.key; // ดึงค่าปุ่มที่กด
-   console.log("Key Pressed:", key);
-   
-   // กดตัวเลข
-   if (!isNaN(key)) {
-     setNumberValue(key); // ส่งตัวเลขไปแสดงผล
-   }
-   // กดจุดทศนิยม
-   else if (key === ".") {
-     addDecimal();
-   }
-   // กด Backspace เพื่อลบตัวเลข
-   else if (key === "Backspace") {
-     const currentDisplay = calculatorDisplay.textContent;
-     calculatorDisplay.textContent = currentDisplay.slice(0, -1) || "0"; // ลบตัวเลขตัวสุดท้าย
-     console.log(
-       "Backspace pressed, new display:",
-       calculatorDisplay.textContent
-     );
-   }
-   // กด ESC เพื่อเคลียร์หน้าจอ
-   else if (key === "Escape") {
-     Delete();
-   }
-   // กด Enter เพื่อคำนวณ (หรืออาจเรียกฟังก์ชันอื่น)
-   else if (key === "Enter") {
-     console.log(
-       "Enter key pressed (you can call a calculation function here)."
-     );
-   }
-   // กดเครื่องหมายการคำนวณ (+, -, *, /)
-   else if (["+", "-", "*", "/"].includes(key)) {
-     callperator(key); // เรียกฟังก์ชันโอเปอเรเตอร์
-   }
-   });
-   
-   
+
+
+    function setNumberValue(number) {
+
+
+      const displayVlave = calculatorDisplay.textContent; // เก็บตัวแปรการแสดงผลข้อมูลไว้ที่ displayValue
+      calculatorDisplay.textContent =
+        displayVlave === "0" ? number : displayVlave + number; //ตั้งค่าเป็น 0 เริ่มต้นเมื่อมีการกดก็จะทำการบวกตัวแปรนับเบอร์เข้าไป
+
+      console.log("Current number:", calculatorDisplay.textContent);
+
+
+
+
+    }
+
+    //การควบคุมเกี่ยวกับจุดทศนิยมถ้ากด "."เมื่อทำการกดก็จะให้ตัวเลข 0 มันมาอยู่ข้างหน้า
+    function addDecimal() {
+      if (!calculatorDisplay.textContent.includes(".")) {
+        // สามารถทำการกดจุดได้แค่ครั้งเดียวไม่สามารถทำการกดจุดได้อีกแล้ว
+        calculatorDisplay.textContent = `${calculatorDisplay.textContent}.`;
+      }
+      console.log("addDeciml :", calculatorDisplay.textContent);
+    }
+
+    // ฟังก์ชันจัดการโอเปอเรเตอร์
+    function callperator(call) {
+      console.log(call);
+    }
+
+    function Delete() {
+      console.log("Display cleared"); // ตรวจสอบเมื่อมีการรีเซ็ตค่า
+      calculatorDisplay.textContent = "0"; // รีเซ็ตหน้าจอเป็น 0
+    }
+
+    // เพิ่ม Event Listener ให้กับปุ่มทั้งหมด
+    inputBtn.forEach((input) => {
+      if (input.classList.length === 2) {
+        //ลองเช็คตัวจำนวณของ class ว่ามีทั้งหมดกี่ class แล้วทำการเรียกใช้ class ที่ 2
+        input.addEventListener("click", () => setNumberValue(input.value)); // ต้องเป็น.value
+      } else if (input.classList.contains("operrator")) {
+        input.addEventListener("click", () => callperator(input.value));
+      } else if (input.classList.contains("delete")) {
+        input.addEventListener("click", () => Delete());
+      } else if (input.classList.contains("operrator1")) {
+        input.addEventListener("click", () => addDecimal());
+      }
+
+      console.log(input.classList); // ทำการตรวจสอบclass ที่ประกาศในตัวแปรinput ว่ามันมีทั้งกี่ตัวสำหรับการเรียกใช้งาน input
+      console.log(input.classList.length); // ทำการเรียกดูว่ามีclass ที่ความยาว 3 มีทั้้งหมดกี่ตัว
+    });
+
+    // ปุ่ม Clear
+    clearBtn.addEventListener("click", () => Delete()); // ลบข้อมูลทั้งหมดเมื่อกดปุ่ม Clear
+
+    //--------------------------function สำหรับการเรียกใช้งานใน Keybord----------------------------------------------------
+
+    document.addEventListener("keydown", (event) => {
+      const key = event.key; // ดึงค่าปุ่มที่กด
+      console.log("Key Pressed:", key);
+
+      // กดตัวเลข
+      if (!isNaN(key)) {
+        setNumberValue(key); // ส่งตัวเลขไปแสดงผล
+      }
+      // กดจุดทศนิยม
+      else if (key === ".") {
+        addDecimal();
+      }
+      // กด Backspace เพื่อลบตัวเลข
+      else if (key === "Backspace") {
+        const currentDisplay = calculatorDisplay.textContent;
+        calculatorDisplay.textContent = currentDisplay.slice(0, -1) || "0"; // ลบตัวเลขตัวสุดท้าย
+        console.log(
+          "Backspace pressed, new display:",
+          calculatorDisplay.textContent
+        );
+      }
+      // กด ESC เพื่อเคลียร์หน้าจอ
+      else if (key === "Escape") {
+        Delete();
+      }
+      // กด Enter เพื่อคำนวณ (หรืออาจเรียกฟังก์ชันอื่น)
+      else if (key === "Enter") {
+        console.log("Enter key pressed (you can call a calculation function here).");
+
+        // 📌 ตรวจสอบว่า calculatorDisplay มีอยู่จริง
+        if (!calculatorDisplay) {
+          console.error("❌ calculatorDisplay ไม่ได้ถูกกำหนด!");
+          return;
+        }
+
+        // 📌 ตรวจสอบค่า calculatorDisplay ก่อนนำไปใช้
+        console.log("🔍 ค่า calculatorDisplay.textContent ก่อน trim:", calculatorDisplay.textContent);
+        let scannedBarcode = calculatorDisplay.textContent.trim();
+        console.log("🔍 ค่า scannedBarcode หลัง trim:", scannedBarcode);
+
+        if (!scannedBarcode) {
+          console.log("❌ scannerDisplay.textContent ว่างเปล่า! ไม่สามารถดำเนินการต่อได้");
+          return;
+        }
+
+        // ✅ ตรวจสอบว่า blogArray มีสินค้าอยู่หรือไม่
+        if (!Array.isArray(blogArray)) {
+          console.error("❌ blogArray ไม่ได้ถูกกำหนด หรือไม่ใช่ Array!");
+          return;
+        }
+
+        // ✅ ค้นหาสินค้าใน blogArray
+        foundProduct = blogArray.find(product => product.barcode.toString() === scannedBarcode);
+
+        if (!foundProduct) {
+          alert("❌ คุณไม่ได้ทำการกรอกตัว barcode ในระบบ.");
+          console.log("❌ ไม่พบสินค้าในระบบ! แต่จะไปทำงานในส่วนอื่นต่อ...");
+        } else {
+          console.log("✅ พบสินค้าแล้ว!", foundProduct);
+
+          // ตรวจสอบว่าตัวแปรถูกกำหนดไว้ก่อนหรือไม่
+          if (typeof ArrayBarcode === "undefined") ArrayBarcode = [];
+          if (typeof stockAdjustments === "undefined") stockAdjustments = [];
+          if (typeof ArrayBarcode1 === "undefined") ArrayBarcode1 = [];
+          if (typeof itemtCouter === "undefined") itemtCouter = 0;
+
+          // 🛒 เพิ่มสินค้าในตารางหรืออัปเดตจำนวน
+          const tableBody = document.getElementById("itemTableBody");
+          const rows = tableBody.querySelectorAll("tr");
+          let found = false;
+
+          let Price1 = parseFloat(foundProduct.price) || 0;
+          let profitprice = parseFloat(foundProduct.profitprice) || 0;
+          let addedQuantity = 1; // จำนวนที่เพิ่มเข้ามาเริ่มต้นเป็น 1
+          let totalProfit = profitprice * addedQuantity;
+          let TotalPrice = Price1 * addedQuantity;
+
+          rows.forEach((row) => {
+            const productCell = row.querySelector("td:nth-child(3)");
+            const quantityCell = row.querySelector("td:nth-child(5)");
+            const priceCell = row.querySelector("td:nth-child(6)");
+
+            if (productCell && productCell.textContent === foundProduct.name) {
+              const currentQuantity = parseFloat(quantityCell.textContent.split(" ")[0]) || 0;
+              const newQuantity = currentQuantity + 1;
+              const newTotalPrice = newQuantity * foundProduct.price;
+
+              quantityCell.textContent = `${newQuantity} `;
+              priceCell.textContent = `${newTotalPrice.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} บาท`;
+
+              const adjustmentIndex = stockAdjustments.findIndex(item => item.product === foundProduct.name);
+              if (adjustmentIndex > -1) {
+                stockAdjustments[adjustmentIndex].quantity += 1;
+                stockAdjustments[adjustmentIndex].TotalPrice = stockAdjustments[adjustmentIndex].quantity * foundProduct.price;
+                stockAdjustments[adjustmentIndex].totalProfit = stockAdjustments[adjustmentIndex].quantity * foundProduct.profitprice;
+              }
+
+              ArrayBarcode.push(foundProduct.price);
+              found = true;
+              console.log("✅ อัปเดตสินค้าที่มีอยู่ในตารางแล้ว!");
+            }
+          });
+
+          if (!found) {
+            console.log("🔄 เพิ่มสินค้าใหม่เข้าไปในตาราง...");
+
+            ArrayBarcode.push(foundProduct.price);
+            addRowToTable(
+              itemtCouter,
+              foundProduct.barcode,
+              foundProduct.name,
+              "pcs",
+              1,
+              foundProduct.price,
+              foundProduct.stock
+            );
+
+            stockAdjustments.push({
+              product: foundProduct.name,
+              quantity: 1,
+              totalProfit: totalProfit,
+              TotalPrice: TotalPrice,
+            });
+
+            itemtCouter++;
+          }
+
+          const existingProduct = ArrayBarcode1.find(item => item.name === foundProduct.name);
+          if (existingProduct) {
+            existingProduct.price += Number(foundProduct.price);
+            console.log(`🔄 เพิ่มราคาให้สินค้า "${foundProduct.name}" เป็น ${existingProduct.price} บาท`);
+          } else {
+            ArrayBarcode1.push({ name: foundProduct.name, price: Number(foundProduct.price) });
+            console.log(`✅ เพิ่มสินค้าใหม่ "${foundProduct.name}" (ราคา ${foundProduct.price} บาท)`);
+          }
+
+          console.log("✅ ค่า ArrayBarcode1 ที่อัปเดตแล้ว:", ArrayBarcode1);
+
+          const grandTotalPrice = stockAdjustments.reduce((sum, item) => sum + item.TotalPrice, 0);
+          const grandTotalProfit = stockAdjustments.reduce((sum, item) => sum + item.totalProfit, 0);
+
+          ArrayBarcode = ArrayBarcode.map(Number);
+          console.log("✅ ArrayBarcode ที่แปลงเป็นตัวเลขแล้ว:", ArrayBarcode);
+
+          const totalAmount = ArrayBarcode.reduce((sum, item) => sum + Number(item), 0);
+          document.getElementById("totalAmount").innerText = `${totalAmount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} บาท`;
+
+          console.log("📦 Stock Adjustments:", stockAdjustments);
+          console.log("รวมทั้งหมดสำหรับการสแกนบาร์โค้ด ", ArrayBarcode);
+          console.log("💰 Grand Total:", totalAmount);
+          console.log("🛒 รวมราคาขายทั้งหมด:", grandTotalPrice);
+          console.log("💰 รวมกำไรรวมทั้งหมด:", grandTotalProfit);
+
+          calculatorDisplay.textContent = "0";
+          selectedItem = "";
+          // ✅ ตรวจสอบว่ามีสินค้าอยู่ก่อนแสดงผล
+          if (foundProduct) {
+            if (foundProduct.image) {
+              productContainer.innerHTML = `
+              <div class="img2">
+                  <img src="${foundProduct.image}" alt="${foundProduct.name}" />
+              </div>`;
+            } else {
+              productContainer.innerHTML = `<div class="img2">ไม่มีรูปภาพ</div>`;
+            }
+
+            productContainer1.innerHTML = `
+              <h6>
+                  - สินค้าใน stock: ${foundProduct.stock} pcs <br />
+                  - ชื่อสินค้า: ${foundProduct.name} <br />
+                  - ราคา: ${foundProduct.price} บาท <br />
+              </h6>
+          `;
+          } else {
+            productContainer.innerHTML = `<div class="img2">ไม่มีข้อมูลสินค้า</div>`;
+            productContainer1.innerHTML = `<h6>ไม่พบข้อมูลสินค้า</h6>`;
+          }
+        }
+
+        calculatorDisplay.textContent = "0"; // รีเซ็ตค่าแสดงผลเป็น 0
+        selectedItem = ""; // รีเซ็ตสถานะหลังจากเพิ่มรายการ
+
+
+
+      }
+      // กดเครื่องหมายการคำนวณ (+, -, *, /)
+      else if (["+", "-", "*", "/"].includes(key)) {
+        callperator(key); // เรียกฟังก์ชันโอเปอเรเตอร์
+      }
+    });
+
+
 
     //-------------------การลบรายการที่เพิ่มเข้าไปในตารางต้องทำการ ศีกษาให้ระเอียด้วยในส่วนนี้เพราะว่าจะป็นการที่เราจะเอาไปใช้ประโยชน์ในโปรเจคถัดไปได้ง่าย ------------------------------
 
     //------------------------------------------ การเพิ่มการรับเงิน ----------------------------------------------
 
-    function TransferMoney() {
-      console.log("button 6");
-    }
-    if (inputBtn3) {
-      inputBtn3.addEventListener("click", () => TransferMoney());
-    }
 
 
-
-    //--------------------------------------------------หมูกระทะ----------------------------------------------
+    //------------------------------------------------------------------สำหรับบาร์โค้ด---------------------------------------------------------
 
     function colom11() {
       const displayVlave = calculatorDisplay.textContent;
@@ -506,19 +662,19 @@ fetch(apiUrl)
 
       if (firstBlog1) {
         productContainer.innerHTML = `
-  <div class="img2">
-  <img src="${firstBlog1.image}" alt="${firstBlog1.name}" />
-   </div> 
-   `;
+<div class="img2">
+<img src="${firstBlog1.image}" alt="${firstBlog1.name}" />
+ </div> 
+ `;
       }
       if (firstBlog2) {
         productContainer1.innerHTML = `
-              <h6>
-                 -สินค้าใน stock :${firstBlog1.stock} kg <br />
-                 -ชื่อสินค้า : :${firstBlog1.name} <br />
-                 -ราคา :${firstBlog1.price} บาท <br />
-             </h6>
-   `;
+            <h6>
+               -สินค้าใน stock :${firstBlog1.stock} kg <br />
+               -ชื่อสินค้า : :${firstBlog1.name} <br />
+               -ราคา :${firstBlog1.price} บาท <br />
+           </h6>
+ `;
       }
     }
     if (row11) {
@@ -539,19 +695,19 @@ fetch(apiUrl)
 
       if (firstBlog2) {
         productContainer.innerHTML = `
-      <div class="img2">
-      <img src="${firstBlog2.image}" alt="${firstBlog2.name}" />
-       </div> 
-       `;
+    <div class="img2">
+    <img src="${firstBlog2.image}" alt="${firstBlog2.name}" />
+     </div> 
+     `;
       }
       if (firstBlog2) {
         productContainer1.innerHTML = `
-                  <h6>
-                     -สินค้าใน stock :${firstBlog2.stock} Kg <br />
-                     -ชื่อสินค้า : :${firstBlog2.name} <br />
-                     -ราคา :${firstBlog2.price} บาท <br />
-                 </h6>
-       `;
+                <h6>
+                   -สินค้าใน stock :${firstBlog2.stock} Kg <br />
+                   -ชื่อสินค้า : :${firstBlog2.name} <br />
+                   -ราคา :${firstBlog2.price} บาท <br />
+               </h6>
+     `;
       }
     }
 
@@ -573,19 +729,19 @@ fetch(apiUrl)
 
       if (firstBlog3) {
         productContainer.innerHTML = `
-      <div class="img2">
-      <img src="${firstBlog3.image}" alt="${firstBlog3.name}" />
-       </div> 
-       `;
+    <div class="img2">
+    <img src="${firstBlog3.image}" alt="${firstBlog3.name}" />
+     </div> 
+     `;
       }
       if (firstBlog3) {
         productContainer1.innerHTML = `
-                  <h6>
-                     -สินค้าใน stock :${firstBlog3.stock} Kg <br />
-                     -ชื่อสินค้า : :${firstBlog3.name} <br />
-                     -ราคา :${firstBlog3.price} บาท <br />
-                 </h6>
-       `;
+                <h6>
+                   -สินค้าใน stock :${firstBlog3.stock} Kg <br />
+                   -ชื่อสินค้า : :${firstBlog3.name} <br />
+                   -ราคา :${firstBlog3.price} บาท <br />
+               </h6>
+     `;
       }
     }
 
@@ -610,19 +766,19 @@ fetch(apiUrl)
 
       if (firstBlog4) {
         productContainer.innerHTML = `
-      <div class="img2">
-      <img src="${firstBlog4.image}" alt="${firstBlog4.name}" />
-       </div> 
-       `;
+    <div class="img2">
+    <img src="${firstBlog4.image}" alt="${firstBlog4.name}" />
+     </div> 
+     `;
       }
       if (firstBlog4) {
         productContainer1.innerHTML = `
-                  <h6>
-                     -สินค้าใน stock :${firstBlog4.stock} Kg <br />
-                     -ชื่อสินค้า : :${firstBlog4.name} <br />
-                     -ราคา :${firstBlog4.price} บาท <br />
-                 </h6>
-       `;
+                <h6>
+                   -สินค้าใน stock :${firstBlog4.stock} Kg <br />
+                   -ชื่อสินค้า : :${firstBlog4.name} <br />
+                   -ราคา :${firstBlog4.price} บาท <br />
+               </h6>
+     `;
       }
     }
 
@@ -648,19 +804,19 @@ fetch(apiUrl)
 
       if (firstBlog5) {
         productContainer.innerHTML = `
-      <div class="img2">
-      <img src="${firstBlog5.image}" alt="${firstBlog5.name}" />
-       </div> 
-       `;
+    <div class="img2">
+    <img src="${firstBlog5.image}" alt="${firstBlog5.name}" />
+     </div> 
+     `;
       }
       if (firstBlog5) {
         productContainer1.innerHTML = `
-                  <h6>
-                     -สินค้าใน stock :${firstBlog5.stock} Kg <br />
-                     -ชื่อสินค้า : :${firstBlog5.name} <br />
-                     -ราคา :${firstBlog5.price} บาท <br />
-                 </h6>
-       `;
+                <h6>
+                   -สินค้าใน stock :${firstBlog5.stock} Kg <br />
+                   -ชื่อสินค้า : :${firstBlog5.name} <br />
+                   -ราคา :${firstBlog5.price} บาท <br />
+               </h6>
+     `;
       }
     }
 
@@ -691,19 +847,19 @@ fetch(apiUrl)
 
       if (firstBlog6) {
         productContainer.innerHTML = `
-      <div class="img2">
-      <img src="${firstBlog6.image}" alt="${firstBlog6.name}" />
-       </div> 
-       `;
+    <div class="img2">
+    <img src="${firstBlog6.image}" alt="${firstBlog6.name}" />
+     </div> 
+     `;
       }
       if (firstBlog6) {
         productContainer1.innerHTML = `
-                  <h6>
-                     -สินค้าใน stock :${firstBlog6.stock} Kg <br />
-                     -ชื่อสินค้า : :${firstBlog6.name} <br />
-                     -ราคา :${firstBlog6.price} บาท <br />
-                 </h6>
-       `;
+                <h6>
+                   -สินค้าใน stock :${firstBlog6.stock} Kg <br />
+                   -ชื่อสินค้า : :${firstBlog6.name} <br />
+                   -ราคา :${firstBlog6.price} บาท <br />
+               </h6>
+     `;
       }
     }
 
@@ -728,19 +884,19 @@ fetch(apiUrl)
 
       if (firstBlog7) {
         productContainer.innerHTML = `
-      <div class="img2">
-      <img src="${firstBlog7.image}" alt="${firstBlog7.name}" />
-       </div> 
-       `;
+    <div class="img2">
+    <img src="${firstBlog7.image}" alt="${firstBlog7.name}" />
+     </div> 
+     `;
       }
       if (firstBlog7) {
         productContainer1.innerHTML = `
-                  <h6>
-                     -สินค้าใน stock :${firstBlog7.stock} Kg <br />
-                     -ชื่อสินค้า : :${firstBlog7.name} <br />
-                     -ราคา :${firstBlog7.price} บาท <br />
-                 </h6>
-       `;
+                <h6>
+                   -สินค้าใน stock :${firstBlog7.stock} Kg <br />
+                   -ชื่อสินค้า : :${firstBlog7.name} <br />
+                   -ราคา :${firstBlog7.price} บาท <br />
+               </h6>
+     `;
       }
     }
 
@@ -767,19 +923,19 @@ fetch(apiUrl)
 
       if (firstBlog8) {
         productContainer.innerHTML = `
-      <div class="img2">
-      <img src="${firstBlog8.image}" alt="${firstBlog8.name}" />
-       </div> 
-       `;
+    <div class="img2">
+    <img src="${firstBlog8.image}" alt="${firstBlog8.name}" />
+     </div> 
+     `;
       }
       if (firstBlog8) {
         productContainer1.innerHTML = `
-                  <h6>
-                     -สินค้าใน stock :${firstBlog8.stock} Kg <br />
-                     -ชื่อสินค้า : :${firstBlog8.name} <br />
-                     -ราคา :${firstBlog8.price} บาท <br />
-                 </h6>
-       `;
+                <h6>
+                   -สินค้าใน stock :${firstBlog8.stock} Kg <br />
+                   -ชื่อสินค้า : :${firstBlog8.name} <br />
+                   -ราคา :${firstBlog8.price} บาท <br />
+               </h6>
+     `;
       }
     }
 
@@ -808,19 +964,19 @@ fetch(apiUrl)
 
       if (firstBlog9) {
         productContainer.innerHTML = `
-      <div class="img2">
-      <img src="${firstBlog9.image}" alt="${firstBlog9.name}" />
-       </div> 
-       `;
+    <div class="img2">
+    <img src="${firstBlog9.image}" alt="${firstBlog9.name}" />
+     </div> 
+     `;
       }
       if (firstBlog9) {
         productContainer1.innerHTML = `
-                  <h6>
-                     -สินค้าใน stock :${firstBlog9.stock} Kg <br />
-                     -ชื่อสินค้า : :${firstBlog9.name} <br />
-                     -ราคา :${firstBlog9.price} บาท <br />
-                 </h6>
-       `;
+                <h6>
+                   -สินค้าใน stock :${firstBlog9.stock} Kg <br />
+                   -ชื่อสินค้า : :${firstBlog9.name} <br />
+                   -ราคา :${firstBlog9.price} บาท <br />
+               </h6>
+     `;
       }
     }
 
@@ -847,19 +1003,19 @@ fetch(apiUrl)
 
       if (firstBlog10) {
         productContainer.innerHTML = `
-      <div class="img2">
-      <img src="${firstBlog10.image}" alt="${firstBlog10.name}" />
-       </div> 
-       `;
+    <div class="img2">
+    <img src="${firstBlog10.image}" alt="${firstBlog10.name}" />
+     </div> 
+     `;
       }
       if (firstBlog10) {
         productContainer1.innerHTML = `
-                  <h6>
-                     -สินค้าใน stock :${firstBlog10.stock} Kg <br />
-                     -ชื่อสินค้า : :${firstBlog10.name} <br />
-                     -ราคา :${firstBlog10.price} บาท <br />
-                 </h6>
-       `;
+                <h6>
+                   -สินค้าใน stock :${firstBlog10.stock} Kg <br />
+                   -ชื่อสินค้า : :${firstBlog10.name} <br />
+                   -ราคา :${firstBlog10.price} บาท <br />
+               </h6>
+     `;
       }
     }
 
@@ -867,18 +1023,29 @@ fetch(apiUrl)
       row21.addEventListener("click", () => comlum21()); // 
     }
 
-  //------------------------------------------------------------------สำหรับบาร์โค้ด---------------------------------------------------------
+    //--------------------------***************เมื่อทำการกดปุ่มรับเงินให้มาแสดงในรายการนี้*****************------------------------------------------
+
+    let enteredAmount = 0; // ตัวแปรสำหรับเก็บตัวเลขที่ผู้ใช้ป้อน
 
 
 
 
+    //************************************************************************************* */
   
 
 
 
-    //--------------------------***************เมื่อทำการกดปุ่มรับเงินให้มาแสดงในรายการนี้*****************------------------------------------------
 
-    let enteredAmount = 0; // ตัวแปรสำหรับเก็บตัวเลขที่ผู้ใช้ป้อน
+
+
+
+
+
+
+
+    //*************************************************************************************** */
+
+
 
 
 
@@ -893,67 +1060,46 @@ fetch(apiUrl)
       console.log("จำนวนเงินที่ป้อน:", enteredAmount);
       let sumSankor = totalItems1.reduce((sum, current) => sum + current, 0); //ทำการรวมค่าทั้งหมดที่มีสำหรับสันคอ
       console.log("ราคารวมของสันคอทั้งหมด:", sumSankor); // 450
-
-
       // บวกราคารวมของไส้อ้อน------------------------------------------------------------------
       enteredAmount = parseFloat(displayVlave); // แปลงค่าที่ป้อนเป็นตัวเลข และเก็บในตัวแปร enteredAmount
       console.log("จำนวนเงินที่ป้อน:", enteredAmount);
       let sumSaiOn = totalItems2.reduce((sum, current) => sum + current, 0); //ทำการรวมค่าทั้งหมดที่มีสำหรับสันคอ
       console.log("ราคารวมของสันคอทั้งหมด:", sumSaiOn); // 450
-
-
-
       // บวกราคารวมของไส้ใหญ่---------------------------------------------------
       enteredAmount = parseFloat(displayVlave); // แปลงค่าที่ป้อนเป็นตัวเลข และเก็บในตัวแปร enteredAmount
       console.log("จำนวนเงินที่ป้อน:", enteredAmount);
       let sumSaiYai = totalItems3.reduce((sum, current) => sum + current, 0); //ทำการรวมค่าทั้งหมดที่มีสำหรับสันคอ
       console.log("ราคารวมของสันคอทั้งหมด:", sumSaiYai); // 450
-
-
       // บวกราคารวมของซีครงหมู------------------------------------------------------------------
       enteredAmount = parseFloat(displayVlave); // แปลงค่าที่ป้อนเป็นตัวเลข และเก็บในตัวแปร enteredAmount
       console.log("จำนวนเงินที่ป้อน:", enteredAmount);
       let sumSiKhorongMu = totalItems4.reduce((sum, current) => sum + current, 0); //ทำการรวมค่าทั้งหมดที่มีสำหรับสันคอ
       console.log("ราคารวมของสันคอทั้งหมด:", sumSiKhorongMu); // 450
-
       // บวกราคารวมของไหล่หมู-----------------------------------------------------------------
-
       enteredAmount = parseFloat(displayVlave); // แปลงค่าที่ป้อนเป็นตัวเลข และเก็บในตัวแปร enteredAmount
       console.log("จำนวนเงินที่ป้อน:", enteredAmount);
       let sumLaiMu = totalItems5.reduce((sum, current) => sum + current, 0); //ทำการรวมค่าทั้งหมดที่มีสำหรับสันคอ
       console.log("ราคารวมของสันคอทั้งหมด:", sumLaiMu); // 450
-
       // บวกราคารวมของสั้นนอก-------------------------------------------------
       enteredAmount = parseFloat(displayVlave); // แปลงค่าที่ป้อนเป็นตัวเลข และเก็บในตัวแปร enteredAmount
       console.log("จำนวนเงินที่ป้อน:", enteredAmount);
       let sumSanNok = totalItems6.reduce((sum, current) => sum + current, 0); //ทำการรวมค่าทั้งหมดที่มีสำหรับสันคอ
       console.log("ราคารวมของสันคอทั้งหมด:", sumSanNok); // 450
-
-
       // บวกราคารวมของสามชั้น---------------------------------------------------
       enteredAmount = parseFloat(displayVlave); // แปลงค่าที่ป้อนเป็นตัวเลข และเก็บในตัวแปร enteredAmount
       console.log("จำนวนเงินที่ป้อน:", enteredAmount);
       let sumSamChan = totalItems7.reduce((sum, current) => sum + current, 0); //ทำการรวมค่าทั้งหมดที่มีสำหรับสันคอ
       console.log("ราคารวมของสันคอทั้งหมด:", sumSamChan); // 450
-
-
       // บวกราคารวมของกระดูกชูป--------------------------------------------------
       enteredAmount = parseFloat(displayVlave); // แปลงค่าที่ป้อนเป็นตัวเลข และเก็บในตัวแปร enteredAmount
       console.log("จำนวนเงินที่ป้อน:", enteredAmount);
       let sumKradukChup = totalItems8.reduce((sum, current) => sum + current, 0); //ทำการรวมค่าทั้งหมดที่มีสำหรับสันคอ
       console.log("ราคารวมของสันคอทั้งหมด:", sumKradukChup); // 450
-
-
       // บวกราคารวมของหมูบด--------------------------------------------------
       enteredAmount = parseFloat(displayVlave); // แปลงค่าที่ป้อนเป็นตัวเลข และเก็บในตัวแปร enteredAmount
       console.log("จำนวนเงินที่ป้อน:", enteredAmount);
       let sumMomot = totalItems9.reduce((sum, current) => sum + current, 0); //ทำการรวมค่าทั้งหมดที่มีสำหรับสันคอ
       console.log("ราคารวมของสันคอทั้งหมด:", sumMomot); // 450
-
-
-
-
-
       // บวกราคารวมของหมูบด--------------------------------------------------
       enteredAmount = parseFloat(displayVlave); // แปลงค่าที่ป้อนเป็นตัวเลข และเก็บในตัวแปร enteredAmount
       console.log("จำนวนเงินที่ป้อน:", enteredAmount);
@@ -969,21 +1115,34 @@ fetch(apiUrl)
       console.log("จำนวนเงินที่ป้อน:", enteredAmount);
 
       // ตรวจสอบค่าที่อยู่ใน Array ก่อนรวม
-      console.log("🔍 ตรวจสอบค่าใน ArrayBarcode:", ArrayBarcode);
+      console.log("🔍 ตรวจสอบค่าใน ArrayBarcode1:", ArrayBarcode1);
 
       // รวมค่าทั้งหมดที่มีอยู่ใน ArrayBarcode
-      let SumAllBarcode = ArrayBarcode.reduce((sum, current) => sum + Number(current), 0);
+      // ✅ ดึงเฉพาะ price แล้วรวมทั้งหมด
+      let totalPrice1 = ArrayBarcode1.reduce((sum, item) => sum + Number(item.price), 0);
 
-      // แสดงผลรวมของสินค้า
-      console.log("ราคารวมของสินค้า:", SumAllBarcode.toLocaleString(undefined, {
+      // ✅ แสดงผลรวมของราคา
+      console.log("💰 ราคารวมของสินค้า:", totalPrice1.toLocaleString(undefined, {
         minimumFractionDigits: 2,
         maximumFractionDigits: 2
       }));
 
+      //-----------------------------------------------------สำหรับการเลือกจาก dashborad--------------------------------------
+       
+      // คำนวณผลรวม totalProfit
+
+      let TotalPriceSum = ValueSelect.reduce((sum, item) => sum + item.TotalPrice, 0);
+      console.log("📊 ผลรวมของ totalProfit:", TotalPriceSum);
+
+
+
+
+
+
 
 
       //---------------------------------------รายการวมทั่งหมดเมื่อมีการทำการกดตรงนี้ ------------------------------------------
-      const All = sumNeauyang + sumSankor + sumSaiOn + sumSaiYai + sumSiKhorongMu + sumLaiMu + sumSanNok + sumSamChan + sumKradukChup + sumMomot + SumAllBarcode;
+      const All = sumNeauyang + sumSankor + sumSaiOn + sumSaiYai + sumSiKhorongMu + sumLaiMu + sumSanNok + sumSamChan + sumKradukChup + sumMomot + totalPrice1+TotalPriceSum;
       console.log("กดได้แล้วน่ะ :", All);
 
 
@@ -1000,10 +1159,35 @@ fetch(apiUrl)
         );
         console.log("จำนวนเงินที่ป้อนน้อยกว่าราคาสินค้ารวม");
       } else {
-         
+
+
+
+
+
+        // แสดงผลรวมในหน้าเว็บ
 
 
         //---------------------------------------------ที่เรียกทั้งหมดที่อยู่ 1 ตัว-------------------------------------------------------------
+
+        document.querySelectorAll("button").forEach(btn => {
+          if (btn.id !== "row22" && !btn.classList.contains("print-btn")) { // ยกเว้นปุ่ม Clean
+            btn.style.pointerEvents = "none"; // ❌ ปิดการใช้งานปุ่มแบบไม่ปิด Event โคตเท่สำหรับโปรแกรมการทำงาน 
+            btn.style.opacity = "0.4"; // 💡 ทำให้ปุ่มดูเหมือน Disabled
+            btn.addEventListener("click", function (event) {
+              event.preventDefault(); // ❌ ป้องกันปุ่มทำงาน
+              event.stopImmediatePropagation(); // ❌ ป้องกัน Event อื่นที่เกี่ยวข้อง
+              alert("⚠️ กรุณากดปุ่ม Clean ก่อนเพื่อทำการปลดล็อก 🔓");
+            });
+          }
+        });
+
+
+
+
+        // ส่งข้อมูลจาก ajax.js เข้ามา
+
+
+
 
 
 
@@ -1011,8 +1195,9 @@ fetch(apiUrl)
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
-            "X-CSRFToken": csrfToken,
+            "X-CSRFToken": csrfToken // เพิ่ม CSRF Token ถ้าจำเป็น
           },
+          credentials: "include",  // ✅ อนุญาตให้ส่ง Cookies ไปด้วย
           body: JSON.stringify({ updates: stockAdjustments }),
         })
           .then((response) => {
@@ -1021,10 +1206,8 @@ fetch(apiUrl)
             }
             return response.json();
           })
-
-
-          .then((data) => {///------------------------ขอโน็ตไว้ก่อนน่ะ---------------------------
-            console.log("Stock updated successfully:", data);
+          .then((data) => {
+            console.log("✅ Stock updated successfully:", data);
 
             savedResults.push({
               totalAmount: All,
@@ -1035,30 +1218,88 @@ fetch(apiUrl)
             });
 
 
-            fetch("http://127.0.0.1:8080/save-sale-record/", {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-                "X-CSRFToken": csrfToken,  // ต้องเพิ่ม CSRF Token เพื่อความปลอดภัย
-              },
-              body: JSON.stringify(savedResults[savedResults.length - 1]), // ส่งข้อมูล JSON
-            })
-              .then(response => {
-                if (!response.ok) {
-                  throw new Error(`HTTP error! Status: ${response.status}`);
-                }
-                return response.json();
-              })
-              .then(data => {
-                console.log("Sale record saved successfully:", data);
-              })
-              .catch(error => {
-                console.error("Error saving sale record:", error);
-              });
 
-            console.log("JSON to be sent:", JSON.stringify(savedResults[savedResults.length - 1]));
 
-           
+            setTimeout(() => {
+              fetch("http://127.0.0.1:8080/save-sale-record/", {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                  "X-CSRFToken": csrfToken,
+                },
+                credentials: "include",
+                body: JSON.stringify(savedResults[savedResults.length - 1]),
+              })
+                .then(response => response.json())
+                .then(data => {
+
+
+                  console.log("✅ Data received:", data);
+
+                  if (data.totalAmount) {
+
+                    console.log("✅ totalAmount:", data.totalAmount);
+                    console.log("✅ enteredAmount:", data.enteredAmount);
+                    console.log("✅ change:", data.change);
+                    console.log("✅ totalAmount:", data.totalAmount);
+
+                    let enteredAmount = parseFloat(data.enteredAmount || 0);
+                    let change = parseFloat(data.change || 0);
+                    let totalAmount = parseFloat(data.totalAmount || 0);
+
+                    // ✅ อัปเดตค่าบน UI
+                    document.getElementById("totalAmount").innerText = totalAmount.toFixed(2) + " บาท";
+                    document.getElementById("enteredAmount").innerText = enteredAmount.toFixed(2) + " บาท";
+                    document.getElementById("change").innerText = change.toFixed(2) + " บาท";
+                    document.getElementById("timestamp").innerText = new Date(data.timestamp).toLocaleString("th-TH");
+
+                    // ✅ แก้ไขการคำนวณให้ถูกต้อง
+                    let calculatedTotal = enteredAmount - change;
+                    document.getElementById("TotalAmount1").innerText = calculatedTotal.toFixed(2) + " บาท";
+
+                    console.log("✅ Calculated TotalAmount1:", calculatedTotal);
+
+                    // ✅ วนลูปแสดงรายการสินค้า
+                    let stockList = document.getElementById("stockAdjustments");
+                    stockList.innerHTML = ""; // เคลียร์ข้อมูลเก่า
+                    data.stockAdjustments.forEach(item => {
+                      let row = `<tr>
+                          <td>${item.product}</td>
+                          <td>${parseFloat(item.quantity).toFixed(2)}</td>
+                          <td>${parseFloat(item.TotalPrice).toFixed(2)} บาท</td>
+                      </tr>`;
+                      stockList.innerHTML += row;
+                    });
+
+                    console.log("✅ Updated UI successfully!");
+                  } else {
+                    console.error("❌ No totalAmount found in response!");
+                  }
+                })
+                .catch(error => console.error("❌ Error fetching data:", error));
+
+            }, 1000);
+
+
+
+            //-------------------------------------ขอทำการโน็ตไว้ก่อนน่ะ
+
+
+            // แสดงผลรวมในหน้าเว็บ
+
+            // ✅ แสดงปุ่ม "🧾 ดูใบเสร็จ"
+            document.getElementById("receiptBtn").style.display = "block";
+            // ✅ เปิดป๊อปอัปอัตโนมัติ
+            openModal();
+            console.log("✅ ผ่านเงื่อนไข แสดงป๊อปอัปใบเสร็จ");
+
+
+
+
+            //-------------------------------------ขอทำการโน็ตไว้ก่อนน่ะ
+
+            console.log("บันทึกผลลัพธ์สำเร็จ:", savedResults);
+            console.log("บันทึกผลลัพธ์สำเร็จ:", savedResults);
 
           })
           .catch((error) => {
@@ -1099,11 +1340,11 @@ fetch(apiUrl)
           });
 
 
-
-
-
-
         console.log("เงินทอน:", getMonney.toFixed(2), "บาท"); // คำนวณเงินทอน
+
+
+
+
       }
       calculatorDisplay.textContent = 0; // รีเซ็ตค่า
 
@@ -1126,31 +1367,39 @@ fetch(apiUrl)
     }
 
     const csrfToken = getCSRFToken();
-
+    console.log("CSRF Token:", csrfToken)
     //-----------------------------------------------สำหรับการลบแถวในตาราง------------------------------------------------- */
 
     function DeleteItem() {
+
+
+
       const tableBody = document.getElementById("itemTableBody"); // ดึง tbody ของตาราง
       if (tableBody && tableBody.lastElementChild) {
         // ดึงแถวสุดท้ายของตาราง
         const lastRow = tableBody.lastElementChild;
         //------------------------------------------------------สำหรับลบตารางหมูกระทะ---------------------------------------------
         if (lastRow) {
-          const productType = lastRow.querySelector("td:nth-child(3)")?.textContent; // ชื่อสินค้าในคอลัมน์ที่ 3
+          let productType = lastRow.querySelector("td:nth-child(3)")?.textContent; // ชื่อสินค้าในคอลัมน์ที่ 3
 
           if (productType === firstBlog1.name) {
-            // ลบข้อมูลใน stockAdjustments
+            // ลบข้อมูลใน stockAdjustments201
             const adjustmentIndex = stockAdjustments.findIndex(
               (item) => item.product === productType    // ใช้ productType แทน productName
             );
             if (adjustmentIndex > -1) {
               stockAdjustments.splice(adjustmentIndex, 1); //ลบรายการที่เป็นแถวจาก adjustmentIndec
               console.log(`ลบข้อมูลสินค้า: ${productType} ออกจาก stockAdjustments`);
+
             }
             // ลบแถวออกจากตาราง
             console.log("ลบแถวสำเร็จ");
-            totalItems.pop(); // ลบข้อมูลล่าสุดของ "เนื้อย่าง" จากอาร์เรย์
-            console.log("ลบรายการเนื้อย่างล่าสุดออกจากอาร์เรย์:", totalItems);
+
+            totalItems.splice(0, totalItems.length);
+            console.log("ลบข้อมูลทั้งหมดออกจาก totalItems เนี้อย่าง :", totalItems);
+
+
+
             //-------------------------------------------------------------------สำหรับลบตรารางขอหมูย่าง--------------------------------- 
 
           } else if (productType === firstBlog2.name) {
@@ -1159,8 +1408,8 @@ fetch(apiUrl)
               stockAdjustments.splice(adjustmentIndex, 1);
               console.log(`ลบข้อมูลสินค้า ${productType} ออกจาก stockAdjustments`)
             }
-            totalItems1.pop(); // ลบข้อมูลล่าสุดของ "สันคอ" จากอาร์เรย์
-            console.log("ลบรายการสันคอล่าสุดออกจากอาร์เรย์ :", totalItems1);
+            totalItems1.splice(0, totalItems1.length);
+            console.log("ลบข้อมูลทั้งหมดออกจาก totalItems1 คอหมูย่าง :", totalItems1);
 
             //-------------------------------------------------------------------ไส่อ่อน-----------------------------------
           } else if (productType === firstBlog3.name) {
@@ -1169,8 +1418,13 @@ fetch(apiUrl)
               stockAdjustments.splice(adjustmentIndex, 1);
               console.log(`ลบข้อมูลสินค้า ${productType} ออกจาก stockAdjustments`)
             }
-            totalItems2.pop(); // ลบข้อมูลล่าสุดของ "สันคอ" จากอาร์เรย์
-            console.log("ลบรายการสันคอล่าสุดออกจากอาร์เรย์ :", totalItems2);
+
+
+
+            totalItems2.splice(0, totalItems2.length);
+            console.log("ลบข้อมูลทั้งหมดออกจาก totalItems2  ไส้อ่อน :", totalItems2);
+
+
 
             //-----------------------------------------------------------------ไส้ใหญ่-------------------------------------------------
 
@@ -1181,8 +1435,10 @@ fetch(apiUrl)
               stockAdjustments.splice(adjustmentIndex, 1);
               console.log(`ลบข้อมูลสินค้า ${productType} ออกจาก stockAdjustments`)
             }
-            totalItems3.pop(); // ลบข้อมูลล่าสุดของ "สันคอ" จากอาร์เรย์
-            console.log("ลบรายการสันคอล่าสุดออกจากอาร์เรย์ :", totalItems3);
+
+            totalItems3.splice(0, totalItems3.length);
+            console.log("ลบข้อมูลทั้งหมดออกจาก totalItems3 ไส้ใหญ่ :", totalItems3);
+
 
 
             //-------------------------------------------------------------------------------------------------------------------------
@@ -1194,8 +1450,11 @@ fetch(apiUrl)
               stockAdjustments.splice(adjustmentIndex, 1);
               console.log(`ลบข้อมูลสินค้า ${productType} ออกจาก stockAdjustments`)
             }
-            totalItems4.pop(); // ลบข้อมูลล่าสุดของ "สันคอ" จากอาร์เรย์
-            console.log("ลบรายการสันคอล่าสุดออกจากอาร์เรย์ :", totalItems4);
+
+
+            totalItems4.splice(0, totalItems4.length);
+            console.log("ลบข้อมูลทั้งหมดออกจาก totalItems2 :", totalItems4);
+
 
 
             //------------------------------------------------------------------ไหล่หมู-----------------------------------------
@@ -1209,8 +1468,8 @@ fetch(apiUrl)
               stockAdjustments.splice(adjustmentIndex, 1);
               console.log(`ลบข้อมูลสินค้า ${productType} ออกจาก stockAdjustments`)
             }
-            totalItems5.pop(); // ลบข้อมูลล่าสุดของ "สันคอ" จากอาร์เรย์
-            console.log("ลบรายการสันคอล่าสุดออกจากอาร์เรย์ :", totalItems5);
+            totalItems5.splice(0, totalItems5.length);
+            console.log("ลบข้อมูลทั้งหมดออกจาก totalItems2 :", totalItems5);
 
 
 
@@ -1223,8 +1482,8 @@ fetch(apiUrl)
               stockAdjustments.splice(adjustmentIndex, 1);
               console.log(`ลบข้อมูลสินค้า ${productType} ออกจาก stockAdjustments`)
             }
-            totalItems6.pop(); // ลบข้อมูลล่าสุดของ "สันคอ" จากอาร์เรย์ห
-            console.log("ลบรายการสันคอล่าสุดออกจากอาร์เรย์ :", totalItems6);
+            totalItems6.splice(0, totalItems6.length);
+            console.log("ลบข้อมูลทั้งหมดออกจาก totalItems2 :", totalItems6);
 
 
             //-------------------------------------------------------------------ลบสามชั้นออก-------------------------------------------
@@ -1237,9 +1496,8 @@ fetch(apiUrl)
               stockAdjustments.splice(adjustmentIndex, 1);
               console.log(`ลบข้อมูลสินค้า ${productType} ออกจาก stockAdjustments`)
             }
-            totalItems7.pop(); // ลบข้อมูลล่าสุดของ "สันคอ" จากอาร์เรย์ห
-            console.log("ลบรายการสันคอล่าสุดออกจากอาร์เรย์ :", totalItems7);
-
+            totalItems7.splice(0, totalItems7.length);
+            console.log("ลบข้อมูลทั้งหมดออกจาก totalItems2 :", totalItems7);
 
             //-------------------------------------------------------------กระดูกชูป-----------------------------------------
 
@@ -1250,8 +1508,8 @@ fetch(apiUrl)
               stockAdjustments.splice(adjustmentIndex, 1);
               console.log(`ลบข้อมูลสินค้า ${productType} ออกจาก stockAdjustments`)
             }
-            totalItems8.pop(); // ลบข้อมูลล่าสุดของ "สันคอ" จากอาร์เรย์ห
-            console.log("ลบรายการสันคอล่าสุดออกจากอาร์เรย์ :", totalItems8);
+            totalItems8.splice(0, totalItems8.length);
+            console.log("ลบข้อมูลทั้งหมดออกจาก totalItems2 :", totalItems8);
 
 
 
@@ -1264,26 +1522,12 @@ fetch(apiUrl)
               stockAdjustments.splice(adjustmentIndex, 1);
               console.log(`ลบข้อมูลสินค้า ${productType} ออกจาก stockAdjustments`)
             }
-            totalItems9.pop(); // ลบข้อมูลล่าสุดของ "สันคอ" จากอาร์เรย์ห
-            console.log("ลบรายการสันคอล่าสุดออกจากอาร์เรย์ :", totalItems9);
-
+            totalItems9.splice(0, totalItems9.length);
+            console.log("ลบข้อมูลทั้งหมดออกจาก totalItems2 :", totalItems9);
 
             //-------------------------------------------ArrayBarcode----------------------------------------------------------------- 
-
-          } else if (productType === foundProduct.name) {
-            const adjustmentIndex = stockAdjustments.findIndex((item) => item.product === productType);
-            if (adjustmentIndex > -1) {
-              stockAdjustments.splice(adjustmentIndex, 1);
-              console.log(`ลบข้อมูลสินค้า ${productType} ออกจาก stockAdjustments`)
-            }
-            ArrayBarcode.pop(); // ลบข้อมูลล่าสุดของ "สันคอ" จากอาร์เรย์ห
-            console.log("ลบรายการสันคอล่าสุดออกจากอาร์เรย์ :", ArrayBarcode);
-
-            //----------------------------------------------------------------------------------------------------------------
-
           }
-          tableBody.removeChild(lastRow);
-          console.log("ลบแถวสำเร็จ");
+
         }
       } else {
         console.log("ไม่มีรายการให้ลบ");
@@ -1296,13 +1540,83 @@ fetch(apiUrl)
     }
 
 
+    //-------------------------------------------------------------------------
 
 
 
 
-    //-------------------------------------------------- การเพิ่มรายการสำหรับการยิงบาร์โค้ด-----------------------------------------------
+    //-------------------------------------------------- การลบสำหรับการยิงบาร์โค้ด-----------------------------------------------
 
 
+    function DeleteLatestItem() {
+      const tableBody = document.getElementById("itemTableBody");
+      if (!tableBody || !tableBody.lastElementChild) {
+        console.log("⚠️ ไม่มีแถวในตารางให้ลบ");
+        alert("ไม่มีรายการในตารางที่สามารถลบได้");
+        return;
+      }
+
+      // ✅ ดึงแถวสุดท้าย
+      let lastRow = tableBody.lastElementChild;
+      let productType = lastRow.querySelector("td:nth-child(3)")?.textContent.trim();
+
+      if (!productType) {
+        console.log("⚠️ ไม่สามารถระบุชื่อสินค้าได้");
+        return;
+      }
+
+      console.log(`🔍 ลบแถวล่าสุด: "${productType}"`);
+
+      // ✅ ลบสินค้าตัวล่าสุดที่ตรงกันจาก stockAdjustments
+      const lastIndex = stockAdjustments.findLastIndex(item => item.product === productType);
+      if (lastIndex > -1) {
+        let removedItem = stockAdjustments.splice(lastIndex, 1)[0];
+        console.log(`❌ ลบสินค้าล่าสุดที่ตรงกันจาก stockAdjustments:`, removedItem);
+      } else {
+        console.log(`⚠️ ไม่พบสินค้า "${productType}" ใน stockAdjustments`);
+      }
+
+      // ✅ ลบสินค้าออกจาก ArrayBarcode1 ด้วย
+      const arrayIndex = ArrayBarcode1.findIndex(item => item.name === productType);
+      if (arrayIndex > -1) {
+        ArrayBarcode1.splice(arrayIndex, 1);
+        console.log(`❌ ลบสินค้าจาก ArrayBarcode1: "${productType}"`);
+      }
+
+      console.log("📦 Stock Adjustments ปัจจุบัน:", JSON.stringify(stockAdjustments, null, 2));
+
+      // ✅ ลบแถวสุดท้ายจาก tableBody
+      tableBody.removeChild(lastRow);
+      console.log("✅ ลบแถวสำเร็จ");
+
+      // ✅ ตรวจสอบว่าเหลือสินค้าใน stockAdjustments หรือไม่
+      if (stockAdjustments.length > 0) {
+        productType = stockAdjustments[stockAdjustments.length - 1].product;
+        console.log(`🔄 อัปเดตค่า productType ใหม่เป็น "${productType}"`);
+      } else {
+        productType = null;
+        console.log("🚨 ไม่มีข้อมูลสินค้าเหลืออยู่ใน stockAdjustments แล้ว!");
+      }
+
+      // ✅ อัปเดตยอดรวม (Total Amount)
+      const totalAmount = stockAdjustments.reduce((sum, item) => sum + item.TotalPrice, 0);
+      document.getElementById("totalAmount").innerText = `${totalAmount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} บาท`;
+      console.log("💰 อัปเดตยอดรวมหลังลบสินค้า:", totalAmount);
+    }
+
+
+
+
+
+
+
+
+
+
+    // ✅ เพิ่ม event listener ให้ปุ่ม
+    if (inputBtn2) {
+      inputBtn2.addEventListener("click", DeleteLatestItem);
+    }
 
 
 
@@ -1319,7 +1633,7 @@ fetch(apiUrl)
 
     //-----------------------------------------------------การเพิ่มค่าในตารางเนื้อย่าง-------------------------------------------------------
 
-    
+
 
     function Additem() {
       console.log("🔄 Starting Additem function...");
@@ -1327,89 +1641,119 @@ fetch(apiUrl)
 
       // ✅ **รองรับสินค้าแบบ Dynamic**
       let productList = [
-          { key: "neauyang", product: firstBlog1, totalItems: totalItems, currentTotal: currentTotal },
-          { key: "sankor", product: firstBlog2, totalItems: totalItems1, currentTotal: currentTotal1 },
-          { key: "SaiOn", product: firstBlog3, totalItems: totalItems2, currentTotal: currentTotal2 },
-          { key: "SaiYai", product: firstBlog4, totalItems: totalItems3, currentTotal: currentTotal3 },
-          { key: "SiKhorongMu", product: firstBlog5, totalItems: totalItems4, currentTotal: currentTotal4 },
-          { key: "LaiMu", product: firstBlog6, totalItems: totalItems5, currentTotal: currentTotal5 },
-          { key: "SanNok", product: firstBlog7, totalItems: totalItems6, currentTotal: currentTotal6 },
-          { key: "SamChan", product: firstBlog8, totalItems: totalItems7, currentTotal: currentTotal7 },
-          { key: "KradukChup", product: firstBlog9, totalItems: totalItems8, currentTotal: currentTotal8 },
-          { key: "MuBot", product: firstBlog10, totalItems: totalItems9, currentTotal: currentTotal9 },
-         
+        { key: "neauyang", product: firstBlog1, totalItems: totalItems, currentTotal: currentTotal },
+        { key: "sankor", product: firstBlog2, totalItems: totalItems1, currentTotal: currentTotal1 },
+        { key: "SaiOn", product: firstBlog3, totalItems: totalItems2, currentTotal: currentTotal2 },
+        { key: "SaiYai", product: firstBlog4, totalItems: totalItems3, currentTotal: currentTotal3 },
+        { key: "SiKhorongMu", product: firstBlog5, totalItems: totalItems4, currentTotal: currentTotal4 },
+        { key: "LaiMu", product: firstBlog6, totalItems: totalItems5, currentTotal: currentTotal5 },
+        { key: "SanNok", product: firstBlog7, totalItems: totalItems6, currentTotal: currentTotal6 },
+        { key: "SamChan", product: firstBlog8, totalItems: totalItems7, currentTotal: currentTotal7 },
+        { key: "KradukChup", product: firstBlog9, totalItems: totalItems8, currentTotal: currentTotal8 },
+        { key: "MuBot", product: firstBlog10, totalItems: totalItems9, currentTotal: currentTotal9 },
+
 
       ];
-  
       let selectedProduct = productList.find(item => item.key === selectedItem);
-  
+
+
+
       if (selectedProduct && selectedProduct.currentTotal > 0) {
-          console.log(`🔍 Processing additional item: ${selectedProduct.product.name}`);
-          const tableBody = document.getElementById("itemTableBody");
-          const rows = tableBody.querySelectorAll("tr");
-          let found = false;
-  
-          rows.forEach((row) => {
-              const productCell = row.querySelector("td:nth-child(3)");
-              const quantityCell = row.querySelector("td:nth-child(5)");
-              const priceCell = row.querySelector("td:nth-child(6)");
-  
-              if (productCell && productCell.textContent === selectedProduct.product.name) {
-                  const currentQuantity = parseFloat(quantityCell.textContent.split(" ")[0]);
-                  const newQuantity = currentQuantity + parseFloat(calculatorDisplay.textContent);
-                  const newTotalPrice = newQuantity * selectedProduct.product.price;
-  
-                  quantityCell.textContent = `${newQuantity} kg`;
-                  priceCell.textContent = `${newTotalPrice.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} บาท`;
-  
-                  const adjustmentIndex = stockAdjustments.findIndex((item) => item.product === selectedProduct.product.name);
-                  if (adjustmentIndex > -1) {
-                      stockAdjustments[adjustmentIndex].quantity += parseFloat(calculatorDisplay.textContent);
-                  }
-  
-                  selectedProduct.totalItems.push(selectedProduct.currentTotal);
-                  found = true;
-              }
-          });
-  
-          if (!found) {
-              selectedProduct.totalItems.push(selectedProduct.currentTotal);
-              addRowToTable(
-                  itemtCouter,
-                  selectedProduct.product.barcode,
-                  selectedProduct.product.name,
-                  "kg",
-                  calculatorDisplay.textContent,
-                  selectedProduct.currentTotal,
-                  selectedProduct.product.stock
-              );
-  
-              stockAdjustments.push({
-                  product: selectedProduct.product.name,
-                  quantity: parseFloat(calculatorDisplay.textContent),
-              });
+        console.log(`🔍 Processing additional item: ${selectedProduct.product.name}`);
+        const tableBody = document.getElementById("itemTableBody");
+        const rows = tableBody.querySelectorAll("tr");
+        let found = false;
+
+        // ✅ คำนวณราคาและกำไร
+        let Price1 = parseFloat(selectedProduct.product.price);
+        let profitprice = parseFloat(selectedProduct.product.profitprice);
+        let addedQuantity = parseFloat(calculatorDisplay.textContent);
+        let totalProfit = profitprice * addedQuantity;
+        let TotalPrice = Price1 * addedQuantity;
+
+        console.log(`💰 กำไรที่เพิ่มเข้ามา: ${totalProfit.toFixed(2)} บาท`);
+
+        rows.forEach((row) => {
+          const productCell = row.querySelector("td:nth-child(3)");
+          const quantityCell = row.querySelector("td:nth-child(5)");
+          const priceCell = row.querySelector("td:nth-child(6)");
+
+          if (productCell && productCell.textContent === selectedProduct.product.name) {
+            const currentQuantity = parseFloat(quantityCell.textContent.split(" ")[0]);
+            const newQuantity = currentQuantity + addedQuantity;
+            const newTotalPrice = newQuantity * Price1;
+
+            quantityCell.textContent = `${newQuantity} `;
+            priceCell.textContent = `${newTotalPrice.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} บาท`;
+
+            const adjustmentIndex = stockAdjustments.findIndex((item) => item.product === selectedProduct.product.name);
+            if (adjustmentIndex > -1) {
+              stockAdjustments[adjustmentIndex].quantity += addedQuantity;
+              stockAdjustments[adjustmentIndex].totalProfit += totalProfit;
+              stockAdjustments[adjustmentIndex].TotalPrice += TotalPrice;
+            }
+
+            selectedProduct.totalItems.push(selectedProduct.currentTotal);
+            found = true;
           }
-  
-          const grandTotal = selectedProduct.totalItems.reduce((sum, item) => sum + item, 0);
-          document.getElementById("totalAmount").innerText = `${grandTotal.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} บาท`;
-           
-          console.log(`totl Items(${selectedProduct.product.barcode})`)
-          console.log(`📦 Total Items (${selectedProduct.key}):`, selectedProduct.totalItems);
-          console.log(`💰 Grand Total (${selectedProduct.key}):`, grandTotal);
-          console.log("📦 Stock Adjustments:", stockAdjustments);
-  
-          selectedProduct.currentTotal = 0;
+        });
+
+        if (!found) {
+          selectedProduct.totalItems.push(selectedProduct.currentTotal);
+          addRowToTable(
+            itemtCouter,
+            selectedProduct.product.barcode,
+            selectedProduct.product.name,
+            "kg",
+            calculatorDisplay.textContent,
+            selectedProduct.currentTotal,
+            selectedProduct.product.stock
+          );
+
+          // ✅ ตรวจสอบว่ามีสินค้าชื่อเดียวกันอยู่ใน stockAdjustments หรือไม่
+          const existingItemIndex = stockAdjustments.findIndex(item => item.product === selectedProduct.product.name);
+          if (existingItemIndex !== -1) {
+            // ✅ หากมีแล้ว ให้อัปเดตจำนวนสินค้าและราคาที่รวมกัน
+            stockAdjustments[existingItemIndex].quantity += addedQuantity;
+            stockAdjustments[existingItemIndex].totalProfit += totalProfit;
+            stockAdjustments[existingItemIndex].TotalPrice += TotalPrice;
+          } else {
+            // ✅ ถ้ายังไม่มี ให้เพิ่มเป็นสินค้าใหม่
+            stockAdjustments.push({
+              product: selectedProduct.product.name,
+              quantity: addedQuantity,
+              totalProfit: totalProfit,
+              TotalPrice: TotalPrice
+            });
+          }
+        }
+
+
+        
+
+
+         //--------------------------------------------------------------------------------------
+        // ✅ อัปเดตยอดรวม
+        const grandTotalPrice = stockAdjustments.reduce((sum, item) => sum + item.TotalPrice, 0);
+        const grandTotalProfit = stockAdjustments.reduce((sum, item) => sum + item.totalProfit, 0);
+        const grandTotal = selectedProduct.totalItems.reduce((sum, item) => sum + item, 0);
+        document.getElementById("totalAmount").innerText = `${grandTotal.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} บาท`;
+
+        console.log(`📦 Stock Adjustments (Updated):`, stockAdjustments);
+        console.log("💰 รวมกำไรทั้งหมด", grandTotalProfit);
+        console.log("💵 รวมราคาทั้งหมด", grandTotalPrice);
+
+        selectedProduct.currentTotal = 0;
       } else {
-          console.log("❌ ไม่พบสินค้าใน Product List แต่โค้ดยังคงทำงานต่อ...");
-          alert("❌ โปรดเลือกรายสินค้าก่อน");
-          console.log("โปรดทำการเพิ่มสินค้าในรายการ");
+        console.log("❌ ไม่พบสินค้าใน Product List แต่โค้ดยังคงทำงานต่อ...");
+        alert("❌ โปรดเลือกรายสินค้าก่อน");
+        console.log("โปรดทำการเพิ่มสินค้าในรายการ");
       }
 
       calculatorDisplay.textContent = "0"; // รีเซ็ตค่าแสดงผลเป็น 0
       selectedItem = ""; // รีเซ็ตสถานะหลังจากเพิ่มรายการ
-  }
-  
-  
+
+    }
     //-------------------------------------------------------- รายการต่อสำหรับการตัด stock -------------------------------------------------------------*
 
 
@@ -1447,57 +1791,82 @@ fetch(apiUrl)
 
     //------------------------------------------------------******************************--------------------------------------------------
 
+
+
+
+
+    function addRemoveEvent() {
+      document.querySelectorAll(".remove-item").forEach((button) => {
+          button.addEventListener("click", function () {
+              let row = this.closest("tr");
+              let productName = row.querySelector("td:nth-child(3)").innerText;
+  
+              // ลบแถวออกจากตาราง
+              row.remove();
+  
+              // ลบข้อมูลออกจาก stockAdjustments
+              stockAdjustments = stockAdjustments.filter(
+                  (item) => item.product !== productName
+              );
+  
+              console.log("✅ stockAdjustments หลังลบ:", stockAdjustments);
+  
+              updateTotalAmount(); // คำนวณยอดรวมใหม่
+          });
+      });
+  }
+  
+
+
     let itemtCouter = 1;
-    function addRowToTable(itemt, barcode, product, kg, count, price, stock1) {
-      const tableBody = document.getElementById("itemTableBody"); // ดึง tbody ของตาราง
-      const newRow = document.createElement("tr"); // สร้างแถวใหม่
 
-      // สร้าง cell สำหรับลำดับ
-      const itemtCell = document.createElement("td");
-      itemtCell.textContent = `${itemt}`;
-      newRow.appendChild(itemtCell);
-      itemtCouter++; // ทำการเพิ่มค่าในระบบไปเรือยจะเรียกใช้ function count การนับ
+function addRowToTable(itemt, barcode, product, kg, count, price, stock1) {
+    const tableBody = document.getElementById("itemTableBody"); // ดึง tbody ของตาราง
+    const newRow = document.createElement("tr"); // สร้างแถวใหม่
 
-      // สร้างเซลสำหรับชื่อสินค้า
+    // สร้าง cell สำหรับลำดับ
+    const itemtCell = document.createElement("td");
+    itemtCell.textContent = `${itemt}`;
+    newRow.appendChild(itemtCell);
+    itemtCouter++; // เพิ่มค่าในระบบ
 
-      const barcodeCell = document.createElement("td");
-      barcodeCell.textContent = `${barcode}`;
-      newRow.appendChild(barcodeCell);
+    // สร้างเซลสำหรับชื่อสินค้า
+    const barcodeCell = document.createElement("td");
+    barcodeCell.textContent = `${barcode}`;
+    newRow.appendChild(barcodeCell);
 
-      // หน่อยนับ
-      const productCell = document.createElement("td");
-      productCell.textContent = product;
-      newRow.appendChild(productCell);
-      //จำนวณ
-      const kgCell = document.createElement("td");
-      kgCell.textContent = kg;
-      newRow.appendChild(kgCell);
+    const productCell = document.createElement("td");
+    productCell.textContent = product;
+    newRow.appendChild(productCell);
 
-      //ราคา
+    const kgCell = document.createElement("td");
+    kgCell.textContent = kg;
+    newRow.appendChild(kgCell);
 
-      const countCell = document.createElement("td");
-      countCell.textContent = `${count} `;
-      newRow.appendChild(countCell);
+    const countCell = document.createElement("td");
+    countCell.textContent = `${count} `;
+    newRow.appendChild(countCell);
 
-      // สร้างเซลล์สำหรับจำนวน
-      const priceCell = document.createElement("td");
-      priceCell.textContent = `${price.toLocaleString(undefined, {
+    const priceCell = document.createElement("td");
+    priceCell.textContent = `${price.toLocaleString(undefined, {
         minimumFractionDigits: 2,
         maximumFractionDigits: 2,
-      })} บาท`;
-      newRow.appendChild(priceCell);
+    })} บาท`;
+    newRow.appendChild(priceCell);
 
-      //สินค้าคงเหลือ
+    const stock1Cell = document.createElement("td");
+    stock1Cell.textContent = `${stock1} `;
+    newRow.appendChild(stock1Cell);
 
-      const stock1Cell = document.createElement("td");
-      stock1Cell.textContent = `${stock1} `;
-      newRow.appendChild(stock1Cell);
+    const deleteProductCell = document.createElement("td");
+    deleteProductCell.innerHTML = `<button type="button" class="btn btn-danger remove-item">ลบข้อมูล</button>`;
+    newRow.appendChild(deleteProductCell);
 
-      //สินค้าคงเเหลือ
+    tableBody.appendChild(newRow);
+    
+    addRemoveEvent(); // เพิ่ม Event Listener ให้กับปุ่มลบทั้งหมด
+}
 
-      // เพิ่มแถวใหม่เข้าไปใน tbody ของตาราง
-      tableBody.appendChild(newRow);
-    }
 
     //----------------------------------------------------************-------------------------------------------
 
@@ -1508,142 +1877,271 @@ fetch(apiUrl)
 
     //--------------------------------------------------------------------
 
-    //--------------------------------------------------------------------
-
-
-    //--------------------------------------------------------------------
-
-
-    //--------------------------------------------------------------------
-
 
     //-----------------------------------------------------------------
 
-    function comlum16(){
+    // ✅ ประกาศตัวแปร foundProduct เป็น global ที่ด้านบน
+    let ArrayBarcode1 = [];
+    let foundProduct = null;
 
-     
-    
+
+
+
+    // -------------------------------------------------------สำหรับการสแกน-------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+    /* document.addEventListener("DOMContentLoaded", function () {
+       let inputField = document.getElementById("calculatorDisplay");
+       let row16Button = document.getElementById("row16"); // ดึงปุ่มที่ต้องการกดอัตโนมัติ
+   
+       if (!inputField) {
+           console.error("❌ ไม่พบ input ที่มี id='calculatorDisplay'");
+           return;
+       }
+   
+       if (!row16Button) {
+           console.error("❌ ไม่พบปุ่มที่มี id='row16'");
+           return;
+       }
+   
+       inputField.addEventListener("input", function () {
+           let scannedBarcode = this.value.trim();
+           console.log("📌 ตรวจสอบค่า input:", scannedBarcode);
+   
+           if (/^\d+$/.test(scannedBarcode)) { // ถ้าป้อนเป็นตัวเลข
+               console.log("✅ Barcode ถูกต้อง! กดปุ่ม row16...");
+               setTimeout(() => {
+                   row16Button.click(); // กดปุ่ม row16 อัตโนมัติ
+               }, 200);
+           }
+       });
+   });*/
+
+
+
+    //------------------------------------สำหรับไม่ต้องสแกนบาร์โคด้-----------------------------
+    function comlum16() {
       // 📌 ตรวจสอบค่า calculatorDisplay ก่อนนำไปใช้
       console.log("🔍 ค่า calculatorDisplay.textContent ก่อน trim:", calculatorDisplay.textContent);
       let scannedBarcode = calculatorDisplay.textContent.trim();
       console.log("🔍 ค่า scannedBarcode หลัง trim:", scannedBarcode);
-  
+
       if (!scannedBarcode) {
-          console.log("❌ scannerDisplay.textContent ว่างเปล่า! ไม่สามารถดำเนินการต่อได้");
-          return;
+        console.log("❌ scannerDisplay.textContent ว่างเปล่า! ไม่สามารถดำเนินการต่อได้");
+        return;
       }
-  
-      // 🔍 ค้นหาสินค้าในฐานข้อมูล JSON
-      let foundProduct = blogArray.find(product => product.barcode.toString() === scannedBarcode);
-  
+
+      // ✅ อัปเดตค่า foundProduct ใหม่
+      foundProduct = blogArray.find(product => product.barcode.toString() === scannedBarcode);
+
       if (!foundProduct) {
-          alert("❌ คุณไม่ได้ทำการกรอกตัว barcode ในระบบ.")
-          console.log("❌ ไม่พบสินค้าในระบบ! แต่จะไปทำงานในส่วนอื่นต่อ...");
+        alert("❌ คุณไม่ได้ทำการกรอกตัว barcode ในระบบ.");
+        console.log("❌ ไม่พบสินค้าในระบบ! แต่จะไปทำงานในส่วนอื่นต่อ...");
       } else {
-          console.log("✅ พบสินค้าแล้ว!", foundProduct);
-      
-          // 🛒 เพิ่มสินค้าในตารางหรืออัปเดตจำนวน
-          const tableBody = document.getElementById("itemTableBody");
-          const rows = tableBody.querySelectorAll("tr");
-          let found = false;
-  
-          rows.forEach((row) => {
-              const productCell = row.querySelector("td:nth-child(3)");
-              const quantityCell = row.querySelector("td:nth-child(5)");
-              const priceCell = row.querySelector("td:nth-child(6)");
-  
-              if (productCell && productCell.textContent === foundProduct.name) {
-                  const currentQuantity = parseFloat(quantityCell.textContent.split(" ")[0]);
-                  const newQuantity = currentQuantity + 1;
-                  const newTotalPrice = newQuantity * foundProduct.price;
-  
-                  quantityCell.textContent = `${newQuantity} kg`;
-                  priceCell.textContent = `${newTotalPrice.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} บาท`;
-  
-                  const adjustmentIndex = stockAdjustments.findIndex(item => item.product === foundProduct.name);
-                  if (adjustmentIndex > -1) {
-                      stockAdjustments[adjustmentIndex].quantity += 1;
-                  }
-  
-                  ArrayBarcode.push(foundProduct.price);
-                  found = true;
-                  console.log("✅ อัปเดตสินค้าที่มีอยู่ในตารางแล้ว!");
-              }
-          });
-  
-          if (!found) {
-              console.log("🔄 เพิ่มสินค้าใหม่เข้าไปในตาราง...");
-  
-              ArrayBarcode.push(foundProduct.price);
-              addRowToTable(
-                  itemtCouter,
-                  foundProduct.barcode,
-                  foundProduct.name,
-                  "pcs",
-                  1,
-                  foundProduct.price,
-                  foundProduct.stock
-              );
-  
-              stockAdjustments.push({
-                  product: foundProduct.name,
-                  quantity: 1,
-              });
-  
-              itemtCouter++;
+        console.log("✅ พบสินค้าแล้ว!", foundProduct);
+
+        // 🛒 เพิ่มสินค้าในตารางหรืออัปเดตจำนวน
+        const tableBody = document.getElementById("itemTableBody");
+        const rows = tableBody.querySelectorAll("tr");
+        let found = false;
+
+        // ✅ ดึงราคาสินค้า และกำไรต่อหน่วย (ProfitPrice)
+        let Price1 = parseFloat(foundProduct.price);
+        let profitprice = parseFloat(foundProduct.profitprice);
+        let addedQuantity = 1; // จำนวนที่เพิ่มเข้ามาเริ่มต้นเป็น 1
+
+        // ✅ คำนวณกำไร = profitprice * quantity
+        let totalProfit = profitprice * addedQuantity;
+
+        // ✅ คำนวณราคาขายรวม
+        let TotalPrice = Price1 * addedQuantity;
+
+        rows.forEach((row) => {
+          const productCell = row.querySelector("td:nth-child(3)");
+          const quantityCell = row.querySelector("td:nth-child(5)");
+          const priceCell = row.querySelector("td:nth-child(6)");
+
+          if (productCell && productCell.textContent === foundProduct.name) {
+            const currentQuantity = parseFloat(quantityCell.textContent.split(" ")[0]);
+            const newQuantity = currentQuantity + 1;
+            const newTotalPrice = newQuantity * foundProduct.price;
+
+            quantityCell.textContent = `${newQuantity} `;
+            priceCell.textContent = `${newTotalPrice.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} บาท`;
+
+            const adjustmentIndex = stockAdjustments.findIndex(item => item.product === foundProduct.name);
+            if (adjustmentIndex > -1) {
+              stockAdjustments[adjustmentIndex].quantity += 1;
+              stockAdjustments[adjustmentIndex].TotalPrice = stockAdjustments[adjustmentIndex].quantity * foundProduct.price;
+              stockAdjustments[adjustmentIndex].totalProfit = stockAdjustments[adjustmentIndex].quantity * foundProduct.profitprice;
+            }
+
+            ArrayBarcode.push(Number(foundProduct.price));
+            found = true;
+            console.log("✅ อัปเดตสินค้าที่มีอยู่ในตารางแล้ว!");
           }
-  
-          // 🔢 **คำนวณ Total Items และแสดงผล**
-          const totalAmount = ArrayBarcode.reduce((sum, item) => sum + Number(item), 0);
-          document.getElementById("totalAmount").innerText = `${totalAmount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} บาท`;
-  
-          console.log("💰 Grand Total:", totalAmount);
-          console.log("📦 Stock Adjustments:", stockAdjustments);
-       
+        });
 
-          calculatorDisplay.textContent = "0";
-    selectedItem = "";
+        if (!found) {
+          console.log("🔄 เพิ่มสินค้าใหม่เข้าไปในตาราง...");
 
-    // ✅ ตรวจสอบว่ามีสินค้าอยู่ก่อนแสดงผล
-    if (foundProduct) {
-        if (foundProduct.image) {
-            productContainer.innerHTML = `
-            <div class="img2">
-                <img src="${foundProduct.image}" alt="${foundProduct.name}" />
-            </div>`;
-        } else {
-            productContainer.innerHTML = `<div class="img2">ไม่มีรูปภาพ</div>`;
+          ArrayBarcode.push(Number(foundProduct.price));
+          addRowToTable(
+            itemtCouter,
+            foundProduct.barcode,
+            foundProduct.name,
+            "pcs",
+            1,
+            foundProduct.price,
+            foundProduct.stock
+          );
+
+          // ✅ ตรวจสอบว่ามีสินค้าชื่อเดียวกันอยู่ใน stockAdjustments หรือไม่
+          const existingProduct = stockAdjustments.find(item => item.product === foundProduct.name);
+          if (existingProduct) {
+            // ✅ หากมีแล้ว ให้อัปเดตจำนวนสินค้าและราคาที่รวมกัน
+            existingProduct.quantity += addedQuantity;
+            existingProduct.totalProfit += totalProfit;
+            existingProduct.TotalPrice += TotalPrice;
+          } else {
+            // ✅ ถ้ายังไม่มี ให้เพิ่มเป็นสินค้าใหม่
+            stockAdjustments.push({
+              product: foundProduct.name, // ✅ ใช้ foundProduct.name แทน selectedProduct
+              quantity: addedQuantity,
+              totalProfit: totalProfit,
+              TotalPrice: TotalPrice
+            });
+          }
+
+          itemtCouter++;
         }
 
-        productContainer1.innerHTML = `
-            <h6>
-                - สินค้าใน stock: ${foundProduct.stock} Kg <br />
-                - ชื่อสินค้า: ${foundProduct.name} <br />
-                - ราคา: ${foundProduct.price} บาท <br />
-            </h6>
-        `;
-    } else {
-        productContainer.innerHTML = `<div class="img2">ไม่มีข้อมูลสินค้า</div>`;
-        productContainer1.innerHTML = `<h6>ไม่พบข้อมูลสินค้า</h6>`;
+        // ✅ ตรวจสอบ ArrayBarcode1
+        const existingProduct1 = ArrayBarcode1.find(item => item.name === foundProduct.name);
+        if (existingProduct1) {
+          existingProduct1.price += Number(foundProduct.price);
+          console.log(`🔄 เพิ่มราคาให้สินค้า "${foundProduct.name}" เป็น ${existingProduct1.price} บาท`);
+        } else {
+          ArrayBarcode1.push({ name: foundProduct.name, price: Number(foundProduct.price) });
+          console.log(`✅ เพิ่มสินค้าใหม่ "${foundProduct.name}" (ราคา ${foundProduct.price} บาท)`);
+        }
+
+        console.log("✅ ค่า ArrayBarcode1 ที่อัปเดตแล้ว:", ArrayBarcode1);
+
+        const grandTotalPrice = stockAdjustments.reduce((sum, item) => sum + item.TotalPrice, 0);
+        const grandTotalProfit = stockAdjustments.reduce((sum, item) => sum + item.totalProfit, 0);
+
+        // ✅ แปลงราคาทั้งหมดเป็นตัวเลข
+        ArrayBarcode = ArrayBarcode.map(Number);
+        console.log("✅ ArrayBarcode ที่แปลงเป็นตัวเลขแล้ว:", ArrayBarcode);
+
+        // 🔢 **คำนวณ Total Items และแสดงผล**
+        const totalAmount = ArrayBarcode.reduce((sum, item) => sum + Number(item), 0);
+        document.getElementById("totalAmount").innerText = `${totalAmount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} บาท`;
+
+        console.log("📦 Stock Adjustments:", stockAdjustments);
+        console.log("💰 รวมกำไรรวมทั้งหมด:", grandTotalProfit);
+        console.log("🛒 รวมราคาขายทั้งหมด:", grandTotalPrice);
+
+        calculatorDisplay.textContent = "0";
+        selectedItem = "";
+
+
+
+        //-----------------------------------------
+
+
+        //-------------------------------------------------------------------------------------
+
+        // ✅ ตรวจสอบว่ามีสินค้าอยู่ก่อนแสดงผล
+        if (foundProduct) {
+          if (foundProduct.image) {
+            productContainer.innerHTML = `
+                <div class="img2">
+                    <img src="${foundProduct.image}" alt="${foundProduct.name}" />
+                </div>`;
+          } else {
+            productContainer.innerHTML = `<div class="img2">ไม่มีรูปภาพ</div>`;
+          }
+
+          productContainer1.innerHTML = `
+                <h6>
+                    - สินค้าใน stock: ${foundProduct.stock} pcs <br />
+                    - ชื่อสินค้า: ${foundProduct.name} <br />
+                    - ราคา: ${foundProduct.price} บาท <br />
+                </h6>
+            `;
+        } else {
+          productContainer.innerHTML = `<div class="img2">ไม่มีข้อมูลสินค้า</div>`;
+          productContainer1.innerHTML = `<h6>ไม่พบข้อมูลสินค้า</h6>`;
+        }
+      }
+
+      calculatorDisplay.textContent = "0"; // รีเซ็ตค่าแสดงผลเป็น 0
+      selectedItem = ""; // รีเซ็ตสถานะหลังจากเพิ่มรายการ
+    }
+
+    if (row16) {
+      row16.addEventListener("click", () => comlum16()); // ใช้เป็น id แทนระบุแต่ล่ะตัวไปเลย
+
     }
 
 
-          
-      }
-      calculatorDisplay.textContent = "0"; // รีเซ็ตค่าแสดงผลเป็น 0
-      selectedItem = ""; // รีเซ็ตสถานะหลังจากเพิ่มรายการ
+    console.log("ว่ามันจะเกิดไรขึ้นหลังจากนี้", foundProduct);
+    console.log("ทดสอบ api การทำงาน", ArrayBarcode)
+
+    //-------------------------------สำหรับ pop up Ajax -----------------------------------
 
 
-      
-     }
-  
-      if(row16){
-        row16.addEventListener("click", () => comlum16()); // ใช้เป็น id แทนระบุแต่ล่ะตัวไปเลย
-  
-      }
 
-  
-    //--------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     //--------------------------------ปุ่มเคลียร-------------------------
@@ -1726,4 +2224,3 @@ fetch(apiUrl)
 
 
 
- 

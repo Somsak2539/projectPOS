@@ -1805,57 +1805,88 @@ fetch(apiUrl)
 
     //------------------------------------------------------******************************--------------------------------------------------
 
+
+
+
+
+
+  
+
+
+
+
+    function addRemoveEvent() {
+      document.querySelectorAll(".remove-item").forEach((button) => {
+          button.addEventListener("click", function () {
+              let row = this.closest("tr");
+              let productName = row.querySelector("td:nth-child(3)").innerText;
+  
+              // ลบแถวออกจากตาราง
+              row.remove();
+  
+              // ลบข้อมูลออกจาก stockAdjustments
+              stockAdjustments = stockAdjustments.filter(
+                  (item) => item.product !== productName
+              );
+  
+              console.log("✅ stockAdjustments หลังลบ:", stockAdjustments);
+  
+              updateTotalAmount(); // คำนวณยอดรวมใหม่
+          });
+      });
+  }
+  
+
+
     let itemtCouter = 1;
-    function addRowToTable(itemt, barcode, product, kg, count, price, stock1) {
-      const tableBody = document.getElementById("itemTableBody"); // ดึง tbody ของตาราง
-      const newRow = document.createElement("tr"); // สร้างแถวใหม่
 
-      // สร้าง cell สำหรับลำดับ
-      const itemtCell = document.createElement("td");
-      itemtCell.textContent = `${itemt}`;
-      newRow.appendChild(itemtCell);
-      itemtCouter++; // ทำการเพิ่มค่าในระบบไปเรือยจะเรียกใช้ function count การนับ
+function addRowToTable(itemt, barcode, product, kg, count, price, stock1) {
+    const tableBody = document.getElementById("itemTableBody"); // ดึง tbody ของตาราง
+    const newRow = document.createElement("tr"); // สร้างแถวใหม่
 
-      // สร้างเซลสำหรับชื่อสินค้า
+    // สร้าง cell สำหรับลำดับ
+    const itemtCell = document.createElement("td");
+    itemtCell.textContent = `${itemt}`;
+    newRow.appendChild(itemtCell);
+    itemtCouter++; // เพิ่มค่าในระบบ
 
-      const barcodeCell = document.createElement("td");
-      barcodeCell.textContent = `${barcode}`;
-      newRow.appendChild(barcodeCell);
+    // สร้างเซลสำหรับชื่อสินค้า
+    const barcodeCell = document.createElement("td");
+    barcodeCell.textContent = `${barcode}`;
+    newRow.appendChild(barcodeCell);
 
-      // หน่อยนับ
-      const productCell = document.createElement("td");
-      productCell.textContent = product;
-      newRow.appendChild(productCell);
-      //จำนวณ
-      const kgCell = document.createElement("td");
-      kgCell.textContent = kg;
-      newRow.appendChild(kgCell);
+    const productCell = document.createElement("td");
+    productCell.textContent = product;
+    newRow.appendChild(productCell);
 
-      //ราคา
+    const kgCell = document.createElement("td");
+    kgCell.textContent = kg;
+    newRow.appendChild(kgCell);
 
-      const countCell = document.createElement("td");
-      countCell.textContent = `${count} `;
-      newRow.appendChild(countCell);
+    const countCell = document.createElement("td");
+    countCell.textContent = `${count} `;
+    newRow.appendChild(countCell);
 
-      // สร้างเซลล์สำหรับจำนวน
-      const priceCell = document.createElement("td");
-      priceCell.textContent = `${price.toLocaleString(undefined, {
+    const priceCell = document.createElement("td");
+    priceCell.textContent = `${price.toLocaleString(undefined, {
         minimumFractionDigits: 2,
         maximumFractionDigits: 2,
-      })} บาท`;
-      newRow.appendChild(priceCell);
+    })} บาท`;
+    newRow.appendChild(priceCell);
 
-      //สินค้าคงเหลือ
+    const stock1Cell = document.createElement("td");
+    stock1Cell.textContent = `${stock1} `;
+    newRow.appendChild(stock1Cell);
 
-      const stock1Cell = document.createElement("td");
-      stock1Cell.textContent = `${stock1} `;
-      newRow.appendChild(stock1Cell);
+    const deleteProductCell = document.createElement("td");
+    deleteProductCell.innerHTML = `<button type="button" class="btn btn-danger remove-item">ลบข้อมูล</button>`;
+    newRow.appendChild(deleteProductCell);
 
-      //สินค้าคงเเหลือ
+    tableBody.appendChild(newRow);
+    
+    addRemoveEvent(); // เพิ่ม Event Listener ให้กับปุ่มลบทั้งหมด
+}
 
-      // เพิ่มแถวใหม่เข้าไปใน tbody ของตาราง
-      tableBody.appendChild(newRow);
-    }
 
     //----------------------------------------------------************-------------------------------------------
 
@@ -2207,7 +2238,6 @@ fetch(apiUrl)
 
 
 ////-------------------------------------function ทดสอบ API สำหรับการทำงาน---------------------------------------
-
 
 
 
