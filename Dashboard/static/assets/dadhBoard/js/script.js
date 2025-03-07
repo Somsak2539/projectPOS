@@ -1045,7 +1045,6 @@ fetch(apiUrl)
         console.warn("⚠️ ไม่มีสินค้าใน stockAdjustments");
         return;
       }
-
       updateCartTable(); // ✅ อัปเดตตารางสินค้า
 
       // ✅ ทำให้แน่ใจว่า stockAdjustments มีค่า ก่อนอัปเดต Stock

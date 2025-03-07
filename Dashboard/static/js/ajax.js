@@ -183,20 +183,29 @@ function updateTotalAmount() {
     })} บาท`;
 }
 
-// ✅ ฟังก์ชันลบสินค้าออกจากตาราง
 function addRemoveEvent() {
     document.querySelectorAll(".remove-item").forEach((button) => {
         button.addEventListener("click", function () {
             let row = this.closest("tr");
-            let productId = row.getAttribute("data-product-id");
             let productName = row.querySelector("td:nth-child(3)").innerText;
 
+            // ลบแถวออกจากตาราง
+            row.remove();
+
+            // ลบข้อมูลออกจาก stockAdjustments
+            console.log("ก่อนลบ:", stockAdjustments);
             stockAdjustments = stockAdjustments.filter(
                 (item) => item.product !== productName
             );
+            console.log("หลังลบ:", stockAdjustments);
 
-            row.remove();
-            updateTotalAmount(); // คำนวณยอดรวมใหม่
+            // ------------------------------อัปเดต LocalStorage ส่งข้ามไฟค์---------------------------------
+            localStorage.setItem("stockAdjustments", JSON.stringify(stockAdjustments));
+            // ส่ง Event ไปให้ไฟล์อื่น (ถ้าจำเป็น)
+            document.dispatchEvent(new CustomEvent("updateStock", { detail: stockAdjustments }));
+
+            // คำนวณยอดรวมใหม่
+            updateTotalAmount();
         });
     });
 }

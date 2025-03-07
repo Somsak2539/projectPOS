@@ -80,7 +80,11 @@ document.addEventListener("click", function (event) {
         }
 
 
-       
+        
+        localStorage.setItem("stockAdjustments", JSON.stringify(stockAdjustments));
+        // ✅ ส่ง Event ไปให้ script.js
+        document.dispatchEvent(new CustomEvent("updateStock", { detail: stockAdjustments }));
+        console.log("📦 stockAdjustments ปัจจุบัน:", stockAdjustments);
         
 
         // ✅ อัปเดตตารางสินค้า
@@ -179,7 +183,6 @@ function updateTotalAmount() {
     })} บาท`;
 }
 
-// ✅ ฟังก์ชันลบสินค้าออกจากตาราง
 function addRemoveEvent() {
     document.querySelectorAll(".remove-item").forEach((button) => {
         button.addEventListener("click", function () {
@@ -206,40 +209,6 @@ function addRemoveEvent() {
         });
     });
 }
-
-
-//**************************************************************************************** */
-
-let ValueSelect = [];  // ✅ เปลี่ยนจาก const เป็น let
-
-    // ✅ รับ Event จาก ajax.js และอัปเดต stockAdjustments
-    document.addEventListener("updateStock", function (event) {
-      stockAdjustments = event.detail;
-      console.log("📦 stockAdjustments ที่ได้รับใน ajax.js:", stockAdjustments);
-
-      ValueSelect = [...stockAdjustments]; // ✅ ทำสำเนา stockAdjustments ไปยัง ValueSelect
-      console.log("📌 ประกาศตัวแปร Global of aJax.js:", ValueSelect);
-
-      if (stockAdjustments.length === 0) {
-        console.warn("⚠️ ไม่มีสินค้าใน stockAdjustments");
-        return;
-      }
-
-      updateCartTable(); // ✅ อัปเดตตารางสินค้า
-
-      // ✅ ทำให้แน่ใจว่า stockAdjustments มีค่า ก่อนอัปเดต Stock
-      setTimeout(() => {
-        updateStockAPI();
-      }, 500); // หน่วงเวลา 0.5 วินาที
-    });
-
-
-//**************************************************************************************** */
-
-
-    console.log("📤 กำลังส่งข้อมูลไป API:", JSON.stringify({ updates: stockAdjustments }));
-    console.log("📦 ค่า stockAdjustments ก่อนส่ง:", stockAdjustments);
-
 
 // ------------------------------------------------------------------------สำหรับการแอด update Stock-------------------------------------
 
@@ -271,7 +240,6 @@ function getCookie(name) {
     }
     return cookieValue;
 }
-
 
 
 

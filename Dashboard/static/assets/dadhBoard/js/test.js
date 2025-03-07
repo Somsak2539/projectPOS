@@ -1031,16 +1031,34 @@ fetch(apiUrl)
 
 
     //************************************************************************************* */
-  
+    let ValueSelect = [];  // ✅ เปลี่ยนจาก const เป็น let
+
+    // ✅ รับ Event จาก ajax.js และอัปเดต stockAdjustments
+    document.addEventListener("updateStock", function (event) {
+      stockAdjustments = event.detail;
+      console.log("📦 stockAdjustments ที่ได้รับใน script.js:", stockAdjustments);
+
+      ValueSelect = [...stockAdjustments]; // ✅ ทำสำเนา stockAdjustments ไปยัง ValueSelect
+      console.log("📌 ประกาศตัวแปร Global:", ValueSelect);
+
+      if (stockAdjustments.length === 0) {
+        console.warn("⚠️ ไม่มีสินค้าใน stockAdjustments");
+        return;
+      }
+      updateCartTable(); // ✅ อัปเดตตารางสินค้า
+
+      // ✅ ทำให้แน่ใจว่า stockAdjustments มีค่า ก่อนอัปเดต Stock
+      setTimeout(() => {
+        updateStockAPI();
+      }, 500); // หน่วงเวลา 0.5 วินาที
+    });
 
 
 
 
 
-
-
-
-
+    console.log("📤 กำลังส่งข้อมูลไป API:", JSON.stringify({ updates: stockAdjustments }));
+    console.log("📦 ค่า stockAdjustments ก่อนส่ง:", stockAdjustments);
 
 
     //*************************************************************************************** */
@@ -1728,11 +1746,6 @@ fetch(apiUrl)
           }
         }
 
-
-        
-
-
-         //--------------------------------------------------------------------------------------
         // ✅ อัปเดตยอดรวม
         const grandTotalPrice = stockAdjustments.reduce((sum, item) => sum + item.TotalPrice, 0);
         const grandTotalProfit = stockAdjustments.reduce((sum, item) => sum + item.totalProfit, 0);
@@ -1795,6 +1808,11 @@ fetch(apiUrl)
 
 
 
+
+  
+
+
+
     function addRemoveEvent() {
       document.querySelectorAll(".remove-item").forEach((button) => {
           button.addEventListener("click", function () {
@@ -1805,13 +1823,19 @@ fetch(apiUrl)
               row.remove();
   
               // ลบข้อมูลออกจาก stockAdjustments
+              console.log("ก่อนลบ:", stockAdjustments);
               stockAdjustments = stockAdjustments.filter(
                   (item) => item.product !== productName
               );
+              console.log("หลังลบ:", stockAdjustments);
   
-              console.log("✅ stockAdjustments หลังลบ:", stockAdjustments);
+              // ------------------------------อัปเดต LocalStorage ส่งข้ามไฟค์---------------------------------
+              localStorage.setItem("stockAdjustments", JSON.stringify(stockAdjustments));
+              // ส่ง Event ไปให้ไฟล์อื่น (ถ้าจำเป็น)
+              document.dispatchEvent(new CustomEvent("updateStock", { detail: stockAdjustments }));
   
-              updateTotalAmount(); // คำนวณยอดรวมใหม่
+              // คำนวณยอดรวมใหม่
+              updateTotalAmount();
           });
       });
   }
@@ -1928,166 +1952,7 @@ function addRowToTable(itemt, barcode, product, kg, count, price, stock1) {
 
 
     //------------------------------------สำหรับไม่ต้องสแกนบาร์โคด้-----------------------------
-    function comlum16() {
-      // 📌 ตรวจสอบค่า calculatorDisplay ก่อนนำไปใช้
-      console.log("🔍 ค่า calculatorDisplay.textContent ก่อน trim:", calculatorDisplay.textContent);
-      let scannedBarcode = calculatorDisplay.textContent.trim();
-      console.log("🔍 ค่า scannedBarcode หลัง trim:", scannedBarcode);
-
-      if (!scannedBarcode) {
-        console.log("❌ scannerDisplay.textContent ว่างเปล่า! ไม่สามารถดำเนินการต่อได้");
-        return;
-      }
-
-      // ✅ อัปเดตค่า foundProduct ใหม่
-      foundProduct = blogArray.find(product => product.barcode.toString() === scannedBarcode);
-
-      if (!foundProduct) {
-        alert("❌ คุณไม่ได้ทำการกรอกตัว barcode ในระบบ.");
-        console.log("❌ ไม่พบสินค้าในระบบ! แต่จะไปทำงานในส่วนอื่นต่อ...");
-      } else {
-        console.log("✅ พบสินค้าแล้ว!", foundProduct);
-
-        // 🛒 เพิ่มสินค้าในตารางหรืออัปเดตจำนวน
-        const tableBody = document.getElementById("itemTableBody");
-        const rows = tableBody.querySelectorAll("tr");
-        let found = false;
-
-        // ✅ ดึงราคาสินค้า และกำไรต่อหน่วย (ProfitPrice)
-        let Price1 = parseFloat(foundProduct.price);
-        let profitprice = parseFloat(foundProduct.profitprice);
-        let addedQuantity = 1; // จำนวนที่เพิ่มเข้ามาเริ่มต้นเป็น 1
-
-        // ✅ คำนวณกำไร = profitprice * quantity
-        let totalProfit = profitprice * addedQuantity;
-
-        // ✅ คำนวณราคาขายรวม
-        let TotalPrice = Price1 * addedQuantity;
-
-        rows.forEach((row) => {
-          const productCell = row.querySelector("td:nth-child(3)");
-          const quantityCell = row.querySelector("td:nth-child(5)");
-          const priceCell = row.querySelector("td:nth-child(6)");
-
-          if (productCell && productCell.textContent === foundProduct.name) {
-            const currentQuantity = parseFloat(quantityCell.textContent.split(" ")[0]);
-            const newQuantity = currentQuantity + 1;
-            const newTotalPrice = newQuantity * foundProduct.price;
-
-            quantityCell.textContent = `${newQuantity} `;
-            priceCell.textContent = `${newTotalPrice.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} บาท`;
-
-            const adjustmentIndex = stockAdjustments.findIndex(item => item.product === foundProduct.name);
-            if (adjustmentIndex > -1) {
-              stockAdjustments[adjustmentIndex].quantity += 1;
-              stockAdjustments[adjustmentIndex].TotalPrice = stockAdjustments[adjustmentIndex].quantity * foundProduct.price;
-              stockAdjustments[adjustmentIndex].totalProfit = stockAdjustments[adjustmentIndex].quantity * foundProduct.profitprice;
-            }
-
-            ArrayBarcode.push(Number(foundProduct.price));
-            found = true;
-            console.log("✅ อัปเดตสินค้าที่มีอยู่ในตารางแล้ว!");
-          }
-        });
-
-        if (!found) {
-          console.log("🔄 เพิ่มสินค้าใหม่เข้าไปในตาราง...");
-
-          ArrayBarcode.push(Number(foundProduct.price));
-          addRowToTable(
-            itemtCouter,
-            foundProduct.barcode,
-            foundProduct.name,
-            "pcs",
-            1,
-            foundProduct.price,
-            foundProduct.stock
-          );
-
-          // ✅ ตรวจสอบว่ามีสินค้าชื่อเดียวกันอยู่ใน stockAdjustments หรือไม่
-          const existingProduct = stockAdjustments.find(item => item.product === foundProduct.name);
-          if (existingProduct) {
-            // ✅ หากมีแล้ว ให้อัปเดตจำนวนสินค้าและราคาที่รวมกัน
-            existingProduct.quantity += addedQuantity;
-            existingProduct.totalProfit += totalProfit;
-            existingProduct.TotalPrice += TotalPrice;
-          } else {
-            // ✅ ถ้ายังไม่มี ให้เพิ่มเป็นสินค้าใหม่
-            stockAdjustments.push({
-              product: foundProduct.name, // ✅ ใช้ foundProduct.name แทน selectedProduct
-              quantity: addedQuantity,
-              totalProfit: totalProfit,
-              TotalPrice: TotalPrice
-            });
-          }
-
-          itemtCouter++;
-        }
-
-        // ✅ ตรวจสอบ ArrayBarcode1
-        const existingProduct1 = ArrayBarcode1.find(item => item.name === foundProduct.name);
-        if (existingProduct1) {
-          existingProduct1.price += Number(foundProduct.price);
-          console.log(`🔄 เพิ่มราคาให้สินค้า "${foundProduct.name}" เป็น ${existingProduct1.price} บาท`);
-        } else {
-          ArrayBarcode1.push({ name: foundProduct.name, price: Number(foundProduct.price) });
-          console.log(`✅ เพิ่มสินค้าใหม่ "${foundProduct.name}" (ราคา ${foundProduct.price} บาท)`);
-        }
-
-        console.log("✅ ค่า ArrayBarcode1 ที่อัปเดตแล้ว:", ArrayBarcode1);
-
-        const grandTotalPrice = stockAdjustments.reduce((sum, item) => sum + item.TotalPrice, 0);
-        const grandTotalProfit = stockAdjustments.reduce((sum, item) => sum + item.totalProfit, 0);
-
-        // ✅ แปลงราคาทั้งหมดเป็นตัวเลข
-        ArrayBarcode = ArrayBarcode.map(Number);
-        console.log("✅ ArrayBarcode ที่แปลงเป็นตัวเลขแล้ว:", ArrayBarcode);
-
-        // 🔢 **คำนวณ Total Items และแสดงผล**
-        const totalAmount = ArrayBarcode.reduce((sum, item) => sum + Number(item), 0);
-        document.getElementById("totalAmount").innerText = `${totalAmount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} บาท`;
-
-        console.log("📦 Stock Adjustments:", stockAdjustments);
-        console.log("💰 รวมกำไรรวมทั้งหมด:", grandTotalProfit);
-        console.log("🛒 รวมราคาขายทั้งหมด:", grandTotalPrice);
-
-        calculatorDisplay.textContent = "0";
-        selectedItem = "";
-
-
-
-        //-----------------------------------------
-
-
-        //-------------------------------------------------------------------------------------
-
-        // ✅ ตรวจสอบว่ามีสินค้าอยู่ก่อนแสดงผล
-        if (foundProduct) {
-          if (foundProduct.image) {
-            productContainer.innerHTML = `
-                <div class="img2">
-                    <img src="${foundProduct.image}" alt="${foundProduct.name}" />
-                </div>`;
-          } else {
-            productContainer.innerHTML = `<div class="img2">ไม่มีรูปภาพ</div>`;
-          }
-
-          productContainer1.innerHTML = `
-                <h6>
-                    - สินค้าใน stock: ${foundProduct.stock} pcs <br />
-                    - ชื่อสินค้า: ${foundProduct.name} <br />
-                    - ราคา: ${foundProduct.price} บาท <br />
-                </h6>
-            `;
-        } else {
-          productContainer.innerHTML = `<div class="img2">ไม่มีข้อมูลสินค้า</div>`;
-          productContainer1.innerHTML = `<h6>ไม่พบข้อมูลสินค้า</h6>`;
-        }
-      }
-
-      calculatorDisplay.textContent = "0"; // รีเซ็ตค่าแสดงผลเป็น 0
-      selectedItem = ""; // รีเซ็ตสถานะหลังจากเพิ่มรายการ
-    }
+    
 
     if (row16) {
       row16.addEventListener("click", () => comlum16()); // ใช้เป็น id แทนระบุแต่ล่ะตัวไปเลย
@@ -2218,7 +2083,6 @@ function addRowToTable(itemt, barcode, product, kg, count, price, stock1) {
 
 
 ////-------------------------------------function ทดสอบ API สำหรับการทำงาน---------------------------------------
-
 
 
 
