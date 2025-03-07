@@ -224,7 +224,7 @@ fetch(apiUrl)
     //---------------------------------------ทำการทดสอบ API สำหรับการทำงานผ่าน django   -----------------------------------------------
 
     //--------------------------------------สำหรับเก็บไว้ในตัวแปร array ------------------------------------------------------
-    let stockAdjustments = [];
+    //let stockAdjustments = [];
     let savedResults = []; // เก็บผลลัพธ์
     let ArrayBarcode = []; // เก็บไว้สำหรับบาร์โค้ด
 
@@ -335,9 +335,77 @@ fetch(apiUrl)
 
 
 
+// ✅ กำหนดตัวแปรเก็บรายการสินค้า
+let stockAdjustments = [];
+
+// ✅ ฟังก์ชันเพิ่ม Event Listener สำหรับปุ่มลบ
+function addRemoveEvent() {
+    document.querySelectorAll(".remove-item").forEach((button) => {
+        button.addEventListener("click", function () {
+            let row = this.closest("tr");
+            let productName = row.querySelector("td:nth-child(3)").textContent.trim(); // เอาชื่อสินค้าแบบ trim
+
+            // ✅ ลบสินค้าจาก stockAdjustments
+            stockAdjustments = stockAdjustments.filter(item => item.product !== productName);
+            
+            console.log("✅ stockAdjustments หลังลบ:", stockAdjustments);
+
+            // ✅ บันทึกค่าใหม่ไปยัง localStorage
+            localStorage.setItem("stockAdjustments", JSON.stringify(stockAdjustments));
+
+            // ✅ ลบแถวออกจากตาราง
+            row.remove();
+
+            // ✅ อัปเดตยอดรวม
+            updateTotalAmount(); 
+        });
+    });
+}
+
+// ✅ ใช้ Event Delegation แทนการผูก Event ทีละปุ่ม (แก้ปัญหากรณีปุ่มถูกสร้างใหม่)
+document.addEventListener("click", function (event) {
+    if (event.target.classList.contains("remove-item")) {
+        let row = event.target.closest("tr");
+        let productName = row.querySelector("td:nth-child(3)").textContent.trim();
+
+        // ✅ ลบสินค้าจาก stockAdjustments
+        stockAdjustments = stockAdjustments.filter(item => item.product !== productName);
+        console.log("✅ stockAdjustments หลังลบ:", stockAdjustments);
+
+        // ✅ บันทึกค่าใหม่ไปยัง localStorage
+        localStorage.setItem("stockAdjustments", JSON.stringify(stockAdjustments));
+
+        // ✅ ลบแถวออกจากตาราง
+        row.remove();
+
+        // ✅ อัปเดตยอดรวม
+        updateTotalAmount();
+    }
+});
+
+// ✅ ฟังก์ชันอัปเดตยอดรวม
+function updateTotalAmount() {
+    let totalAmount = stockAdjustments.reduce((sum, item) => sum + item.TotalPrice, 0);
+    let totalProfit = stockAdjustments.reduce((sum, item) => sum + item.totalProfit, 0);
+
+    document.getElementById("totalAmount").innerText = `${totalAmount.toLocaleString(undefined, { 
+        minimumFractionDigits: 2, 
+        maximumFractionDigits: 2 
+    })} บาท`;
+
+    console.log("💰 กำไรทั้งหมด:", totalProfit);
+    console.log("💵 ราคาสินค้ารวม:", totalAmount);
+}
+
+// ✅ โหลด stockAdjustments จาก localStorage เมื่อหน้าโหลด
+document.addEventListener("DOMContentLoaded", function () {
+    stockAdjustments = JSON.parse(localStorage.getItem("stockAdjustments")) || [];
+    updateTotalAmount();
+});
 
 
-
+  
+  
 
 
 
@@ -390,6 +458,8 @@ fetch(apiUrl)
 
 
 
+
+   let grandTotalPrice=0;
 
 
     function setNumberValue(number) {
@@ -1153,14 +1223,15 @@ fetch(apiUrl)
       console.log("📊 ผลรวมของ totalProfit:", TotalPriceSum);
 
 
+      //---------------------------------สำหรับค่า stock adjustment----------------------------------------------------------------
 
+       let stockAdjustmentSum=stockAdjustments.reduce((sum, item) => sum + item.TotalPrice, 0);
 
-
-
+       console.log("show Stockadjustment",stockAdjustmentSum)
 
 
       //---------------------------------------รายการวมทั่งหมดเมื่อมีการทำการกดตรงนี้ ------------------------------------------
-      const All = sumNeauyang + sumSankor + sumSaiOn + sumSaiYai + sumSiKhorongMu + sumLaiMu + sumSanNok + sumSamChan + sumKradukChup + sumMomot + totalPrice1+TotalPriceSum;
+      const All = /*sumNeauyang + sumSankor + sumSaiOn + sumSaiYai + sumSiKhorongMu + sumLaiMu + sumSanNok + sumSamChan + sumKradukChup + sumMomot*/stockAdjustmentSum/*totalPrice1/TotalPriceSum*/;
       console.log("กดได้แล้วน่ะ :", All);
 
 
@@ -1651,7 +1722,7 @@ fetch(apiUrl)
 
     //-----------------------------------------------------การเพิ่มค่าในตารางเนื้อย่าง-------------------------------------------------------
 
-
+ 
 
     function Additem() {
       console.log("🔄 Starting Additem function...");
@@ -1809,32 +1880,12 @@ fetch(apiUrl)
 
 
 
-  
+    
 
 
 
 
-    function addRemoveEvent() {
-      document.querySelectorAll(".remove-item").forEach((button) => {
-          button.addEventListener("click", function () {
-              let row = this.closest("tr");
-              let productName = row.querySelector("td:nth-child(3)").innerText;
-  
-              // ลบแถวออกจากตาราง
-              row.remove();
-  
-              // ลบข้อมูลออกจาก stockAdjustments
-              stockAdjustments = stockAdjustments.filter(
-                  (item) => item.product !== productName
-              );
-  
-              console.log("✅ stockAdjustments หลังลบ:", stockAdjustments);
-  
-              updateTotalAmount(); // คำนวณยอดรวมใหม่
-          });
-      });
-  }
-  
+    
 
 
     let itemtCouter = 1;
@@ -1883,6 +1934,9 @@ function addRowToTable(itemt, barcode, product, kg, count, price, stock1) {
 
     tableBody.appendChild(newRow);
     
+
+    
+
     addRemoveEvent(); // เพิ่ม Event Listener ให้กับปุ่มลบทั้งหมด
 }
 
