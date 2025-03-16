@@ -1,10 +1,10 @@
 
 
 // ------------------------------------------------------------------------------การทดสอบ Api------------------------------------------------
-const apiUrl = "http://127.0.0.1:8080/blog/list/";
+//const apiUrl = "http://127.0.0.1:8080/blog/list/";
 
 
-
+const apiUrl = "http://[2001:44c8:44c5:8e4c:8d1:e48a:2672:947c]:8080/blog/list/";
 
 
 
@@ -463,27 +463,38 @@ fetch(apiUrl)
 
 
     function setNumberValue(number) {
+      let displayValue = calculatorDisplay.textContent;
 
+      // ถ้าความยาวเกิน 15 ตัวอักษร ให้หยุดทำงาน
+      if (displayValue.length >= 13) return;
 
-      const displayVlave = calculatorDisplay.textContent; // เก็บตัวแปรการแสดงผลข้อมูลไว้ที่ displayValue
+      if (displayValue.includes(".")) {
+        // ตรวจสอบว่ามีทศนิยมอยู่แล้ว และไม่ให้เกิน 2 ตำแหน่ง
+        let [integerPart, decimalPart] = displayValue.split(".");
+        if (decimalPart.length >= 2) return; // ป้องกันการเพิ่มเกิน 2 ตำแหน่ง
+      }
+
       calculatorDisplay.textContent =
-        displayVlave === "0" ? number : displayVlave + number; //ตั้งค่าเป็น 0 เริ่มต้นเมื่อมีการกดก็จะทำการบวกตัวแปรนับเบอร์เข้าไป
+        displayValue === "0" ? number : displayValue + number;
 
       console.log("Current number:", calculatorDisplay.textContent);
-
-
-
-
     }
 
-    //การควบคุมเกี่ยวกับจุดทศนิยมถ้ากด "."เมื่อทำการกดก็จะให้ตัวเลข 0 มันมาอยู่ข้างหน้า
+    // การควบคุมเกี่ยวกับจุดทศนิยม
     function addDecimal() {
-      if (!calculatorDisplay.textContent.includes(".")) {
-        // สามารถทำการกดจุดได้แค่ครั้งเดียวไม่สามารถทำการกดจุดได้อีกแล้ว
-        calculatorDisplay.textContent = `${calculatorDisplay.textContent}.`;
+      let displayValue = calculatorDisplay.textContent;
+
+      // ถ้าความยาวเกิน 14 (เพราะ "." กิน 1 ตัว) ไม่ให้เพิ่มจุดทศนิยม
+      if (displayValue.length >= 14) return;
+
+      if (!displayValue.includes(".")) {
+        calculatorDisplay.textContent = `${displayValue}.`;
       }
-      console.log("addDeciml :", calculatorDisplay.textContent);
+
+      console.log("addDecimal:", calculatorDisplay.textContent);
     }
+
+
 
     // ฟังก์ชันจัดการโอเปอเรเตอร์
     function callperator(call) {
@@ -707,6 +718,11 @@ fetch(apiUrl)
         callperator(key); // เรียกฟังก์ชันโอเปอเรเตอร์
       }
     });
+
+
+
+    //-------------------ส่งค่าไปให้ Ajex.js-----------------------------------
+
 
 
 
@@ -1103,7 +1119,7 @@ fetch(apiUrl)
     //******************************ตัวนี่สำคัญสำหรับการแก้ bug.ในการทำงาน  ค่าที่ส่งมาคือค่าที่ถูกต้องแล้ว แต่ต้องเอาค่าส่งมาเข้าไปรวมกับ  Array ใน scrip.js ************************************************** */
 
 
- // ✅ เปลี่ยนจาก const เป็น let
+    // ✅ เปลี่ยนจาก const เป็น let
 
 
 
@@ -1146,7 +1162,7 @@ fetch(apiUrl)
 
 
 
-   
+
 
 
 
@@ -1300,8 +1316,7 @@ fetch(apiUrl)
 
 
 
-
-        fetch("http://127.0.0.1:8080/update-stock/", {
+        fetch("http://[2001:44c8:44c5:8e4c:8d1:e48a:2672:947c]:8080/update-stock/", {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
@@ -1330,12 +1345,34 @@ fetch(apiUrl)
 
 
 
+
+
+
+
+            function getCSRFToken() {
+              let cookieValue = null;
+              if (document.cookie && document.cookie !== "") {
+                  const cookies = document.cookie.split(";");
+                  for (let i = 0; i < cookies.length; i++) {
+                      const cookie = cookies[i].trim();
+                      if (cookie.startsWith("csrftoken=")) {
+                          cookieValue = cookie.substring("csrftoken=".length, cookie.length);
+                          break;
+                      }
+                  }
+              }
+              return cookieValue;
+          }
+          
+          const csrfToken = getCSRFToken(); // ✅ ดึงค่า CSRF Token
+          console.log("CSRF Token:5555", csrfToken);
+
             setTimeout(() => {
-              fetch("http://127.0.0.1:8080/save-sale-record/", {
+              fetch("http://[2001:44c8:44c5:8e4c:8d1:e48a:2672:947c]:8080/save-sale-record/", {
                 method: "POST",
                 headers: {
                   "Content-Type": "application/json",
-                  "X-CSRFToken": csrfToken,
+                  "X-CSRFToken": getCSRFToken()
                 },
                 credentials: "include",
                 body: JSON.stringify(savedResults[savedResults.length - 1]),
@@ -1386,9 +1423,23 @@ fetch(apiUrl)
                     console.error("❌ No totalAmount found in response!");
                   }
                 })
+
+
+              
                 .catch(error => console.error("❌ Error fetching data:", error));
 
-            }, 1000);
+
+
+                
+
+
+
+
+          
+
+
+
+              }, 1000);
 
 
 
@@ -1810,18 +1861,28 @@ fetch(apiUrl)
             found = true;
           }
         });
-
         if (!found) {
-          selectedProduct.totalItems.push(selectedProduct.currentTotal);
+          let formattedTotal = parseFloat(selectedProduct.currentTotal).toFixed(2);
+          let formattedCalculatorValue = parseFloat(calculatorDisplay.textContent).toFixed(2);
+
+          // push ค่าที่ถูกแปลงเป็น 2 ตำแหน่งแล้ว
+          selectedProduct.totalItems.push(parseFloat(formattedTotal));
+
           addRowToTable(
             itemtCouter,
             selectedProduct.product.barcode,
             selectedProduct.product.name,
             "kg",
-            calculatorDisplay.textContent,
-            selectedProduct.currentTotal,
-            selectedProduct.product.stock
+            parseFloat(formattedCalculatorValue), // แปลงเป็นตัวเลขจริง
+            parseFloat(formattedTotal), // แปลงเป็นตัวเลขจริง
+            parseFloat(selectedProduct.product.stock).toFixed(2) // ป้องกัน stock มีค่าเกิน 2 ตำแหน่ง
           );
+
+          console.log("🔹 Total Items (Updated):", selectedProduct.totalItems);
+          console.log("🔹 Calculator Display:", formattedCalculatorValue);
+
+
+
 
           // ✅ ตรวจสอบว่ามีสินค้าชื่อเดียวกันอยู่ใน stockAdjustments หรือไม่
           const existingItemIndex = stockAdjustments.findIndex(item => item.product === selectedProduct.product.name);
@@ -1935,138 +1996,142 @@ fetch(apiUrl)
     console.log("📤 กำลังส่งข้อมูลไป API:", JSON.stringify({ updates: stockAdjustments }));
     console.log("📦 ค่า stockAdjustments ก่อนส่ง:", stockAdjustments);
 
-  
-  
 
 
 
 
 
-  let itemtCouter = 1;
 
-  function addRowToTable(itemt, barcode, product, kg, count, price, stock1) {
+
+    let itemtCouter = 1;
+
+    function addRowToTable(itemt, barcode, product, kg, count, price, stock1) {
       const tableBody = document.getElementById("itemTableBody"); // ดึง tbody ของตาราง
       const newRow = document.createElement("tr"); // สร้างแถวใหม่
-  
+
       // สร้าง cell สำหรับลำดับ
       const itemtCell = document.createElement("td");
       itemtCell.textContent = `${itemt}`;
       newRow.appendChild(itemtCell);
       itemtCouter++; // เพิ่มค่าในระบบ
-  
+
       // สร้างเซลสำหรับชื่อสินค้า
       const barcodeCell = document.createElement("td");
       barcodeCell.textContent = `${barcode}`;
       newRow.appendChild(barcodeCell);
-  
+
       const productCell = document.createElement("td");
       productCell.textContent = product;
       newRow.appendChild(productCell);
-  
+
       const kgCell = document.createElement("td");
       kgCell.textContent = kg;
       newRow.appendChild(kgCell);
-  
+
+
       const countCell = document.createElement("td");
-      countCell.textContent = `${count} `;
+      countCell.textContent = `${Math.round(count * 100) / 100}`;
       newRow.appendChild(countCell);
-  
+
+
+
+
       const priceCell = document.createElement("td");
       priceCell.textContent = `${price.toLocaleString(undefined, {
-          minimumFractionDigits: 2,
-          maximumFractionDigits: 2,
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
       })} บาท`;
       newRow.appendChild(priceCell);
-  
+
       const stock1Cell = document.createElement("td");
       stock1Cell.textContent = `${stock1} `;
       newRow.appendChild(stock1Cell);
-  
+
       const deleteProductCell = document.createElement("td");
       deleteProductCell.innerHTML = `<button type="button" class="btn btn-danger remove-item">ลบข้อมูล</button>`;
       newRow.appendChild(deleteProductCell);
-  
+
       tableBody.appendChild(newRow);
-      
-  
-      
-  
+
+
+
+
       addRemoveEvent(); // เพิ่ม Event Listener ให้กับปุ่มลบทั้งหมด
-  }
-
-
-
-
-
-
- /*   let itemtCouter = 1;
-
-function addRowToTable(itemt, barcode, product, kg, count, price, stock1) {
-    const tableBody = document.getElementById("itemTableBody");
-
-    // ✅ ใช้ barcode เป็นตัวอ้างอิงเพื่อลดปัญหาซ้ำซ้อน
-    let existingRow = document.querySelector(`#itemTableBody tr[data-barcode="${barcode}"]`);
-
-    if (existingRow) {
-        console.log("🟢 อัปเดตจำนวนสินค้าในตาราง:", product);
-
-        // ✅ ดึงค่าปัจจุบันจาก stockAdjustments
-        let updatedProduct = stockAdjustments.find(item => item.product === product);
-
-        if (!updatedProduct) {
-            console.warn(`⚠️ ไม่พบสินค้า ${product} ใน stockAdjustments`);
-            return;
-        }
-
-        let quantityCell = existingRow.querySelector(".cart-quantity");
-        let totalCell = existingRow.querySelector(".cart-total");
-
-        // ✅ ใช้ค่าล่าสุดจาก stockAdjustments
-        let newQuantity = updatedProduct.quantity;
-        let newTotalPrice = updatedProduct.TotalPrice;
-
-        quantityCell.innerText = newQuantity.toFixed(2);
-        totalCell.innerText = newTotalPrice.toLocaleString(undefined, {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2,
-        }) + " บาท";
-
-    } else {
-        console.log("🆕 เพิ่มสินค้าใหม่ลงในตาราง:", product);
-
-        const newRow = document.createElement("tr");
-        newRow.setAttribute("data-barcode", barcode); // ใช้ barcode เป็น identifier
-
-        newRow.innerHTML = `
-            <td class="1border p-2">${itemt}</td>
-            <td class="1border p-2">${barcode}</td>
-            <td class="1border p-2">${product}</td>
-            <td class="1border p-2">${kg}</td>
-            <td class="1border p-2 cart-quantity">${parseFloat(count).toFixed(2)}</td>
-            <td class="1border p-2 cart-total">${price.toLocaleString(undefined, {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2,
-            })} บาท</td>
-            <td class="1border p-2">${stock1}</td>
-            <td class="1border p-2">
-                <button type="button" class="btn btn-danger remove-item">ลบข้อมูล</button>
-            </td>
-        `;
-        tableBody.appendChild(newRow);
     }
 
-    addRemoveEvent(); // ✅ อัปเดต Event Listener
-}
-*/
-  
-  
+
+
+
+
+
+    /*   let itemtCouter = 1;
+   
+   function addRowToTable(itemt, barcode, product, kg, count, price, stock1) {
+       const tableBody = document.getElementById("itemTableBody");
+   
+       // ✅ ใช้ barcode เป็นตัวอ้างอิงเพื่อลดปัญหาซ้ำซ้อน
+       let existingRow = document.querySelector(`#itemTableBody tr[data-barcode="${barcode}"]`);
+   
+       if (existingRow) {
+           console.log("🟢 อัปเดตจำนวนสินค้าในตาราง:", product);
+   
+           // ✅ ดึงค่าปัจจุบันจาก stockAdjustments
+           let updatedProduct = stockAdjustments.find(item => item.product === product);
+   
+           if (!updatedProduct) {
+               console.warn(`⚠️ ไม่พบสินค้า ${product} ใน stockAdjustments`);
+               return;
+           }
+   
+           let quantityCell = existingRow.querySelector(".cart-quantity");
+           let totalCell = existingRow.querySelector(".cart-total");
+   
+           // ✅ ใช้ค่าล่าสุดจาก stockAdjustments
+           let newQuantity = updatedProduct.quantity;
+           let newTotalPrice = updatedProduct.TotalPrice;
+   
+           quantityCell.innerText = newQuantity.toFixed(2);
+           totalCell.innerText = newTotalPrice.toLocaleString(undefined, {
+               minimumFractionDigits: 2,
+               maximumFractionDigits: 2,
+           }) + " บาท";
+   
+       } else {
+           console.log("🆕 เพิ่มสินค้าใหม่ลงในตาราง:", product);
+   
+           const newRow = document.createElement("tr");
+           newRow.setAttribute("data-barcode", barcode); // ใช้ barcode เป็น identifier
+   
+           newRow.innerHTML = `
+               <td class="1border p-2">${itemt}</td>
+               <td class="1border p-2">${barcode}</td>
+               <td class="1border p-2">${product}</td>
+               <td class="1border p-2">${kg}</td>
+               <td class="1border p-2 cart-quantity">${parseFloat(count).toFixed(2)}</td>
+               <td class="1border p-2 cart-total">${price.toLocaleString(undefined, {
+                   minimumFractionDigits: 2,
+                   maximumFractionDigits: 2,
+               })} บาท</td>
+               <td class="1border p-2">${stock1}</td>
+               <td class="1border p-2">
+                   <button type="button" class="btn btn-danger remove-item">ลบข้อมูล</button>
+               </td>
+           `;
+           tableBody.appendChild(newRow);
+       }
+   
+       addRemoveEvent(); // ✅ อัปเดต Event Listener
+   }
+   */
+
+
 
 
     //---------------------------------------------------การ updateStock จาก ajax.js --------------------------------------
 
 
-    
-  
+
+
 
     //-------------------------------------------**********************-----------------------------------
 
@@ -2342,12 +2407,13 @@ function addRowToTable(itemt, barcode, product, kg, count, price, stock1) {
     //--------------------------------ปุ่มเคลียร-------------------------
     function comlum22() {
 
-      fetch("http://127.0.0.1:8080/Dashboard/", {
+      fetch("http://[2001:44c8:44c5:8e4c:8d1:e48a:2672:947c]:8080/Dashboard/", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
-          "X-CSRFToken": csrfToken,
+          "X-CSRFToken": csrfToken
         },
+        credentials: "include",  // ✅ ให้ส่ง Cookie ไปด้วย
       })
         .then(response => {
           if (response.ok) {
@@ -2360,6 +2426,16 @@ function addRowToTable(itemt, barcode, product, kg, count, price, stock1) {
         })
         .catch(error => {
           console.error("Fetch error:", error);
+
+
+          
+              
+
+
+
+
+
+
         });
 
 

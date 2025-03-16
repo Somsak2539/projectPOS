@@ -2,6 +2,9 @@
 
 {% for Product1 in products %}
 <div x-data="{ open: false }">
+
+    
+    
     <div class="space-y-1 rounded-md border border-white-light bg-white p-3 shadow-md dark:border-[#1B2E4B] dark:bg-black">
         <!-- คลิกที่รูปเพื่อเปิด Pop-up -->
         <div class="max-h-40 overflow-hidden rounded-md cursor-pointer" @click="open = true">
@@ -20,8 +23,10 @@
         <p class="text-xs dark:text-white">
             <span class="font-bold">Barcode</span> : {{ Product1.barcode }}
         </p>
-        
     </div>
+
+
+    
 
     <!-- Pop-up ที่จะเปิดขึ้นเมื่อคลิกรูป -->
     <div class="fixed inset-0 z-50 hidden bg-black/60 flex items-center justify-center" :class="open && '!block'">
@@ -42,18 +47,30 @@
                     <div class="mb-5">
                         <div class="flex">
                             <div class="bg-[#eee] flex justify-center items-center ltr:rounded-l-md rtl:rounded-r-md px-3 font-semibold border ltr:border-r-0 rtl:border-l-0 border-[#e0e6ed] dark:border-[#17263c] dark:bg-[#1b2e4b]">
-                                Bath
-                            </div>
-                            <div class="bg-[#eee] flex justify-center items-center rounded-none px-3 font-semibold border ltr:border-r-0 rtl:border-l-0 border-[#e0e6ed] dark:border-[#17263c] dark:bg-[#1b2e4b]">
                                 ใส่จำนวนสินค้า
                             </div>
-                            <input type="number" id="quantity-{{ Product1.id }}" value="1" min="1">
+                            <div class="bg-[#eee] flex justify-center items-center rounded-none px-3 font-semibold border ltr:border-r-0 rtl:border-l-0 border-[#e0e6ed] dark:border-[#17263c] dark:bg-[#1b2e4b]">
+                               Kg
+                            </div>
+
+
+                            <input type="text" id="quantity-{{ Product1.id }}" value="1.00" 
+                             oninput="formatInput(this)" onblur="validateDecimal(this)">
+
+
+
+                     
+                     
+
+
+                     
+
                         </div>
                     </div>
                 </form>
             </div>
             <button type="button" class="btn btn-secondary add-to-cart-btn" 
-            data-product-id="{{ Product1.id }}" @click="showAlert()">
+            data-product-id="{{ Product1.id }}" onclick="resetCalculatorDisplay(); resetQuantity('{{ Product1.id }}'); resetResultBox();" @click="showAlert() ">
               เพิ่มรายการสินค้า
              </button>
         </div>
@@ -66,6 +83,9 @@
 
 
 
+
+
+
 <script>
     async function showAlert() {
         new window.Swal({
@@ -75,4 +95,8 @@
             padding: '2em',
         });
     }
+
+
+
+   
 </script>

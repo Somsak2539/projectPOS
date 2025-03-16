@@ -348,15 +348,16 @@ td {
                                       <!-- placeholder -->
                                       <form id="searchForm">
                                         <select id="categorySelect" name="category" class="selectize">
-                                        <option value="">-- ทุกหมวดหมู่ --</option>
+                                         <!-- <option value="">-- ทุกหมวดหมู่ --</option>-->
                                         {% for category in categories %}
-                                            <option value="{{ category.id }}" {% if request.GET.category == category.id|stringformat:"s" %}selected{% endif %}>
-                                                {{ category.name }}
-                                            </option>
+                                        {% if category.id == 2 or category.id == 10 %}  <!-- ตัวนี้คือประเภทของ catagory  -->
+                                        <option value="{{ category.id }}">{{ category.name }}</option>
+                                           
+                                            {% endif %}   <!-- เหลือกบางประเถท  -->
                                         {% endfor %}
                                     </select>
                                          <button type="submit" class="btn btn-success mt-3">ค้นหา</button>
-                                  </form>
+                                   </form>
                                     
 
 
@@ -460,9 +461,7 @@ td {
                   <div class="mt-8 flex items-center justify-end">
                       <button type="button" class="btn btn-outline-danger"
                           @click="toggle">Discard</button>
-                      <button type="button"
-                          class="btn btn-primary ltr:ml-4 rtl:mr-4"
-                          @click="toggle">Save</button>
+                      
                        
                   </div>
               </div>
@@ -612,14 +611,16 @@ td {
           </div>
 
 
+
+             
           
           <div class="b1_1">
             <div class="b1_1_1">
-              <button class="custom-button2" id="row11">หมูกระทะ</button>
-              <button class="custom-button2" id="row12">คอหมูย่าง</button>
-              <button class="custom-button2" id="row13">ไส้อ่อน</button>
-              <button class="custom-button2" id="row14">ไส่ใหญ่</button>
-              <button class="custom-button2" id="row15">ซีกโครงหมู</button>
+              <button class="custom-button2" id="row11#"> - <!-- หมู่กะทะ --></button>
+              <button class="custom-button2" id="row12#">- <!--คอหมูย่าง--></button>
+              <button class="custom-button2" id="row13#">- <!--ไส้อ่อน--></button>
+              <button class="custom-button2" id="row14#">- <!--ไส่ใหญ่--></button>
+              <button class="custom-button2" id="row15">- ซีกโครงหมู</button>
               <button class="custom-button3" id="row16">Barcode</button>
             </div>
           </div>
@@ -640,11 +641,11 @@ td {
                 </div>
               </div>
             </div>
-            <button class="custom-button2" id="row17">ไหล่หมู</button>
-            <button class="custom-button2" id="row18">สันนอก</button>
-            <button class="custom-button2" id="row19">สามชั้น</button>
-            <button class="custom-button2" id="row20">กระดูกหมูชูป</button>
-            <button class="custom-button2" id="row21">หมูบด</button>
+            <button class="custom-button2" id="row17#">- <!--ไหล่หมู--></button>
+            <button class="custom-button2" id="row18#">- <!--สันนอก--></button>
+            <button class="custom-button2" id="row19#">- <!--สามชั้น--></button>
+            <button class="custom-button2" id="row20#">- <!--กระดูกหมูชูป--></button>
+            <button class="custom-button2" id="row21#">- <!--หมูบด--></button>
             <button class="custom-button2" id="row22">Clean</button>
           </div>
         </div>
@@ -671,7 +672,7 @@ td {
 
       <div class="box">
         <div class="b21">
-          <div class="result-box">0</div>
+          <div id="calculatorDisplay" class="result-box">0</div>
           <i id="currency">บาท</i>
         </div>
 
@@ -809,8 +810,11 @@ td {
     
 
 
+    
+     <script src="{% static 'assets/dadhBoard/js/script.js' %}"></script>
     <link rel="stylesheet" href="{% static "assets/dadhBoard/css/style1.css"%}">
-    <script src="{% static 'assets/dadhBoard/js/script.js' %}"></script>
+
+  
 
   
 
@@ -854,14 +858,10 @@ td {
 </script>
 
 
-
-
-
-
 <!--สำหรับการเรียกใช้ pop up เข้ามาทำงานในนี้-->
 
-<script>
-  document.addEventListener("DOMContentLoaded", function() {
+<!-- <script>
+   document.addEventListener("DOMContentLoaded", function() {
       document.getElementById("searchForm").addEventListener("submit", function(event) {
           event.preventDefault(); // ✅ ป้องกันหน้าเว็บรีโหลด
   
@@ -884,12 +884,84 @@ td {
           .catch(error => console.error("เกิดข้อผิดพลาด: ", error));
       });
   });
-  </script>
+  </script>-->
   
   
 
 
+<!-- ✅ รายระเอียดใน pop UP-->
 
+  <script>
+
+    function formatInput(input) {
+      let value = input.value;
+  
+      // ✅ อนุญาตให้พิมพ์ตัวเลขและจุดทศนิยมเท่านั้น
+      input.value = value.replace(/[^0-9.]/g, ""); 
+  
+      // ✅ ป้องกันไม่ให้ใส่จุด `.` มากกว่า 1 ครั้ง
+      let parts = input.value.split(".");
+      if (parts.length > 2) {
+          input.value = parts[0] + "." + parts.slice(1).join(""); 
+      }
+  
+      // ✅ จำกัดทศนิยมไม่เกิน 2 ตำแหน่งขณะพิมพ์
+      if (parts.length === 2 && parts[1].length > 2) {
+          input.value = parts[0] + "." + parts[1].slice(0, 2);
+      }
+  
+      // ✅ จำกัดจำนวนเต็มไม่เกิน 2 หลัก
+      if (parts[0].length > 2) {
+          input.value = parts[0].slice(-2) + (parts[1] ? "." + parts[1] : "");
+      }
+  }
+  
+  function validateDecimal(input) {
+      let value = input.value;
+  
+      // ✅ ถ้าค่าว่าง หรือไม่ใช่ตัวเลข ให้ตั้งเป็น 1.00
+      if (value === "" || isNaN(value)) {
+          input.value = "1.00";
+          return;
+      }
+  
+      let num = parseFloat(value);
+  
+      // ✅ ถ้าค่าต่ำกว่า 0.01 ให้ตั้งเป็น 0.01
+      if (num < 0.01) {
+          input.value = "0.01";
+          return;
+      }
+  
+      // ✅ ถ้าค่ามากกว่า 99.99 ให้ตั้งเป็น 99.99
+      if (num > 99.99) {
+          input.value = "99.99";
+          return;
+      }
+  
+      // ✅ บังคับให้มีทศนิยม 2 ตำแหน่งเมื่อออกจากช่อง
+      input.value = num.toFixed(2);
+  }
+  
+  
+  
+    
+
+
+ 
+
+    function resetResultBox() {
+        setTimeout(() => {  // ✅ หน่วงเวลาเพื่อให้แน่ใจว่า `.result-box` อยู่ใน DOM
+            let resultBox = document.querySelector(".result-box");
+    
+            if (resultBox) {
+                resultBox.textContent = "0";  // ✅ รีเซ็ตค่าเป็น 0
+            } else {
+                console.error("⚠️ ไม่พบ .result-box ใน DOM");
+            }
+        }, 100);  // ✅ รอ 100ms ก่อนรีเซ็ตค่า
+    }
+    
 
     
 
@@ -899,14 +971,52 @@ td {
 
 
 
+</script>
+
+
+
+    
+
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      var categorySelect = document.getElementById("categorySelect");
+  
+      document.getElementById("searchForm").addEventListener("submit", function(event) {
+          event.preventDefault(); // ✅ ป้องกันหน้าเว็บรีโหลด
+  
+          var categoryId = categorySelect.value; // ✅ ดึงค่าหมวดหมู่ที่เลือก
+          var productList = document.getElementById("productList"); // ✅ พื้นที่แสดงสินค้า
+  
+          fetch(`/Dashboard/?category=${categoryId}`, {
+              headers: { "X-Requested-With": "XMLHttpRequest" } // ✅ แจ้ง Django ว่าเป็น AJAX Request
+          })
+          .then(response => response.text()) 
+          .then(data => {
+              productList.innerHTML = data; // ✅ อัปเดตรายการสินค้าแบบ Real-Time
+          })
+          .catch(error => console.error("เกิดข้อผิดพลาด: ", error));
+      });
+  });
+  
+  
+    </script>
 
 
 
 
 
 
-   <script defer src="{% static 'js/script.js' %}"></script>
-    <script defer src="{% static 'js/ajax.js' %}"></script>
+
+
+
+
+
+
+
+
+
+  <script defer src="{% static 'js/ajax.js' %}"></script>
    <!-- JavaScript Files -->
    <script src="{% static 'assets/js/swiper-bundle.min.js' %}"></script>
    <script src="{% static 'assets/js/highlight.min.js' %}"></script>

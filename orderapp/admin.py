@@ -4,7 +4,7 @@ from orderapp.models import Order,OrderDetail
 
 
 
-class ManageProduct3(admin.ModelAdmin):
+'''class ManageProduct3(admin.ModelAdmin):
     
     list_display = ["fullname", "phone","address","total_with_comma", "created","customer"]
     
@@ -16,5 +16,5 @@ class ManageProduct4(admin.ModelAdmin):
     
     list_display = ["product","price_with_comma","quantity","created","order","sub_total","DetailBuy"]
     
-admin.site.register(OrderDetail, ManageProduct4)
+admin.site.register(OrderDetail, ManageProduct4)'''
 

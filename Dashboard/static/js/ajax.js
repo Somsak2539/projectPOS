@@ -16,8 +16,9 @@ if (!productContainer || !productContainer1) {
 }
 
 
+
 // ✅ โหลดข้อมูลสินค้าจาก API
-fetch("http://127.0.0.1:8080/blog/list/")
+fetch("http://[2001:44c8:44c5:8e4c:8d1:e48a:2672:947c]:8080/blog/list/")
     .then((response) => response.json())
     .then((data) => {
         blogArray = data; // กำหนดค่าให้ตัวแปร
@@ -111,6 +112,11 @@ document.addEventListener("click", function (event) {
                   </h6>`;
         }
 
+
+      
+
+
+
         // ✅ รีเซ็ตค่าแสดงผล
         const calculatorDisplay = document.getElementById("calculatorDisplay");
         if (calculatorDisplay) {
@@ -180,9 +186,9 @@ function updateCartTable(product, quantity) {
             <td class="1border p-2">Kg/pcs</td>
             <td class="1border p-2 cart-quantity">${updatedProduct.quantity.toFixed(2)}</td>
             <td class="1border p-2 cart-total">${updatedProduct.TotalPrice.toLocaleString(undefined, {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2,
-            })} บาท</td>
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+        })} บาท</td>
             <td class="1border p-2">${product.stock}</td>
             <td class="1border p-2">
                 <button type="button" class="btn btn-danger remove-item">ลบข้อมูล</button>
@@ -278,7 +284,7 @@ function addRemoveEvent() {
 //********************************************************************* */
 
 // ✅ โหลดข้อมูลสินค้าจาก API
-fetch("http://127.0.0.1:8080/blog/list/")
+fetch("http://[2001:44c8:44c5:8e4c:8d1:e48a:2672:947c]:8080/blog/list/")
     .then((response) => response.json())
     .then((data) => {
         blogArray = data;

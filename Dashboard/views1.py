@@ -33,6 +33,7 @@ from django.utils.timezone import make_aware
 from django.utils import timezone  # ✅ นำเข้า timezone สำหรับจัดการโซนเวลา
 import time
 
+
 # Create your views here.
 
 
@@ -184,7 +185,10 @@ class SaveSaleRecordAPIView(APIView):
         
         
         
-        
+@method_decorator(csrf_exempt, name='dispatch')
+class DashboardAPIView(APIView):
+    def put(self, request):
+        return Response({"message": "Success!"}, status=200)     
 
 
 def calculate_crc16(data: str) -> str:

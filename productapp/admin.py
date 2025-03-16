@@ -17,7 +17,7 @@ from django.db import models
 admin.site.register(Product, ManageProduct)'''
 
 class ManageProduct1(admin.ModelAdmin):
-    list_display = ["name"]
+    list_display = ["id","name"]
 
 admin.site.register(Category, ManageProduct1)
 

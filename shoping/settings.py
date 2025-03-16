@@ -19,7 +19,7 @@ SECRET_KEY = 'django-insecure-t=278n2b3dn-ke#e&z_s0(kw8=gi47bcy50xx!ndy17peynb03
 DEBUG = True
 
 # ✅ ตั้งค่า Host ที่อนุญาต
-ALLOWED_HOSTS = ["*", "127.0.0.1", "[ 2001:44c8:42c5:f5a6:8333:a098:14e6:42b8]"]
+ALLOWED_HOSTS = ["*", "127.0.0.1", "[2001:44c8:44c5:8e4c:8d1:e48a:2672:947c]","0.0.0.0","192.168.40.250"]
 
 # ✅ ติดตั้งแอปที่ต้องใช้
 INSTALLED_APPS = [
@@ -52,6 +52,9 @@ CHANNEL_LAYERS = {
     },
 }
 
+
+
+
 # ✅ Django REST Framework
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
@@ -67,7 +70,7 @@ MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
-    "django.middleware.csrf.CsrfViewMiddleware",
+    #"django.middleware.csrf.CsrfViewMiddleware", # ✅ CORS ลองปิดดู clean ต้องส่ง crfs token ไปเพราะยังไม่ถูกส่งใช้สำหรับการทดสอบเท่านั้น 
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
@@ -77,28 +80,51 @@ MIDDLEWARE = [
 
 
 # ✅ อนุญาตให้ใช้ CORS (Cross-Origin)
+
 CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_HEADERS = [
     "content-type",
     "X-CSRFToken",
+   
 ]
+
+# ✅ ปรับค่า CSRF Cookie
+CSRF_USE_SESSIONS = True  # ❌ ปิดการใช้ CSRF Token ผ่าน Session
+
+#CSRF_COOKIE_HTTPONLY = True  # ✅ อนุญาตให้ JavaScript อ่าน Cookie CSRF
+#CSRF_COOKIE_SECURE = True  # ✅ ใช้ HTTPS เท่านั้น ถ้าไม่ได้ใช้ HTTPS ต้องตั้งเป็น False
+#CSRF_COOKIE_SAMESITE = "None"  # ✅ อนุญาตให้ใช้งานข้าม Origin
+#SESSION_COOKIE_SECURE = True  # ✅ ปิดเพื่อให้ส่ง Session Cookie ได้
+#SESSION_COOKIE_SAMESITE = "None"  # ✅ อนุญาตให้ส่ง Session Cookie ข้าม Origin
 
 CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:8080",
     "http://localhost:8080",
-    "http://[2001:44c8:42c5:f5a6:8333:a098:14e6:42b8]:8080",
+    "http://[2001:44c8:44c5:8e4c:8d1:e48a:2672:947c]:8080",
+    "http://[2001:44c8:48f3:2772:dc0d:bdd0:30a7:3266]:8080", 
+   # "http://192.168.40.250:8080",# Ip เครืองตัวเอง
+    
+
 ]
 
 # ✅ อนุญาตให้ CSRF ทำงานกับไอพีเซิร์ฟเวอร์
 CSRF_TRUSTED_ORIGINS = [
-    "http://127.0.0.1:8080",
-    "http://localhost:8080",
-    "http://[2001:44c8:42c5:f5a6:8333:a098:14e6:42b8]:8080",
+    "http://127.0.0.1:8080",#ตัวนี้เป็น http ธรรมดา
+    "http://localhost:8080",#ตัวนี้เป็น http ธรรมดา
+    "http://[2001:44c8:44c5:8e4c:8d1:e48a:2672:947c]:8080", #ตัวนี้เป็น http ธรรมดา
+    "https://127.0.0.1:8080",#ตัวนี้เป็น http ธรรมดา
+    "https://localhost:8080",#ตัวนี้เป็น http ธรรมดา
+    "https://[2001:44c8:48f3:2772:c93a:186:3b11:2ab6]:8080",  #ตัวนี้เป็น https 
+    
+    "https://[2001:44c8:48f3:2772:9585:8354:93a2:c187]:8080",
+    #"http://192.168.40.250:8080",  # Ip เครืองตัวเอง
 ]
 
 # ✅ ปิด `SECURE_CROSS_ORIGIN_OPENER_POLICY`
 SECURE_CROSS_ORIGIN_OPENER_POLICY = None
+
+
 
 # ✅ URL Configuration
 ROOT_URLCONF = "shoping.urls"
@@ -107,6 +133,7 @@ ROOT_URLCONF = "shoping.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
+        
         'DIRS': [os.path.join(BASE_DIR, 'DashboardUser/templates')], 
         "APP_DIRS": True,
         "OPTIONS": {

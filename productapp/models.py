@@ -2,6 +2,7 @@
 
 
 from django.db import models
+from django.apps import AppConfig
 
 
 class Product(models.Model):
@@ -22,6 +23,17 @@ class Category(models.Model):
 
     def __str__(self):
         return self.name
+    
+    
+    
+    class Meta:
+        verbose_name = "Category"
+        verbose_name_plural = "ประเภทรายการสินค้า"
+
+    def __str__(self):
+        return self.name
+    
+    
 
 # โมเดล Product
 class Product1(models.Model):
@@ -37,6 +49,11 @@ class Product1(models.Model):
     updated_at = models.DateTimeField(auto_now=True)      # วันที่แก้ไข
     barcode = models.IntegerField()
     
+    
+    
+    class Meta:
+        verbose_name = "Product"
+        verbose_name_plural = "รายการสินค้า"
     
     
     def __str__(self):

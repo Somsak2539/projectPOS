@@ -19,7 +19,8 @@ from django.urls import path,include
 from django.conf.urls.static import static  #ใน Django เพื่อใช้สำหรับการให้บริการไฟล์สื่อ (media files) ในโหมด development
 from django.conf import settings  #ป็นการนำเข้า (import) ตัวแปร settings จากโมดูล django.conf ใน Django ซึ่งเป็นตัวแปรที่ให้คุณเข้าถึงการตั้งค่า (configuration) ของโปรเจกต์ Django ที่กำหนดไว้ในไฟล์ settings.py
 from rest_framework.routers import DefaultRouter #เป็นของคำสั่ง View Reset
-
+from .custom_admin import custom_admin  # ✅ นำเข้า Custom Admi # ✅ นำเข้า Custom Admin
+from django.views.decorators.csrf import csrf_exempt
 
 router = DefaultRouter()
 
@@ -27,7 +28,12 @@ admin.site.site_header="somsak sonngai"
 admin.site.site_title="somsak sonngai"
 admin.site.index_title="somsak sonngai"
 
+
+# ปิด CSRF เฉพาะที่ admin ทำการปิด CSRF 
+#admin.site.login = csrf_exempt(admin.site.login)
+
 urlpatterns = [
+   
     path('admin/', admin.site.urls,name='admin1'),
     path('',include("DashboardUser.urls")),
     path('',include("productapp.urls")),
