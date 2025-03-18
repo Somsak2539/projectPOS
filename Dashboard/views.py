@@ -35,6 +35,9 @@ from django.utils import timezone  # ✅ นำเข้า timezone สำห�
 from rest_framework.authentication import SessionAuthentication
 from .authentication import CsrfExemptSessionAuthentication  # ✅ Import class ที่เราสร้าง คือต้องการที่จะทำการปิด csrf token
 
+
+from django.views.decorators.csrf import ensure_csrf_cookie
+
 # Create your views here.
 
 
@@ -218,13 +221,16 @@ class UpdateStockAPIView(APIView):
         return Response({"updated": response_data}, status=status.HTTP_200_OK)
     
     
- 
+
+@ensure_csrf_cookie  # ✅ บังคับให้เซิร์ฟเวอร์ตั้งค่า CSRF Token
+def my_view(request):
+    return JsonResponse({"message": "CSRF Token set"})
     
 @method_decorator(csrf_exempt, name='dispatch')  # ✅ ปิด CSRF Protection เฉพาะ API นี้
 class SaveSaleRecordAPIView(APIView):
     
     authentication_classes = [CsrfExemptSessionAuthentication, BasicAuthentication]  # ✅ ใช้ CsrfExemptSessionAuthentication
-   # authentication_classes = [SessionAuthentication, BasicAuthentication]
+    #authentication_classes = [SessionAuthentication, BasicAuthentication]
     permission_classes = [IsAuthenticated]  # ✅ ผู้เข้าระหัสจึงสามารถที่จะทำการเข้าได้เท่านั้น 
    
 

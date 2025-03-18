@@ -19,7 +19,7 @@ SECRET_KEY = 'django-insecure-t=278n2b3dn-ke#e&z_s0(kw8=gi47bcy50xx!ndy17peynb03
 DEBUG = True
 
 # ✅ ตั้งค่า Host ที่อนุญาต
-ALLOWED_HOSTS = ["*", "127.0.0.1", "[2001:44c8:44c5:8e4c:8d1:e48a:2672:947c]","0.0.0.0","192.168.40.250"]
+ALLOWED_HOSTS = ["*", "127.0.0.1", "[2001:44c8:4518:d5e5:50fb:df16:7172:726f]","0.0.0.0","172.20.10.5",  'somsaksonngai.duckdns.org', '182.232.184.157','somsaksonngai.site','localhost:8080',  ]
 
 # ✅ ติดตั้งแอปที่ต้องใช้
 INSTALLED_APPS = [
@@ -92,13 +92,14 @@ CORS_ALLOW_HEADERS = [
 # ✅ ปรับค่า CSRF Cookie
 CSRF_USE_SESSIONS = True  # ❌ ปิดการใช้ CSRF Token ผ่าน Session
 
-#CSRF_COOKIE_HTTPONLY = True  # ✅ อนุญาตให้ JavaScript อ่าน Cookie CSRF
-#CSRF_COOKIE_SECURE = True  # ✅ ใช้ HTTPS เท่านั้น ถ้าไม่ได้ใช้ HTTPS ต้องตั้งเป็น False
+CSRF_COOKIE_HTTPONLY = False  # ✅ อนุญาตให้ JavaScript อ่าน Cookie CSRF
+CSRF_COOKIE_SECURE = False  # ✅ ใช้ HTTPS เท่านั้น ถ้าไม่ได้ใช้ HTTPS ต้องตั้งเป็น False
 #CSRF_COOKIE_SAMESITE = "None"  # ✅ อนุญาตให้ใช้งานข้าม Origin
 #SESSION_COOKIE_SECURE = True  # ✅ ปิดเพื่อให้ส่ง Session Cookie ได้
 #SESSION_COOKIE_SAMESITE = "None"  # ✅ อนุญาตให้ส่ง Session Cookie ข้าม Origin
 
 CORS_ALLOWED_ORIGINS = [
+    'https://somsaksonngai.site',
     "http://127.0.0.1:8080",
     "http://localhost:8080",
     "http://[2001:44c8:44c5:8e4c:8d1:e48a:2672:947c]:8080",
@@ -116,7 +117,7 @@ CSRF_TRUSTED_ORIGINS = [
     "https://127.0.0.1:8080",#ตัวนี้เป็น http ธรรมดา
     "https://localhost:8080",#ตัวนี้เป็น http ธรรมดา
     "https://[2001:44c8:48f3:2772:c93a:186:3b11:2ab6]:8080",  #ตัวนี้เป็น https 
-    
+    'https://somsaksonngai.site',
     "https://[2001:44c8:48f3:2772:9585:8354:93a2:c187]:8080",
     #"http://192.168.40.250:8080",  # Ip เครืองตัวเอง
 ]

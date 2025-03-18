@@ -18,7 +18,7 @@ if (!productContainer || !productContainer1) {
 
 
 // ✅ โหลดข้อมูลสินค้าจาก API
-fetch("http://[2001:44c8:44c5:8e4c:8d1:e48a:2672:947c]:8080/blog/list/")
+fetch("http://localhost:8080/blog/list/")
     .then((response) => response.json())
     .then((data) => {
         blogArray = data; // กำหนดค่าให้ตัวแปร
@@ -284,7 +284,7 @@ function addRemoveEvent() {
 //********************************************************************* */
 
 // ✅ โหลดข้อมูลสินค้าจาก API
-fetch("http://[2001:44c8:44c5:8e4c:8d1:e48a:2672:947c]:8080/blog/list/")
+fetch("http://localhost:8080/blog/list/")
     .then((response) => response.json())
     .then((data) => {
         blogArray = data;

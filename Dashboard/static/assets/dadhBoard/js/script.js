@@ -4,7 +4,7 @@
 //const apiUrl = "http://127.0.0.1:8080/blog/list/";
 
 
-const apiUrl = "http://[2001:44c8:44c5:8e4c:8d1:e48a:2672:947c]:8080/blog/list/";
+const apiUrl = "http://localhost:8080/blog/list/";
 
 
 
@@ -1168,6 +1168,7 @@ fetch(apiUrl)
 
 
 
+// ดึง CSRF Token ก่อน
 
 
 
@@ -1316,7 +1317,7 @@ fetch(apiUrl)
 
 
 
-        fetch("http://[2001:44c8:44c5:8e4c:8d1:e48a:2672:947c]:8080/update-stock/", {
+        fetch("http://localhost:8080/update-stock/", {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
@@ -1368,11 +1369,11 @@ fetch(apiUrl)
           console.log("CSRF Token:5555", csrfToken);
 
             setTimeout(() => {
-              fetch("http://[2001:44c8:44c5:8e4c:8d1:e48a:2672:947c]:8080/save-sale-record/", {
+              fetch("http://localhost:8080/save-sale-record/", {
                 method: "POST",
                 headers: {
                   "Content-Type": "application/json",
-                  "X-CSRFToken": getCSRFToken()
+                  "X-CSRFToken": csrfToken
                 },
                 credentials: "include",
                 body: JSON.stringify(savedResults[savedResults.length - 1]),
@@ -1440,6 +1441,7 @@ fetch(apiUrl)
 
 
               }, 1000);
+
 
 
 
@@ -1528,8 +1530,10 @@ fetch(apiUrl)
     }
 
     const csrfToken = getCSRFToken();
-    console.log("CSRF Token:", csrfToken)
+    console.log("CSRF Token1234:", csrfToken)
     //-----------------------------------------------สำหรับการลบแถวในตาราง------------------------------------------------- */
+
+
 
     function DeleteItem() {
 
@@ -2407,7 +2411,7 @@ fetch(apiUrl)
     //--------------------------------ปุ่มเคลียร-------------------------
     function comlum22() {
 
-      fetch("http://[2001:44c8:44c5:8e4c:8d1:e48a:2672:947c]:8080/Dashboard/", {
+      fetch("http://localhost:8080/Dashboard/", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
