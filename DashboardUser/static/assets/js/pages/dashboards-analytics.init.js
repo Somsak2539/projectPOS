@@ -335,96 +335,112 @@ document.addEventListener("DOMContentLoaded", function () {
             .then(response => response.json())
             .then(data => {
                 console.log("✅ ข้อมูล JSON ที่ได้รับ:", data);
-                
 
                 let salesData, profitData, categories;
 
-
-
                 if (type === 'daily') {
                     salesData = data.daily_sales.map(item => parseFloat(item.total).toFixed(2));
-                    profitData = data.daily_profit1.map(item => parseFloat(item.total).toFixed(2)); // ✅ แก้ให้เก็บค่าต่อเนื่อง
-                    categories = data.daily_sales.map(item => item.date);
-    
+                    profitData = data.daily_profit1.map(item => parseFloat(item.total).toFixed(2));
+                    // ตัดเวลาและโซนเวลาออก (รูปแบบ ISO: "2025-02-17T00:00:00+07:00")
+                    categories = data.daily_sales.map(item => item.date.split('T')[0]);
+
                 } else if (type === 'weekly') {
                     salesData = data.weekly_sales.map(item => parseFloat(item.total).toFixed(2));
-                    profitData = data.weekly_profit1.map(item => parseFloat(item.total).toFixed(2)); // ✅ แก้ไข
-                    categories = data.weekly_sales.map(item => "สัปดาห์ที่ " + item.week);
-    
+                    profitData = data.weekly_profit1.map(item => parseFloat(item.total).toFixed(2));
+                    
+                    // สร้างป้ายชื่อสัปดาห์พร้อมช่วงวันที่
+                    categories = data.weekly_sales.map(item => {
+                        const weekDate = new Date(item.week);
+                        const weekNumber = getWeekNumber(weekDate);
+                        const [startDate, endDate] = getWeekDateRange(weekDate);
+                        return `สัปดาห์ที่ ${weekNumber} (${formatDateRange(startDate, endDate)})`;
+                    });
+
                 } else if (type === 'monthly') {
                     salesData = data.monthly_sales.map(item => parseFloat(item.total).toFixed(2));
-                    profitData = data.monthly_profit1.map(item => parseFloat(item.total).toFixed(2)); // ✅ แก้ไข
-                    categories = data.monthly_sales.map(item => "เดือน " + item.month);
+                    profitData = data.monthly_profit1.map(item => parseFloat(item.total).toFixed(2));
+                    // แปลง month เป็น "เดือน YYYY-MM"
+                    categories = data.monthly_sales.map(item => {
+                        const monthDate = new Date(item.month);
+                        const year = monthDate.getFullYear();
+                        const month = String(monthDate.getMonth() + 1).padStart(2, '0');
+                        return `เดือน ${year}-${month}`;
+                    });
                 }
 
-
-                // ✅ ดึงข้อมูล `total_amount` จาก JSON
-                // ✅ ดึงข้อมูลวันที่ (timestamp) สำหรับ x-axis
-                
-
-                console.log("📊 ข้อมูลยอดขายสำหรับกราฟpagesInteraction:", salesData);
-                console.log("📆 ข้อมูลวันที่สำหรับกราฟpagesInteraction:", categories);
+                console.log("📊 ข้อมูลยอดขายสำหรับกราฟ pagesInteraction:", salesData);
+                console.log("📆 ข้อมูลวันที่สำหรับกราฟ pagesInteraction:", categories);
 
                 updateChart(salesData, categories);
             })
-            .catch(error => console.error("❌ เกิดข้อผิดพลาดในการโหลดข้อมูลกราฟ pageInteraction :", error));
+            .catch(error => console.error("❌ เกิดข้อผิดพลาด:", error));
     }
 
+    // ฟังก์ชันคำนวณสัปดาห์
+    function getWeekNumber(date) {
+        const d = new Date(date);
+        d.setHours(0, 0, 0, 0);
+        d.setDate(d.getDate() + 4 - (d.getDay() || 7));
+        const yearStart = new Date(d.getFullYear(), 0, 1);
+        const weekNo = Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
+        return weekNo;
+    }
+
+
+ // ฟังก์ชันหาช่วงวันที่ของสัปดาห์ (เริ่มต้นวันอาทิตย์)
+ function getWeekDateRange(date) {
+    const start = new Date(date);
+    start.setDate(start.getDate() - start.getDay()); // เริ่มวันอาทิตย์
+    const end = new Date(start);
+    end.setDate(end.getDate() + 6); // สิ้นสุดวันเสาร์
+    return [start, end];
+}
+
+
+
+// ฟังก์ชันจัดรูปแบบวันที่ (เช่น "17-23 Feb 2025")
+function formatDateRange(start, end) {
+    const options = { day: 'numeric', month: 'short', year: 'numeric' };
+    const startStr = start.toLocaleDateString('en-US', options).replace(',', '');
+    const endStr = end.toLocaleDateString('en-US', options).replace(',', '');
+    return `${startStr.split(' ')[0]}-${endStr}`;
+}
+
+    // ฟังก์ชันแสดงกราฟ (เหมือนเดิม)
     function updateChart(salesData, categories) {
         var options = {
             series: [{
                 name: 'ยอดขายรวม (บาท)',
                 data: salesData
             }],
-            chart: {
-                height: 350,
-                type: 'bar',
-                toolbar: { show: false }
-            },
-            plotOptions: {
-                bar: {
-                    borderRadius: 10,
-                    dataLabels: { position: 'top' }
-                }
-            },
-            dataLabels: {
+            chart: { height: 350, type: 'bar', toolbar: { show: false } },
+            plotOptions: { bar: { borderRadius: 10, dataLabels: { position: 'top' } } },
+            dataLabels: { 
                 enabled: true,
                 offsetY: -20,
-                style: {
-                    fontSize: '12px',
-                    colors: ["#304758"]
-                }
+                style: { fontSize: '12px', colors: ["#304758"] }
             },
-            xaxis: {
+            xaxis: { 
                 categories: categories,
                 title: { text: "วันที่" },
                 tooltip: { enabled: true }
             },
-            yaxis: {
+            yaxis: { 
                 title: { text: "มูลค่า (บาท)" },
-                labels: {
-                    formatter: val => `${val.toLocaleString()} บาท`
-                }
+                labels: { formatter: val => `${val.toLocaleString()} บาท` }
             },
-            stroke: {
-                show: true,
-                width: 4,
-                colors: ['transparent']
-            },
+            stroke: { show: true, width: 4, colors: ['transparent'] },
             grid: { show: false },
-            colors: ["#008FFB"] // สีของกราฟ
+            colors: ["#4CAF50"]
         };
 
-        // ✅ แสดงกราฟ
         document.querySelector("#pagesInteraction").innerHTML = "";
         var chart = new ApexCharts(document.querySelector("#pagesInteraction"), options);
         chart.render();
     }
 
-    fetchSalesData('daily'); // ✅ โหลดข้อมูลเมื่อหน้าเว็บพร้อม
+    fetchSalesData('weekly'); // โหลดข้อมูลเริ่มต้น
 });
-
-
 
 
 

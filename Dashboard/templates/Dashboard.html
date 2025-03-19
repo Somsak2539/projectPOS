@@ -350,7 +350,7 @@ td {
                                         <select id="categorySelect" name="category" class="selectize">
                                          <!-- <option value="">-- ทุกหมวดหมู่ --</option>-->
                                         {% for category in categories %}
-                                        {% if category.id == 2 or category.id == 10 %}  <!-- ตัวนี้คือประเภทของ catagory  -->
+                                        {% if category.id == 2 or category.id == 10 or category.id == 20 or category.id == 21%}  <!-- ตัวนี้คือประเภทของ catagory  -->
                                         <option value="{{ category.id }}">{{ category.name }}</option>
                                            
                                             {% endif %}   <!-- เหลือกบางประเถท  -->
@@ -555,13 +555,13 @@ td {
               <p class="p1">เวลา : <span id="time"></span></p>
               <p class="p1">วันที่ : <span id="current-datetime"></span></p>
               <p class="p1">สาขา โพนทอง</p>
-              <p class="p1">ระหัสเครื่อง: 15252</p>
+              <p class="p1">ระหัสเครื่อง: {{request.user.id}}</p>
             </div>
 
             <div class="aa3">
-              <p class="p1">แคลชเชีย: Demo</p>
-              <p class="p1">เลขที่ใบเสร็จ: 45165</p>
-              <p class="p1">พนักงานขาย: มยุรี ศรีสุเลิส</p>
+              <p class="p1">แคลชเชีย: {{request.user.username}}</p>
+              <p class="p1">เลขที่ใบเสร็จ: {{request.user.id}}</p>
+              <p class="p1">พนักงานขาย:{{request.user.username}}</p>
             </div>
           </div>
         </div>

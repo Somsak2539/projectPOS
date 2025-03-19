@@ -1,90 +1,382 @@
-<!DOCTYPE html>
+{% extends "LayoutDashbords.html"%}
+{% load humanize %}
+
 {% load static %}
-<html lang="en" class="light scroll-smooth group" data-layout="vertical" data-sidebar="light" data-sidebar-size="lg" data-mode="light" data-topbar="light" data-skin="default" data-navbar="sticky" data-content="fluid" dir="ltr">
 
-<head>
 
-    <meta charset="utf-8">
-    <title>Sign In | StarCode & Dashboard Template</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <meta content="Minimal Admin & Dashboard Template" name="description">
-    <meta content="StarCode Kh" name="author">
-    <!-- App favicon -->
-    <link rel="shortcut icon" href="{% static 'assets/images/favicon.ico' %}">
-    <!-- Layout config Js -->
-    <script src="{% static 'assets/js/layout.js' %}"></script>
-    <!-- Icons CSS -->
-    
-    <!-- StarCode CSS -->
-    
 
-  <link rel="stylesheet" href="{% static 'assets/css/starcode2.css' %}">
-</head>
 
-<body class="flex items-center justify-center min-h-screen py-16 bg-cover bg-auth-pattern dark:bg-auth-pattern-dark dark:text-zink-100 font-public">
 
-    <div class="mb-0 border-none lg:w-[500px] card bg-white/70 shadow-none dark:bg-zink-500/70">
-        <div class="!px-10 !py-12 card-body">
-            <a href="#">
-                <img src="{% static 'assets/images/Bank123.png' %}" alt="" class="hidden h-20 mx-auto dark:block">
-                <img src="{% static 'assets/images/Bank123.png' %}" alt="" class="block h-20 mx-auto dark:hidden">
-            </a>
 
-            <div class="mt-8 text-center">
-                <h4 class="mb-2 text-purple-500 dark:text-purple-500">อย่าเครียดเยอะน่ะที่รัก  !</h4>
-                <p class="text-slate-500 dark:text-zink-200">แบงค์ ❤️💖💘💞💗💓🧡 เหมย</p>
+{% block title%}
+   รายการขายของสำหรับการขายของ
+{% endblock %}
+
+
+
+{% block content%}
+
+  
+<div class="relative min-h-screen group-data-[sidebar-size=sm]:min-h-sm">
+
+    <div class="group-data-[sidebar-size=lg]:ltr:md:ml-vertical-menu group-data-[sidebar-size=lg]:rtl:md:mr-vertical-menu group-data-[sidebar-size=md]:ltr:ml-vertical-menu-md group-data-[sidebar-size=md]:rtl:mr-vertical-menu-md group-data-[sidebar-size=sm]:ltr:ml-vertical-menu-sm group-data-[sidebar-size=sm]:rtl:mr-vertical-menu-sm pt-[calc(theme('spacing.header')_*_1)] pb-[calc(theme('spacing.header')_*_0.8)] px-4 group-data-[navbar=bordered]:pt-[calc(theme('spacing.header')_*_1.3)] group-data-[navbar=hidden]:pt-0 group-data-[layout=horizontal]:mx-auto group-data-[layout=horizontal]:max-w-screen-2xl group-data-[layout=horizontal]:px-0 group-data-[layout=horizontal]:group-data-[sidebar-size=lg]:ltr:md:ml-auto group-data-[layout=horizontal]:group-data-[sidebar-size=lg]:rtl:md:mr-auto group-data-[layout=horizontal]:md:pt-[calc(theme('spacing.header')_*_1.6)] group-data-[layout=horizontal]:px-3 group-data-[layout=horizontal]:group-data-[navbar=hidden]:pt-[calc(theme('spacing.header')_*_0.9)]">
+        <div class="container-fluid group-data-[content=boxed]:max-w-boxed mx-auto">
+
+            <div class="flex flex-col gap-2 py-4 md:flex-row md:items-center print:hidden">
+                <div class="grow">
+                    <h5 class="text-16">รายการแสดงรายการค่าใช้จ่าย</h5>
+                    <div class="flex space-x-2 mb-4">
+                        <button id="filterDaily2" class="text-orange-500 bg-white border-orange-500 btn hover:text-white hover:bg-orange-600 hover:border-orange-600 focus:text-white focus:bg-orange-600 focus:border-orange-600 focus:ring focus:ring-orange-100 active:text-white active:bg-orange-600 active:border-orange-600 active:ring active:ring-orange-100 dark:bg-zink-700 dark:hover:bg-orange-500 dark:ring-orange-400/20 dark:focus:bg-orange-500">รายวัน</button>
+                        <button id="filterWeekly2" class="text-orange-500 bg-white border-orange-500 btn hover:text-white hover:bg-orange-600 hover:border-orange-600 focus:text-white focus:bg-orange-600 focus:border-orange-600 focus:ring focus:ring-orange-100 active:text-white active:bg-orange-600 active:border-orange-600 active:ring active:ring-orange-100 dark:bg-zink-700 dark:hover:bg-orange-500 dark:ring-orange-400/20 dark:focus:bg-orange-500">รายสัปดาห์</button>
+                        <button id="filterMonthly2" class="text-orange-500 bg-white border-orange-500 btn hover:text-white hover:bg-orange-600 hover:border-orange-600 focus:text-white focus:bg-orange-600 focus:border-orange-600 focus:ring focus:ring-orange-100 active:text-white active:bg-orange-600 active:border-orange-600 active:ring active:ring-orange-100 dark:bg-zink-700 dark:hover:bg-orange-500 dark:ring-orange-400/20 dark:focus:bg-orange-500">รายเดือน</button>
+                        <button id="filterYearly2" class="text-orange-500 bg-white border-orange-500 btn hover:text-white hover:bg-orange-600 hover:border-orange-600 focus:text-white focus:bg-orange-600 focus:border-orange-600 focus:ring focus:ring-orange-100 active:text-white active:bg-orange-600 active:border-orange-600 active:ring active:ring-orange-100 dark:bg-zink-700 dark:hover:bg-orange-500 dark:ring-orange-400/20 dark:focus:bg-orange-500">รายปี</button>
+                    </div>
+                </div>
+                <ul class="flex items-center gap-2 text-sm font-normal shrink-0">
+                    <li class="relative before:content-['\ea54'] before:font-remix ltr:before:-right-1 rtl:before:-left-1  before:absolute before:text-[18px] before:-top-[3px] ltr:pr-4 rtl:pl-4 before:text-slate-400 dark:text-zink-200">
+                        <a href="#!" class="text-slate-400 dark:text-zink-200">Dashboards</a>
+                    </li>
+                    <li class="text-slate-700 dark:text-zink-100">
+                        Analytics
+                    </li>
+                </ul>
+            </div>
+            <div class="grid grid-cols-12 gap-x-5">
+
+
+
+
+                <div class="order-1 md:col-span-6 lg:col-span-3 col-span-12 2xl:order-1 bg-green-100 dark:bg-green-500/20 card 2xl:col-span-2 group-data-[skin=bordered]:border-green-500/20 relative overflow-hidden">
+
+                    <div class="card-body">
+                        <i data-lucide="kanban" class="absolute top-0 stroke-1 size-32 text-green-200/50 dark:text-green-500/20 ltr:-right-10 rtl:-left-10"></i>
+                        <div class="flex items-center justify-center bg-green-500 rounded-md size-12 text-15 text-green-50">
+                            <i data-lucide="credit-card"></i>
+                        </div>
+                        <h5 class="mt-5 mb-2">
+                            <span id="totalProfitDisplay">0.00</span> บาท
+                        </h5>
+                        <p class="text-slate-500 dark:text-slate-200">กำไรที่ขายของได้</p>
+                    </div>
+                </div><!--end col-->
+
+
+
+
+
+
+                <div class="order-2 md:col-span-6 lg:col-span-3 col-span-12 2xl:order-1 bg-orange-100 dark:bg-orange-500/20 card 2xl:col-span-2 group-data-[skin=bordered]:border-orange-500/20 relative overflow-hidden">
+
+
+
+                    
+
+                    <div class="card-body">
+                        <i data-lucide="list-filter" class="absolute top-0 stroke-1 size-32 text-orange-200/50 dark:text-orange-500/20 ltr:-right-10 rtl:-left-10"></i>
+                        <div class="flex items-center justify-center bg-red-500 rounded-md size-12 text-15 text-orange-50">
+                            <i data-lucide="piggy-bank"></i>
+                        </div>
+                        <h5 class="mt-5 mb-2"> <span id="total_sum">0.00</span> บาท</h5>
+                        <p class="text-slate-500 dark:text-slate-200">ยอดขายของได้</p>
+                    </div>
+                </div><!--end col-->
+
+
+
+
+
+
+
+
+                <div class="order-5 col-span-12 2xl:order-1 card 2xl:row-span-2 2xl:col-span-8">
+                    <div class="card-body">
+                        <div class="flex items-center gap-2 mb-3">
+                            <h6 class="text-15 grow">รายการสินค้าขายดี รวมยอดขายทั้งหมดที่ขายไปแล้ว</h6>
+                            <div class="relative dropdown shrink-0">
+                               
+                             
+                                <ul class="absolute z-50 hidden py-2 mt-1 ltr:text-left rtl:text-right list-none bg-white rounded-md shadow-md dropdown-menu min-w-[10rem] dark:bg-zink-600" aria-labelledby="emailDataDropdown">
+                                    <li>
+                                        <a class="block px-4 py-1.5 text-base transition-all duration-200 ease-linear text-slate-600 dropdown-item hover:bg-slate-100 hover:text-slate-500 focus:bg-slate-100 focus:text-slate-500 dark:text-zink-100 dark:hover:bg-zink-500 dark:hover:text-zink-200 dark:focus:bg-zink-500 dark:focus:text-zink-200" href="?filter=day" onclick="loadSalesChart('daily')">รายวัน</a>
+                                    </li>
+                                    <li>
+                                        <a class="block px-4 py-1.5 text-base transition-all duration-200 ease-linear text-slate-600 dropdown-item hover:bg-slate-100 hover:text-slate-500 focus:bg-slate-100 focus:text-slate-500 dark:text-zink-100 dark:hover:bg-zink-500 dark:hover:text-zink-200 dark:focus:bg-zink-500 dark:focus:text-zink-200" href="?filter=week" onclick="loadSalesChart('weekly')">รายสัปดาห์</a>
+                                    </li>
+                                    <li>
+                                        <a class="block px-4 py-1.5 text-base transition-all duration-200 ease-linear text-slate-600 dropdown-item hover:bg-slate-100 hover:text-slate-500 focus:bg-slate-100 focus:text-slate-500 dark:text-zink-100 dark:hover:bg-zink-500 dark:hover:text-zink-200 dark:focus:bg-zink-500 dark:focus:text-zink-200" href="?filter=6months" onclick="loadSalesChart('monthly')">รายเดือน</a>
+                                    </li>
+
+                                </ul>
+                            </div>
+                        </div>
+                        <div id="platformPerspective" class="apex-charts" data-chart-colors='["bg-custom-500"]' dir="ltr"></div>
+                        <div id="chartdiv"></div>
+                    </div>
+                </div><!--end col-->
+
+
+
+
+                <div class="order-3 md:col-span-6 lg:col-span-3 col-span-12 2xl:order-1 bg-sky-100 dark:bg-sky-500/20 card 2xl:col-span-2 group-data-[skin=bordered]:border-sky-500/20 relative overflow-hidden">
+
+                    <div class="card-body">
+
+
+                        <i data-lucide="list-filter" class="absolute top-0 stroke-1 size-32 text-sky-200/50 dark:text-sky-500/20 ltr:-right-10 rtl:-left-10"></i>
+                        <div class="flex items-center justify-center rounded-md size-12 bg-sky-500 text-15 text-sky-50">
+                            <i data-lucide="coins"></i>
+                        </div>
+                        <h5 class="mt-5 mb-2"><span class="counter-value" data-target="4500">0</span>บาท <span class="counter-value" data-target="1"></span>month</h5>
+                        <p class="text-slate-500 dark:text-slate-200">มูลค่าของทั้งหมด</p>
+                    </div>
+                </div><!--end col-->
+
+
+
+                
+                
+                <div class="order-3 md:col-span-6 lg:col-span-3 col-span-12 2xl:order-1 bg-sky-100 dark:bg-sky-500/20 card 2xl:col-span-2 group-data-[skin=bordered]:border-sky-500/20 relative overflow-hidden">
+
+
+
+                    
+                    
+                   
+                    
+                    
+                    <div class="card-body">
+
+
+                        <i data-lucide="list-filter" class="absolute top-0 stroke-1 size-32 text-sky-200/50 dark:text-sky-500/20 ltr:-right-10 rtl:-left-10"></i>
+                        <div class="flex items-center justify-center rounded-md size-12 bg-sky-500 text-15 text-sky-50">
+                            <i data-lucide="coins"></i>
+                        </div>
+                        <h5 class="mt-5 mb-2"><span class="counter-value" data-target="4500">0</span>บาท <span class="counter-value" data-target="1"></span>month</h5>
+                        <p class="text-slate-500 dark:text-slate-200">กำไรทั้งหมด</p>
+                    </div>
+                </div><!--end col-->
+
+
+
+                
+                <div class="order-6 col-span-12 2xl:order-1 card 2xl:col-span-5">
+                    <div class="card-body">
+
+
+                        <div class="flex items-center gap-2">
+                            <h5 class="mb-3 text-15 grow">ยอดขาย และกำไร</h5>
+                            <div class="shrink-0">
+                                <button id="dailyBtn" type="button" class="text-orange-500 bg-white border-orange-500 btn hover:text-white hover:bg-orange-600 hover:border-orange-600 focus:text-white focus:bg-orange-600 focus:border-orange-600 focus:ring focus:ring-orange-100 active:text-white active:bg-orange-600 active:border-orange-600 active:ring active:ring-orange-100 dark:bg-zink-700 dark:hover:bg-orange-500 dark:ring-orange-400/20 dark:focus:bg-orange-500">this day</button>
+                            </div>
+
+                            <div class="shrink-0">
+                                <button id="weeklyBtn" type="button" class="text-orange-500 bg-white border-orange-500 btn hover:text-white hover:bg-orange-600 hover:border-orange-600 focus:text-white focus:bg-orange-600 focus:border-orange-600 focus:ring focus:ring-orange-100 active:text-white active:bg-orange-600 active:border-orange-600 active:ring active:ring-orange-100 dark:bg-zink-700 dark:hover:bg-orange-500 dark:ring-orange-400/20 dark:focus:bg-orange-500" >This week</button>
+                            </div>
+
+                            
+                            <div class="shrink-0">
+                                <button id="monthlyBtn" type="button" class="text-orange-500 bg-white border-orange-500 btn hover:text-white hover:bg-orange-600 hover:border-orange-600 focus:text-white focus:bg-orange-600 focus:border-orange-600 focus:ring focus:ring-orange-100 active:text-white active:bg-orange-600 active:border-orange-600 active:ring active:ring-orange-100 dark:bg-zink-700 dark:hover:bg-orange-500 dark:ring-orange-400/20 dark:focus:bg-orange-500">this Month</button>
+                            </div>
+                            
+                           
+                        </div>
+
+                        <div id="responseTimes" class="apex-charts" data-chart-colors='["bg-red-500"]' dir="ltr"></div>
+                    </div>
+
+
+
+                    
+                </div><!--end col-->
+
+
+
+
+               
+
+                
+                        
+
+                   
+             
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                
+                <div class="order-7 col-span-12 2xl:order-1 card 2xl:col-span-7">
+                    <div class="card-body">
+                        <div class="flex items-center gap-2">
+                            <h6 class="mb-3 text-15 grow">Pages Interaction</h6>
+                            <div class="relative dropdown shrink-0">
+                                <button type="button" class="px-2 py-1.5 text-xs bg-text-slate-500 btn bg-slate-100 hover:text-white hover:bg-slate-600 focus:text-white focus:bg-slate-600 focus:ring focus:ring-slate-100 active:text-white active:bg-slate-600 active:ring active:ring-slate-100 dark:bg-slate-500/20 dark:text-slate-400 dark:hover:bg-slate-500 dark:hover:text-white dark:focus:bg-slate-500 dark:focus:text-white dark:active:bg-slate-500 dark:active:text-white dark:ring-slate-400/20 dropdown-toggle" id="emailDataDropdown" data-bs-toggle="dropdown">
+                                    This Yearly <i data-lucide="chevron-down" class="inline-block size-4 ltr:ml-1 rlt:mr-1"></i>
+                                </button>
+                        
+                                <ul class="absolute z-50 hidden py-2 mt-1 ltr:text-left rtl:text-right list-none bg-white rounded-md shadow-md dropdown-menu min-w-[10rem] dark:bg-zink-600" aria-labelledby="emailDataDropdown">
+                                    <li>
+                                        <a class="block px-4 py-1.5 text-base transition-all duration-200 ease-linear text-slate-600 dropdown-item hover:bg-slate-100 hover:text-slate-500 focus:bg-slate-100 focus:text-slate-500 dark:text-zink-100 dark:hover:bg-zink-500 dark:hover:text-zink-200 dark:focus:bg-zink-500 dark:focus:text-zink-200" href="#!">1 Weekly</a>
+                                    </li>
+                                    <li>
+                                        <a class="block px-4 py-1.5 text-base transition-all duration-200 ease-linear text-slate-600 dropdown-item hover:bg-slate-100 hover:text-slate-500 focus:bg-slate-100 focus:text-slate-500 dark:text-zink-100 dark:hover:bg-zink-500 dark:hover:text-zink-200 dark:focus:bg-zink-500 dark:focus:text-zink-200" href="#!">1 Monthly</a>
+                                    </li>
+                                    <li>
+                                        <a class="block px-4 py-1.5 text-base transition-all duration-200 ease-linear text-slate-600 dropdown-item hover:bg-slate-100 hover:text-slate-500 focus:bg-slate-100 focus:text-slate-500 dark:text-zink-100 dark:hover:bg-zink-500 dark:hover:text-zink-200 dark:focus:bg-zink-500 dark:focus:text-zink-200" href="#!">3 Monthly</a>
+                                    </li>
+                                    <li>
+                                        <a class="block px-4 py-1.5 text-base transition-all duration-200 ease-linear text-slate-600 dropdown-item hover:bg-slate-100 hover:text-slate-500 focus:bg-slate-100 focus:text-slate-500 dark:text-zink-100 dark:hover:bg-zink-500 dark:hover:text-zink-200 dark:focus:bg-zink-500 dark:focus:text-zink-200" href="#!">6 Monthly</a>
+                                    </li>
+                                    <li>
+                                        <a class="block px-4 py-1.5 text-base transition-all duration-200 ease-linear text-slate-600 dropdown-item hover:bg-slate-100 hover:text-slate-500 focus:bg-slate-100 focus:text-slate-500 dark:text-zink-100 dark:hover:bg-zink-500 dark:hover:text-zink-200 dark:focus:bg-zink-500 dark:focus:text-zink-200" href="#!">This Yearly</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div id="pagesInteraction" class="apex-charts" data-chart-colors='["bg-custom-500", "bg-purple-500"]' dir="ltr"></div>
+                    </div>
+                </div><!--end col-->
+                
+
+
+
+
+
+                                 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+               
+
+
+            
+             
+            </div>
+            
+            
+            <div class="flex flex-col gap-2 py-4 md:flex-row md:items-center print:hidden">
+                <div class="grow">
+                    <h5 class="text-16">Bar Charts</h5>
+                </div>
+                <ul class="flex items-center gap-2 text-sm font-normal shrink-0">
+                    <li class="relative before:content-['\ea54'] before:font-remix ltr:before:-right-1 rtl:before:-left-1  before:absolute before:text-[18px] before:-top-[3px] ltr:pr-4 rtl:pl-4 before:text-slate-400 dark:text-zink-200">
+                        <a href="#!" class="text-slate-400 dark:text-zink-200">Apexcharts</a>
+                    </li>
+                    <li class="text-slate-700 dark:text-zink-100">
+                        Bar Charts
+                    </li>
+                </ul>
             </div>
 
-            <form method="POST" action="{% url 'login_cover' %}" class="mt-10" id="signInForm">
-                {% csrf_token %} 
-                <div class="hidden px-4 py-3 mb-3 text-sm text-green-500 border border-green-200 rounded-md bg-green-50 dark:bg-green-400/20 dark:border-green-500/50" id="successAlert">
-                    You have <b>successfully</b> signed in.
-                </div>
-                <div class="mb-3">
-                    <label for="username" class="inline-block mb-2 text-base font-medium">UserName/Email ID</label>
-                    <input type="text" id="username" name="username" class="form-input dark:bg-zink-600/50 border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200" placeholder="Username">
-                    <div id="username-error" class="hidden mt-1 text-sm text-red-500">Please enter a valid email address.</div>
-                </div>
-                <div class="mb-3">
-                    <label for="password" class="inline-block mb-2 text-base font-medium">Password/ระหัสผ่าน</label>
-                    <input type="password" id="password" name="password" class="form-input dark:bg-zink-600/50 border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200" placeholder="Password">
-                    <div id="password-error" class="hidden mt-1 text-sm text-red-500">Password must be at least 8 characters long and contain both letters and numbers.</div>
-                </div>
-                <div>
-                    <div class="flex items-center gap-2">
-                        <input  id="checkboxDefault1" class="border rounded-sm appearance-none size-4 bg-slate-100 border-slate-200 dark:bg-zink-600/50 dark:border-zink-500 checked:bg-custom-500 checked:border-custom-500 dark:checked:bg-custom-500 dark:checked:border-custom-500 checked:disabled:bg-custom-400 checked:disabled:border-custom-400" type="checkbox" value="yes">
-                        <label for="checkboxDefault1" class="inline-block text-base font-medium align-middle cursor-pointer">อย่าลืมติ๊กตรงนี้น่ะ</label>
+
+
+            <div class="grid grid-cols-1 gap-x-5 xl:grid-cols-2">
+                    
+                <div class="card">
+                    
+                    <div class="card-body">
+                      
+                        <h6 class="mb-4 text-15">จำนวณที่สามารถขายได้แต่ล่ะรายการ</h6>
+                            
+                        <div id="selectedDateRange" class="text-lg font-semibold text-gray-700 mb-4">
+                            ช่วงวันที่: - ถึง -
+                        </div>
+                        <div class="flex space-x-2 mb-4">
+                            <button id="filterDaily1" class="text-orange-500 bg-white border-orange-500 btn hover:text-white hover:bg-orange-600 hover:border-orange-600 focus:text-white focus:bg-orange-600 focus:border-orange-600 focus:ring focus:ring-orange-100 active:text-white active:bg-orange-600 active:border-orange-600 active:ring active:ring-orange-100 dark:bg-zink-700 dark:hover:bg-orange-500 dark:ring-orange-400/20 dark:focus:bg-orange-500">รายวัน</button>
+                            <button id="filterWeekly1" class="text-orange-500 bg-white border-orange-500 btn hover:text-white hover:bg-orange-600 hover:border-orange-600 focus:text-white focus:bg-orange-600 focus:border-orange-600 focus:ring focus:ring-orange-100 active:text-white active:bg-orange-600 active:border-orange-600 active:ring active:ring-orange-100 dark:bg-zink-700 dark:hover:bg-orange-500 dark:ring-orange-400/20 dark:focus:bg-orange-500">รายสัปดาห์</button>
+                            <button id="filterMonthly1" class="text-orange-500 bg-white border-orange-500 btn hover:text-white hover:bg-orange-600 hover:border-orange-600 focus:text-white focus:bg-orange-600 focus:border-orange-600 focus:ring focus:ring-orange-100 active:text-white active:bg-orange-600 active:border-orange-600 active:ring active:ring-orange-100 dark:bg-zink-700 dark:hover:bg-orange-500 dark:ring-orange-400/20 dark:focus:bg-orange-500">รายเดือน</button>
+                            <button id="filterYearly1" class="text-orange-500 bg-white border-orange-500 btn hover:text-white hover:bg-orange-600 hover:border-orange-600 focus:text-white focus:bg-orange-600 focus:border-orange-600 focus:ring focus:ring-orange-100 active:text-white active:bg-orange-600 active:border-orange-600 active:ring active:ring-orange-100 dark:bg-zink-700 dark:hover:bg-orange-500 dark:ring-orange-400/20 dark:focus:bg-orange-500">รายปี</button>
+                        </div>
+                        
+                        <div id="basicBar" class="apex-charts" data-chart-colors='["bg-custom-500"]' dir="ltr"></div>
                     </div>
-                    <div id="remember-error" class="hidden mt-1 text-sm text-red-500">Please check the "Remember me" before submitting the form.</div>
-                </div>
-                <div class="mt-10">
-                    <button type="submit" class="w-full text-white btn bg-custom-500 border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100 dark:ring-custom-400/20">เข้าสู่ระบบ</button>
-                </div>
+                </div><!--end card-->
 
-                <div class="relative text-center my-9 before:absolute before:top-3 before:left-0 before:right-0 before:border-t before:border-t-slate-200 dark:before:border-t-zink-500">
-                    <h5 class="inline-block px-2 py-0.5 text-sm bg-white text-slate-500 dark:bg-zink-600 dark:text-zink-200 rounded relative">เข้าสู่ระบบ</h5>
-                </div>
 
-                <div class="flex flex-wrap justify-center gap-2">
-                   
-                </div>
 
-                <div class="mt-10 text-center">
-                    <p class="mb-0 text-slate-500 dark:text-zink-200">Don't have an account ? <a href="auth-register-basic.html" class="font-semibold underline transition-all duration-150 ease-linear text-slate-500 dark:text-zink-200 hover:text-custom-500 dark:hover:text-custom-500"> SignUp</a> </p>
-                </div>
-            </form>
+               
+                
+            </div><!--end grid-->
+
+
+             <div class="order-6 col-span-12 2xl:order-1 card 2xl:col-span-5">
+                    <div class="card-body">
+
+
+                        <div class="flex items-center gap-2">
+                            <h5 class="mb-3 text-15 grow">กราฟแสดงค่าใช้จ่ายสำหรับการลงของ</h5>
+                            <div class="shrink-0">
+                                <button id="dailyBtn11" type="button" class="text-orange-500 bg-white border-orange-500 btn hover:text-white hover:bg-orange-600 hover:border-orange-600 focus:text-white focus:bg-orange-600 focus:border-orange-600 focus:ring focus:ring-orange-100 active:text-white active:bg-orange-600 active:border-orange-600 active:ring active:ring-orange-100 dark:bg-zink-700 dark:hover:bg-orange-500 dark:ring-orange-400/20 dark:focus:bg-orange-500">this day</button>
+                            </div>
+
+                            <div class="shrink-0">
+                                <button id="weeklyBtn11" type="button" class="text-orange-500 bg-white border-orange-500 btn hover:text-white hover:bg-orange-600 hover:border-orange-600 focus:text-white focus:bg-orange-600 focus:border-orange-600 focus:ring focus:ring-orange-100 active:text-white active:bg-orange-600 active:border-orange-600 active:ring active:ring-orange-100 dark:bg-zink-700 dark:hover:bg-orange-500 dark:ring-orange-400/20 dark:focus:bg-orange-500" >This week</button>
+                            </div>
+
+                            
+                            <div class="shrink-0">
+                                <button id="monthlyBtn11" type="button" class="text-orange-500 bg-white border-orange-500 btn hover:text-white hover:bg-orange-600 hover:border-orange-600 focus:text-white focus:bg-orange-600 focus:border-orange-600 focus:ring focus:ring-orange-100 active:text-white active:bg-orange-600 active:border-orange-600 active:ring active:ring-orange-100 dark:bg-zink-700 dark:hover:bg-orange-500 dark:ring-orange-400/20 dark:focus:bg-orange-500">this Month</button>
+                            </div>
+                            
+                           
+                        </div>
+
+                        <div id="responseTimes11" class="apex-charts" data-chart-colors='["bg-red-500"]' dir="ltr"></div>
+                    </div>
+
+
+                    
+                    
+                </div><!--end col-->
+
+
+
+
+
+
         </div>
+        <!-- container-fluid -->
     </div>
+    <!-- End Page-content -->
 
-    <script src="{% static 'assets/libs/choices.js/public/assets/scripts/choices.min.js' %}"></script>
-    <script src="{% static 'assets/libs/%40popperjs/core/umd/popper.min.js' %}"></script>
-    <script src="{% static 'assets/libs/tippy.js/tippy-bundle.umd.min.js' %}"></script>
-    <script src="{% static 'assets/libs/simplebar/simplebar.min.js' %}"></script>
-    <script src="{% static 'assets/libs/prismjs/prism.js' %}"></script>
-    <script src="{% static 'assets/libs/lucide/umd/lucide.js' %}"></script>
-    <script src="{% static 'assets/js/starcode.bundle.js' %}"></script>
-    <script src="{% static 'assets/js/pages/auth-login.init.js' %}"></script>
-    
-</body>
+    <footer class="ltr:md:left-vertical-menu rtl:md:right-vertical-menu group-data-[sidebar-size=md]:ltr:md:left-vertical-menu-md group-data-[sidebar-size=md]:rtl:md:right-vertical-menu-md group-data-[sidebar-size=sm]:ltr:md:left-vertical-menu-sm group-data-[sidebar-size=sm]:rtl:md:right-vertical-menu-sm absolute right-0 bottom-0 px-4 h-14 group-data-[layout=horizontal]:ltr:left-0  group-data-[layout=horizontal]:rtl:right-0 left-0 border-t py-3 flex items-center dark:border-zink-600">
+        <div class="group-data-[layout=horizontal]:mx-auto group-data-[layout=horizontal]:max-w-screen-2xl w-full">
+            <div class="grid items-center grid-cols-1 text-center lg:grid-cols-2 text-slate-400 dark:text-zink-200 ltr:lg:text-left rtl:lg:text-right">
+                <div>
+                    <script>document.write(new Date().getFullYear())</script> somsak sonngai
+                </div>
+                <div class="hidden lg:block">
+                    <div class="ltr:text-right rtl:text-left">
+                        Design & Develop by Somsak sonnagi
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>        
+</div>
+   
 
-</html>
+{% endblock%}

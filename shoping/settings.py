@@ -90,10 +90,12 @@ CORS_ALLOW_HEADERS = [
 ]
 
 # ✅ ปรับค่า CSRF Cookie
-CSRF_USE_SESSIONS = True  # ❌ ปิดการใช้ CSRF Token ผ่าน Session
+#CSRF_USE_SESSIONS = True  # ❌ ปิดการใช้ CSRF Token ผ่าน Session
 
-CSRF_COOKIE_HTTPONLY = False  # ✅ อนุญาตให้ JavaScript อ่าน Cookie CSRF
-CSRF_COOKIE_SECURE = False  # ✅ ใช้ HTTPS เท่านั้น ถ้าไม่ได้ใช้ HTTPS ต้องตั้งเป็น False
+#CSRF_COOKIE_HTTPONLY = False  # ✅ อนุญาตให้ JavaScript อ่าน Cookie CSRF
+#CSRF_COOKIE_SECURE = False  # ✅ ใช้ HTTPS เท่านั้น ถ้าไม่ได้ใช้ HTTPS ต้องตั้งเป็น False
+
+
 #CSRF_COOKIE_SAMESITE = "None"  # ✅ อนุญาตให้ใช้งานข้าม Origin
 #SESSION_COOKIE_SECURE = True  # ✅ ปิดเพื่อให้ส่ง Session Cookie ได้
 #SESSION_COOKIE_SAMESITE = "None"  # ✅ อนุญาตให้ส่ง Session Cookie ข้าม Origin
@@ -101,6 +103,7 @@ CSRF_COOKIE_SECURE = False  # ✅ ใช้ HTTPS เท่านั้น ถ�
 CORS_ALLOWED_ORIGINS = [
     'https://somsaksonngai.site',
     "http://127.0.0.1:8080",
+    "https://localhost:8080",
     "http://localhost:8080",
     "http://[2001:44c8:44c5:8e4c:8d1:e48a:2672:947c]:8080",
     "http://[2001:44c8:48f3:2772:dc0d:bdd0:30a7:3266]:8080", 
@@ -111,9 +114,11 @@ CORS_ALLOWED_ORIGINS = [
 
 # ✅ อนุญาตให้ CSRF ทำงานกับไอพีเซิร์ฟเวอร์
 CSRF_TRUSTED_ORIGINS = [
+    
     "http://127.0.0.1:8080",#ตัวนี้เป็น http ธรรมดา
     "http://localhost:8080",#ตัวนี้เป็น http ธรรมดา
     "http://[2001:44c8:44c5:8e4c:8d1:e48a:2672:947c]:8080", #ตัวนี้เป็น http ธรรมดา
+    "https://localhost:8080",
     "https://127.0.0.1:8080",#ตัวนี้เป็น http ธรรมดา
     "https://localhost:8080",#ตัวนี้เป็น http ธรรมดา
     "https://[2001:44c8:48f3:2772:c93a:186:3b11:2ab6]:8080",  #ตัวนี้เป็น https 
@@ -158,6 +163,10 @@ DATABASES = {
         "NAME": BASE_DIR / "db.sqlite3",
     }
 }
+
+
+# settings.py
+VIEW_SITE_URL = "https://somsaksonngai.site/indexDashboardUser/"  # หรือดึงจาก Environment Variable
 
 # ✅ Password Validation
 AUTH_PASSWORD_VALIDATORS = [

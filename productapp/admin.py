@@ -1,5 +1,5 @@
 from django.contrib import admin
-from productapp.models import Product, Product1, Category
+from productapp.models import Product, Product1, Category,frolink
 from django.db.models import Sum
 from django.utils.html import format_html
 import openpyxl
@@ -8,6 +8,8 @@ from django.forms import TextInput
 from django.db import models
 
 
+
+from django.urls import path, reverse
 
 
      
@@ -26,9 +28,9 @@ class ManageProduct2(admin.ModelAdmin):
 
     
     list_display = ["id","name", "price","is_trending","stock","profitprice","barcode","image_preview"]
-    list_editable = ["price", "is_trending", "stock","profitprice",]
+    list_editable = [ "is_trending", "stock","profitprice",]
     list_per_page = 20  # แสดงข้อมูล 20 รายการต่อหน้า
-    search_fields = ["name","barcode"]  # เพิ่มช่องค้นหา
+    search_fields = ["name","barcode","id"]  # เพิ่มช่องค้นหา
     list_filter = ["category"]  # เพิ่มตัวกรองตามหมวดหมู่ 
     actions_on_top = True  # แสดง Actions ด้านบน
     actions_on_bottom = True  # แสดง Actions ด้านล่าง
@@ -68,24 +70,6 @@ class ManageProduct2(admin.ModelAdmin):
         return response
 
    
-   
-   
-   
-   
-   
-  
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     def changelist_view(self, request, extra_context=None):
@@ -98,13 +82,25 @@ class ManageProduct2(admin.ModelAdmin):
         extra_context['total_price'] = total_price
         return super().changelist_view(request, extra_context=extra_context)
     
-    
-    
-    
-    
-    
+
 
 admin.site.register(Product1, ManageProduct2)
+
+
+
+class link(admin.ModelAdmin):
+    list_display = ('name','url_link')
+
+    def url_link(self, obj):
+        url = reverse('indexDashboardUser')  # ใช้ชื่อ URL ที่กำหนดใน urls.py
+        return format_html('<a href="{}" target="">{}</a>', url, obj.name)
+    url_link.short_description = 'Product Link'
+
+admin.site.register(frolink, link)
+
+
+
+
 
 
 

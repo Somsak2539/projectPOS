@@ -41,107 +41,82 @@
                     </li>
                 </ul>
             </div>
-            <div class="grid grid-cols-1 2xl:grid-cols-12 gap-x-5 ">
-                <div class="hidden 2xl:col-span-3 2xl:block">
-                    <div class="card">
-                        <div class="card-body">
-                           
+
+
+
+
+
+            
+            <div class="mt-4 collapsible">
+                <button class="flex items-center w-full text-left collapsible-header group">
+                    <h6 class="underline grow">Product Category</h6>
+                    <div class="shrink-0 text-slate-500 dark:text-zink-200">
+                        <i data-lucide="chevron-down" class="hidden size-4 group-[.show]:inline-block"></i>
+                        <i data-lucide="chevron-up" class="inline-block size-4 group-[.show]:hidden"></i>
+                    </div>
+                </button>
 
 
 
 
 
 
-                            <div class="mt-4 collapsible">
-                                <button class="flex items-center w-full text-left collapsible-header group">
-                                    <h6 class="underline grow">Product Category</h6>
-                                    <div class="shrink-0 text-slate-500 dark:text-zink-200">
-                                        <i data-lucide="chevron-down" class="hidden size-4 group-[.show]:inline-block"></i>
-                                        <i data-lucide="chevron-up" class="inline-block size-4 group-[.show]:hidden"></i>
-                                    </div>
-                                </button>
+                <div class="mt-4 collapsible-content">
 
+                 
+                    <div class="flex flex-col gap-2">
 
+                       
 
+                        <form method="GET" action="{% url 'ProductPreview' %}" class="mb-4 flex flex-wrap gap-2">
 
-                                <div class="mt-4 collapsible-content">
-
-                                 
-                                    <div class="flex flex-col gap-2">
-
-                                       
-
-                                        <form method="GET" action="{% url 'ProductPreview' %}" class="mb-4 flex flex-wrap gap-2">
-    
-                                            <!-- ✅ เลือกประเภทสินค้า -->
-                                             
-                                            <select name="category" class="ltr:pl-8 rtl:pr-8 search form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200">
-                                                <option value="">-- ทุกหมวดหมู่ --</option>
-                                                {% for category in categories %}
-                                                    <option value="{{ category.id }}" {% if request.GET.category == category.id|stringformat:"s" %}selected{% endif %}>
-                                                        {{ category.name }}
-                                                    </option>
-                                                {% endfor %}
-                                            </select>
-                                        
-                                            <!-- ✅ ป้อนช่วงราคา (ค่าไม่หายหลัง Submit) -->
-                                            <input type="number" name="min_price" placeholder="ราคาต่ำสุด"
-                                                class="ltr:pl-8 rtl:pr-8 search form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200"
-                                                value="{{ request.GET.min_price }}">
-                                            
-                                            <input type="number" name="max_price" placeholder="ราคาสูงสุด"
-                                                class="ltr:pl-8 rtl:pr-8 search form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200"
-                                                value="{{ request.GET.max_price }}">
-                                        
-                                            <!-- ✅ ตัวเลือกเรียงลำดับ -->
-                                            <select name="sort" class="ltr:pl-8 rtl:pr-8 search form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200">
-                                                <option value="default" {% if request.GET.sort == "default" %}selected{% endif %}>-- เรียงลำดับ --</option>
-                                                <option value="highest" {% if request.GET.sort == "highest" %}selected{% endif %}>ราคาสูงไปต่ำ</option>
-                                                <option value="lowest" {% if request.GET.sort == "lowest" %}selected{% endif %}>ราคาต่ำไปสูง</option>
-                                                <option value="newest" {% if request.GET.sort == "newest" %}selected{% endif %}>สินค้ามาใหม่</option>
-                                            </select>
-                                        
-                                            <!-- ✅ ปุ่มค้นหา -->
-                                            <button type="submit" class="text-white btn bg-custom-500 border-custom-500 hover:bg-custom-600">ค้นหา</button>
-                                        
-                                            <!-- ✅ ปุ่มเคลียร์ (Reset) -->
-                                            <a href="{% url 'ProductPreview' %}" class="text-white btn bg-custom-500 border-custom-500 hover:bg-custom-600">เคลียร์</a>
-                                        
-                                        </form>
-                                        
-                                        
-                                        
-                                        
-
-
-                                     
-
-                                       
-
-
-
-                                    
-
-                                    </div>
-                                </div>
-
-
-
-
-                            </div>
-
-
-
-
-
+                            <!-- ✅ เลือกประเภทสินค้า -->
+                             
+                            <select name="category" class="ltr:pl-8 rtl:pr-8 search form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200">
+                                <option value="">-- ทุกหมวดหมู่ --</option>
+                                {% for category in categories %}
+                                    <option value="{{ category.id }}" {% if request.GET.category == category.id|stringformat:"s" %}selected{% endif %}>
+                                        {{ category.name }}
+                                    </option>
+                                {% endfor %}
+                            </select>
                         
-
-                        </div>
-
-
+                            <!-- ✅ ป้อนช่วงราคา (ค่าไม่หายหลัง Submit) -->
+                            <input type="number" name="min_price" placeholder="ราคาต่ำสุด"
+                                class="ltr:pl-8 rtl:pr-8 search form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200"
+                                value="{{ request.GET.min_price }}">
+                            
+                            <input type="number" name="max_price" placeholder="ราคาสูงสุด"
+                                class="ltr:pl-8 rtl:pr-8 search form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200"
+                                value="{{ request.GET.max_price }}">
+                        
+                            <!-- ✅ ตัวเลือกเรียงลำดับ -->
+                            <select name="sort" class="ltr:pl-8 rtl:pr-8 search form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200">
+                                <option value="default" {% if request.GET.sort == "default" %}selected{% endif %}>-- เรียงลำดับ --</option>
+                                <option value="highest" {% if request.GET.sort == "highest" %}selected{% endif %}>ราคาสูงไปต่ำ</option>
+                                <option value="lowest" {% if request.GET.sort == "lowest" %}selected{% endif %}>ราคาต่ำไปสูง</option>
+                                <option value="newest" {% if request.GET.sort == "newest" %}selected{% endif %}>สินค้ามาใหม่</option>
+                            </select>
+                        
+                            <!-- ✅ ปุ่มค้นหา -->
+                            <button type="submit" class="text-white btn bg-custom-500 border-custom-500 hover:bg-custom-600">ค้นหา</button>
+                        
+                            <!-- ✅ ปุ่มเคลียร์ (Reset) -->
+                            <a href="{% url 'ProductPreview' %}" class="text-white btn bg-custom-500 border-custom-500 hover:bg-custom-600">เคลียร์</a>
+                        
+                        </form>
 
                     </div>
-                </div><!--end col-->
+                </div>
+
+            </div>
+
+
+
+
+
+            <div class="grid grid-cols-1 2xl:grid-cols-12 gap-x-5 ">
+               
 
 
 
@@ -163,19 +138,6 @@
                 
                     
                     <div class="grid grid-cols-1 mt-5 md:grid-cols-2 [&.gridView]:grid-cols-1 xl:grid-cols-4 group [&.gridView]:xl:grid-cols-1 gap-x-5" id="cardGridView">
-
-
-
-
-
-
-
-
-
-
-                       
-
-
 
 
 
@@ -234,6 +196,8 @@
                     </div><!--end grid-->
                     
                    
+
+
 
                     <div class="flex flex-col items-center mb-5 md:flex-row">
                         <div class="mb-4 grow md:mb-0">

@@ -335,6 +335,112 @@ fetch(apiUrl)
 
 
 
+
+
+    // ✅ กำหนดตัวแปรเก็บรายการสินค้า
+    /*let ajaxStockAdjustments = [];
+
+    // ✅ ฟังก์ชันเพิ่ม Event Listener สำหรับปุ่มลบ
+    function addRemoveEvent() {
+      document.querySelectorAll(".remove-item").forEach((button) => {
+        button.addEventListener("click", function () {
+          let row = this.closest("tr");
+          let productName = row.querySelector("td:nth-child(3)").textContent.trim(); // เอาชื่อสินค้าแบบ trim
+
+          // ✅ ลบสินค้าจาก stockAdjustments
+          ajaxStockAdjustments = ajaxStockAdjustments.filter(item => item.product !== productName);
+
+          console.log("✅ ajaxStockAdjustments หลังลบ:", ajaxStockAdjustments);
+
+          // ✅ บันทึกค่าใหม่ไปยัง localStorage
+          localStorage.setItem("stockAdjustments", JSON.stringify(ajaxStockAdjustments));
+
+          // ✅ ลบแถวออกจากตาราง
+          row.remove();
+
+          // ✅ อัปเดตยอดรวม
+          updateTotalAmount();
+        });
+      });
+    }
+
+    // ✅ ใช้ Event Delegation แทนการผูก Event ทีละปุ่ม (แก้ปัญหากรณีปุ่มถูกสร้างใหม่)
+    document.addEventListener("click", function (event) {
+      if (event.target.classList.contains("remove-item")) {
+        let row = event.target.closest("tr");
+        let productName = row.querySelector("td:nth-child(3)").textContent.trim();
+
+        // ✅ ลบสินค้าจาก stockAdjustments
+        stockAdjustments = stockAdjustments.filter(item => item.product !== productName);
+        console.log("✅ ajaxStockAdjustments หลังลบ:", ajaxStockAdjustments);
+
+        // ✅ บันทึกค่าใหม่ไปยัง localStorage
+        localStorage.setItem("stockAdjustments", JSON.stringify(ajaxStockAdjustments));
+
+        // ✅ ลบแถวออกจากตาราง
+        row.remove();
+
+        // ✅ อัปเดตยอดรวม
+        updateTotalAmount();
+      }
+    });
+
+    // ✅ ฟังก์ชันอัปเดตยอดรวม
+    function updateTotalAmount() {
+      let totalAmount = ajaxStockAdjustments.reduce((sum, item) => sum + item.TotalPrice, 0);
+      let totalProfit = ajaxStockAdjustments.reduce((sum, item) => sum + item.totalProfit, 0);
+
+      document.getElementById("totalAmount").innerText = `${totalAmount.toLocaleString(undefined, {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 211
+      })} บาท`;
+
+      console.log("💰 กำไรทั้งหมด:", totalProfit);
+      console.log("💵 ราคาสินค้ารวม:", totalAmount);
+    }
+
+    // ✅ โหลด stockAdjustments จาก localStorage เมื่อหน้าโหลด
+    document.addEventListener("DOMContentLoaded", function () {
+      stockAdjustments = JSON.parse(localStorage.getItem("ajaxStockAdjustments")) || [];
+      updateTotalAmount();
+    });
+*/
+
+
+
+
+
+
+    ///-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     // ✅ กำหนดตัวแปรเก็บรายการสินค้า
     let stockAdjustments = [];
 
@@ -1168,7 +1274,7 @@ fetch(apiUrl)
 
 
 
-// ดึง CSRF Token ก่อน
+    // ดึง CSRF Token ก่อน
 
 
 
@@ -1257,8 +1363,8 @@ fetch(apiUrl)
 
       // คำนวณผลรวม totalProfit
 
-      let TotalPriceSum = ValueSelect.reduce((sum, item) => sum + item.TotalPrice, 0);
-      console.log("📊 ผลรวมของ totalProfit:", TotalPriceSum);
+      /*let TotalPriceSum = ValueSelect.reduce((sum, item) => sum + item.TotalPrice, 0);
+      console.log("📊 ผลรวมของ totalProfit:", TotalPriceSum);*/
 
 
       //---------------------------------สำหรับค่า stock adjustment----------------------------------------------------------------
@@ -1266,6 +1372,7 @@ fetch(apiUrl)
       let stockAdjustmentSum = stockAdjustments.reduce((sum, item) => sum + item.TotalPrice, 0);
 
       console.log("show Stockadjustment", stockAdjustmentSum)
+
 
 
       //---------------------------------------รายการวมทั่งหมดเมื่อมีการทำการกดตรงนี้ ------------------------------------------
@@ -1321,7 +1428,7 @@ fetch(apiUrl)
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
-            "X-CSRFToken": csrfToken // เพิ่ม CSRF Token ถ้าจำเป็น
+            "X-CSRFToken": csrfToken, // เพิ่ม CSRF Token ถ้าจำเป็น
           },
           credentials: "include",  // ✅ อนุญาตให้ส่ง Cookies ไปด้วย
           body: JSON.stringify({ updates: stockAdjustments }),
@@ -1349,31 +1456,14 @@ fetch(apiUrl)
 
 
 
-
-            function getCSRFToken() {
-              let cookieValue = null;
-              if (document.cookie && document.cookie !== "") {
-                  const cookies = document.cookie.split(";");
-                  for (let i = 0; i < cookies.length; i++) {
-                      const cookie = cookies[i].trim();
-                      if (cookie.startsWith("csrftoken=")) {
-                          cookieValue = cookie.substring("csrftoken=".length, cookie.length);
-                          break;
-                      }
-                  }
-              }
-              return cookieValue;
-          }
-          
-          const csrfToken = getCSRFToken(); // ✅ ดึงค่า CSRF Token
-          console.log("CSRF Token:5555", csrfToken);
+            console.log("CSRF Token:66", csrfToken);
 
             setTimeout(() => {
               fetch("http://localhost:8080/save-sale-record/", {
                 method: "POST",
                 headers: {
                   "Content-Type": "application/json",
-                  "X-CSRFToken": csrfToken
+                  "X-CSRFToken": csrfToken,
                 },
                 credentials: "include",
                 body: JSON.stringify(savedResults[savedResults.length - 1]),
@@ -1426,21 +1516,21 @@ fetch(apiUrl)
                 })
 
 
-              
+
                 .catch(error => console.error("❌ Error fetching data:", error));
 
 
 
-                
 
 
 
 
-          
 
 
 
-              }, 1000);
+
+
+            }, 1000);
 
 
 
@@ -1914,7 +2004,7 @@ fetch(apiUrl)
 
         console.log(`📦 Stock Adjustments (Updated):`, stockAdjustments);
         console.log("💰 รวมกำไรทั้งหมด", grandTotalProfit);
-        console.log("💵 รวมราคาทั้งหมด", grandTotalPrice);
+        console.log("💵 รวมราคาทั้งหมด5555", grandTotalPrice);
 
 
 
@@ -1967,24 +2057,44 @@ fetch(apiUrl)
       inputBtn1.addEventListener("click", () => Additem());
     }
 
-    //------------------------------------------------------******************************--------------------------------------------------
+    //-----------------------------------------------------ดึงค่ามาจาก ajex ข้างนอกตัวนี้ต้องศึกษาเยอะๆมีประโยชน์มาก -------------------------------------------------
 
 
-
-    let ValueSelect = [];  // ✅ เปลี่ยนจาก const เป็น let
+    let ValueSelect = [];
 
     // ✅ รับ Event จาก ajax.js และอัปเดต stockAdjustments
     document.addEventListener("updateStock", function (event) {
-      stockAdjustments = event.detail;
-      console.log("📦 stockAdjustments ที่ได้รับใน script.js:", stockAdjustments);
+      let ajaxStockAdjustments = event.detail;
+      console.log("📦 ajaxStockAdjustments ที่ได้รับใน script.js:", ajaxStockAdjustments);
 
-      ValueSelect = [...stockAdjustments]; // ✅ ทำสำเนา stockAdjustments ไปยัง ValueSelect
+      ValueSelect = [...ajaxStockAdjustments]; // ✅ ทำสำเนาค่าไปยัง ValueSelect
       console.log("📌 ประกาศตัวแปร Global:", ValueSelect);
+
+      // ✅ เพิ่มค่าเข้าไปใน stockAdjustments โดยใช้ push()
+      /*stockAdjustments.push(...ValueSelect);
+      console.log("🔄 stockAdjustments ล่าสุด:", stockAdjustments);*/
+
+
+
+      // เพิ่มเฉพาะข้อมูลที่ไม่ซ้ำ ตัวนี้จะเป็นการรวมสินค้าเข้าใน array ส่วนนี้ 
+      ValueSelect.forEach(item => {
+        const isDuplicate = stockAdjustments.some(
+          existingItem => existingItem.product === item.product
+        );
+        if (!isDuplicate) {
+          stockAdjustments.push(item);
+        }
+      });
+
+      console.log("🔄 stockAdjustments หลังเพิ่มข้อมูล (ไม่ซ้ำ):", stockAdjustments);
+
+
 
       if (stockAdjustments.length === 0) {
         console.warn("⚠️ ไม่มีสินค้าใน stockAdjustments");
         return;
       }
+
       updateCartTable(); // ✅ อัปเดตตารางสินค้า
 
       // ✅ ทำให้แน่ใจว่า stockAdjustments มีค่า ก่อนอัปเดต Stock
@@ -1997,11 +2107,27 @@ fetch(apiUrl)
 
 
 
-    console.log("📤 กำลังส่งข้อมูลไป API:", JSON.stringify({ updates: stockAdjustments }));
-    console.log("📦 ค่า stockAdjustments ก่อนส่ง:", stockAdjustments);
 
 
 
+
+
+
+
+
+
+
+
+
+
+    console.log("📤 กำลังส่งข้อมูลไป ajaxStockAdjustments API:", JSON.stringify({ updates: ajaxStockAdjustments }));
+    console.log("📦 ค่า ajaxStockAdjustments ก่อนส่ง:", ajaxStockAdjustments);
+
+
+
+    function updateStockAPI() {
+      console.log("🔄 อัปเดตสต็อก API ด้วยข้อมูล:", ValueSelect);
+    }
 
 
 
@@ -2432,8 +2558,8 @@ fetch(apiUrl)
           console.error("Fetch error:", error);
 
 
-          
-              
+
+
 
 
 
@@ -2441,6 +2567,26 @@ fetch(apiUrl)
 
 
         });
+
+
+
+
+      /*const getCookie = (name) => {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.startsWith(name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    };
+    
+    const csrfToken = getCookie('csrftoken');*/ // ดึงค่า CSRF Token จาก Cookie
 
 
     }
