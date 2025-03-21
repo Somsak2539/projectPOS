@@ -1485,6 +1485,7 @@ fetch(apiUrl)
                     let change = parseFloat(data.change || 0);
                     let totalAmount = parseFloat(data.totalAmount || 0);
 
+                    
                     // ✅ อัปเดตค่าบน UI
                     document.getElementById("totalAmount").innerText = totalAmount.toFixed(2) + " บาท";
                     document.getElementById("enteredAmount").innerText = enteredAmount.toFixed(2) + " บาท";
@@ -1515,16 +1516,7 @@ fetch(apiUrl)
                   }
                 })
 
-
-
                 .catch(error => console.error("❌ Error fetching data:", error));
-
-
-
-
-
-
-
 
 
 

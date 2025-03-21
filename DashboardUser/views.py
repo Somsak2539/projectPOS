@@ -144,6 +144,7 @@ def ItemProduct(request):
         return render(request, "ItemProduct.html", {
             "records": [],
             "total_sum": 0,
+            "total_profit_sum": 0,
             "start_date": start_date or "",
             "end_date": end_date or "",
             "ProductStock":ProductStock,
@@ -161,6 +162,7 @@ def ItemProduct(request):
             return render(request, "ItemProduct.html", {
                 "records": [],
                 "total_sum": 0,
+                "total_profit_sum": 0,
                 "start_date": start_date,
                 "end_date": end_date,
                 "ProductStock":ProductStock,
@@ -169,15 +171,21 @@ def ItemProduct(request):
 
         # ดึงข้อมูลที่อยู่ในช่วงวันที่ที่เลือก
         records = SaleRecord.objects.filter(timestamp__date__range=[start_date_obj, end_date_obj]).order_by('-timestamp')
-
+       
         # คำนวณผลรวมยอดขาย
         total_sum = records.aggregate(total=Sum("total_amount"))["total"] or 0
+        
+          # ดึกข้อมูลจาก Stockadjustment เพื่อที่จะทำการรวม Total ของจำนวณ
+        total_profit_sum = sum(sum(item.get("totalProfit", 0) for item in record.stock_adjustments or [])for record in records if record.stock_adjustments )
+
+       
 
     except ValueError:
         messages.error(request, "รูปแบบวันที่ไม่ถูกต้อง! กรุณากรอกเป็น YYYY-MM-DD")
         return render(request, "ItemProduct.html", {
             "records": [],
             "total_sum": 0,
+            "total_profit_sum": 0,
             "start_date": start_date,
             "end_date": end_date,
             "ProductStock":ProductStock,
@@ -187,6 +195,7 @@ def ItemProduct(request):
     return render(request, "ItemProduct.html", {
         "records": records,
         "total_sum": total_sum,
+        "total_profit_sum": total_profit_sum,
         "start_date": start_date_obj.strftime('%d/%m/%Y'),
         "end_date": end_date_obj.strftime('%d/%m/%Y'),
         "ProductStock":ProductStock,
@@ -498,6 +507,18 @@ def Circulation2(request):
         start_date = today - timedelta(days=365)
 
     ProductStock = Product1.objects.filter(stock__lt=10).values("id", "name", "stock","updated_at")
+    # ค่าที่แสดงในการรวมมูลล่ะค่าของร้าน
+    TotlalShop = list(Product1.objects.values("name", "price", "stock"))
+    print("รวมมูลค่าของที่อยู่ในร้านทั้งหมด:",TotlalShop);
+    total_valueShop = round(sum(item["price"] * item["stock"] for item in TotlalShop), 2)
+
+
+    print("ราคารวมทั้งหมด:",total_valueShop)
+
+
+    
+  
+    
     # ✅ รีเซ็ตเวลาเป็น 00:00:00 เพื่อให้ได้ข้อมูลตั้งแต่ต้นวัน
     start_date = start_date.replace(hour=0, minute=0, second=0, microsecond=0)
     end_date = today.replace(hour=23, minute=59, second=59, microsecond=999999)
@@ -585,6 +606,8 @@ def Circulation2(request):
     
     # ทำการดึงข้อมูลรายการรวมทั้งหมดออกมาไม่ว่าจะเป็นรวมยอดขายหรือทำการรวมกำไร 
     sale_records = SaleRecord.objects.all()
+    
+  
     # ✅ รวมยอดขายทั้งหมด
     total_profit = sum([
         sum(item.get("totalProfit", 0) for item in record.stock_adjustments)
@@ -686,6 +709,8 @@ def Circulation2(request):
             "daily_profit1": daily_profit_list,
             "weekly_profit1": weekly_profit_list,
             "monthly_profit1": monthly_profit_list,
+            "total_valueShop":total_valueShop,
+            
           
       
            
@@ -704,6 +729,7 @@ def Circulation2(request):
         "product_sales_json": product_sales_json,
         "ProductStock":ProductStock,
         "total_product_count":total_product_count,
+        "total_valueShop":total_valueShop,
        
     })
     

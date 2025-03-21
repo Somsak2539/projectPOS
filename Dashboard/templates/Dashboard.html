@@ -295,6 +295,7 @@ td {
         <button ype="button" class="contlrolBox2-btn">
           <i class="fa-solid fa-user"></i>
         </button>
+
         <div class="contlrolBox2-opption" id="dropdownMenu">
           <a href="{% url 'login.html' %}" target="_blank" >ชื่อสมาชิก</a>
           <a href="{% url 'login.html' %}" target="_blank" >ระหัสสมาชิก</a>
@@ -483,7 +484,6 @@ td {
         <div class="contlrolBox4-opption" id="dropdownMenu">
           <a href="{% url 'indexDashboardUser' %}" target="_blank">ยอดขายประจำวัน</a>
           <a href="{% url 'indexDashboardUser' %}" target="_blank">ยอดขายประจำเดือน</a>
-          <a href="{% url 'indexDashboardUser' %}" target="_blank">จำนวณบิลที่ขายได้</a>
           <a href="{% url 'indexDashboardUser' %}" target="_blank">ยอดขายเฉลี่ยต่อบิล</a>
           <a href="{% url 'indexDashboardUser' %}" target="_blank">กราฟยอดขายรายวัน และรายเดือน</a>
         </div>
@@ -494,7 +494,7 @@ td {
           <i class="fa-regular fa-bell"></i>
         </button>
         <div class="contlrolBox5-opption" id="dropdownMenu">
-          <a href="{% url 'product1' %}">แจ้งเตือนสินค้าคงเหลือใกล้หมด</a>
+          <a href="{% url 'product1' %}">สินค้าใกล้จะหมด </a>
           <a href="{% url 'product1' %}">แจ้งเตือนการคืนสินค้า</a>
           
         </div>
@@ -505,12 +505,12 @@ td {
           <i class="fa-solid fa-clipboard"></i>
         </button>
         <div class="contlrolBox6-opption" id="dropdownMenu">
-          <a href="{% url 'product1' %}">รายงานยอดขายรายวัน</a>
-          <a href="{% url 'product1' %}">รายงานยอดขายรายเดือน</a>
-          <a href="{% url 'product1' %}">ดูรายการสินค้า</a>
-          <a href="{% url 'product1' %}">จัดการลูกค้า</a>
-          <a href="{% url 'product1' %}">จัดการพนักงาน</a>
-          <a href="{% url 'product1' %}">ดูรายงาน</a>
+          <a href="#">รายงานยอดขายรายวัน</a>
+          <a href="#">รายงานยอดขายรายเดือน</a>
+          <a href="#">ดูรายการสินค้า</a>
+          <a href="#">จัดการลูกค้า</a>
+          <a href="#">จัดการพนักงาน</a>
+          <a href="#">ดูรายงาน</a>
         </div>
       </div>
 
@@ -519,12 +519,9 @@ td {
           <i class="fa-solid fa-gear"></i>
         </button>
         <div class="contlrolBox7-opption" id="dropdownMenu">
-          <a href="{% url 'product1' %}">เพื่มรายการสินค้า</a>
-          <a href="{% url 'product1' %}">ดูรายการสินค้า</a>
-          <a href="{% url 'product1' %}">ดูจักการพนักงาน</a>
-          <a href="{% url 'product1' %}">ดูรายงาน</a>
-          <a href="{% url 'product1' %}"
-            >การตั้งค่าร้านค้า ชื้อร้านค้า สกุลเงิน</a
+          <a href="#">เพื่มรายการสินค้า</a>
+          <a href="#"
+            >logout</a
           >
         </div>
       </div>
@@ -771,7 +768,7 @@ td {
 
 
 
-       <button id="receiptBtn" class="print-btn" onclick="openModal()" style="display: none;">
+       <button id="receiptBtn" class="print-btn" onclick="openModal()" style="display: none;"> Click
        </button>
     
     <!-- ✅ ป๊อปอัปใบเสร็จ -->
@@ -779,6 +776,7 @@ td {
 <div id="receiptModal" class="modal">
   <div class="modal-content">
     <span class="close" onclick="closeModal()">&times;</span>
+
     <h5> ร้านค้าของคุณ</h5>
     <h5>รับมา: <span id="enteredAmount">-</span></h5>
     <h5>ทอน: <span id="change">-</span></h5>
@@ -828,7 +826,9 @@ td {
 
     function openModal() {
         document.getElementById("receiptModal").style.display = "flex";
-        document.getElementById("modal-date").innerText = new Date().toLocaleDateString();
+        //document.getElementById("modal-date").innerText = new Date().toLocaleDateString();
+
+        
     }
     
     function closeModal() {

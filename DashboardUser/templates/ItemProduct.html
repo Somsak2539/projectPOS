@@ -66,9 +66,22 @@
                         <div class="grid items-center grid-cols-1 gap-3 mb-5 xl:grid-cols-12">
                             <div class="xl:col-span-3">
                                 
-                                <h6 class="text-15">รายงานยอดขาย</h6>
-                                <h3>ยอดขายรวม: {{ total_sum|floatformat:2|intcomma }} บาท</h3>
+                                <h1 class="text-15">รายงานยอดขาย</h1>
+                                <h4>ยอดขายรวม: {{ total_sum|floatformat:2|intcomma }} บาท</h4>
+                               
+
                             </div><!--end col-->
+
+
+                            <div class="xl:col-span-3">
+                                
+                                <h1 class="text-15">รายงานผลกำไร</h1>
+                           
+                                <h4>กำไรรวมทั้งหมด: {{ total_profit_sum|floatformat:2|intcomma }} บาท</h4>
+
+                            </div><!--end col-->
+
+
                             <div class="xl:col-span-3 xl:col-start-10">
                                 <div class="flex gap-3">
                                     <div class="relative grow">
@@ -88,9 +101,12 @@
                                     <tr>
                                         <th>วันที่/เวลา</th>
                                         <th>ยอดขายรวม (บาท)</th>
+                                        <th>รับเงิน (บาท)</th>
+                                        <th>ทอนตัง (บาท)</th>
                                         <th>ชื่อผู้ที่อยู่เครื่อง</th>
                                         <th>สินค้า</th>
                                         <th>จำนวน</th>
+                                        <th>กำไรต่อหน่วย</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -100,16 +116,20 @@
                                             {% if forloop.first %}
                                                 <td rowspan="{{ record.stock_adjustments|length }}">{{ record.timestamp|date:"d/m/Y H:i:s" }}</td>
                                                 <td rowspan="{{ record.stock_adjustments|length }}">{{ record.total_amount|intcomma }} บาท</td>
+                                                <td rowspan="{{ record.stock_adjustments|length }}">{{ record.entered_amount|intcomma }} บาท</td>
+                                                <td rowspan="{{ record.stock_adjustments|length }}">{{ record.change|intcomma }} บาท</td>
+                                             
                                                 <td rowspan="{{ record.stock_adjustments|length }}">{{ record.cashier }}</td>
                                                 
                                             {% endif %}
                                             <td>{{ item.product }}</td>
                                             <td>{{ item.quantity|floatformat:2|intcomma }}</td>
+                                            <td>{{ item.totalProfit|floatformat:2|intcomma }}</td>
                                         </tr>
                                         {% endfor %}
                                     {% empty %}
                                         <tr>
-                                            <td colspan="5" style="text-align: center;">ไม่มีข้อมูลการขาย</td>
+                                            <td colspan="8" style="text-align: center;">ไม่มีข้อมูลการขาย</td>
                                         </tr>
                                     {% endfor %}
                                 </tbody>
