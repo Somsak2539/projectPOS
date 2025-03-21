@@ -8,7 +8,9 @@ from productapp.serializers import BlogSerializer,CategotySerializer
 from django.http import JsonResponse #ดึงฟั่งชั่นจาก Django เพื่อใช้fucntion ของmyjason มาจาก Class based View เพื่อที่จะทำการนำมาใช้
 from rest_framework.response import Response #มาจาก Class based View เพื่อที่จะทำการนำมาใช้
 from rest_framework import status # คือการ impport แจ้งข้อมูล status สำหรับการทำผิดfuntion ที่ใข้งานมาจาก Class based View เพื่อที่จะทำการนำมาใช้
-
+from django.dispatch import receiver
+from django.db.models.signals import post_delete
+from django.db import models
 # Create your views here.
 
 
@@ -24,8 +26,23 @@ def ProductNew(request):
      return render (request,"ProductUpdate.html",{"all_product":all_product}) #ทำการดึงค่าตัวแปรมาเก็บไว้แล้ว Return กับไป
 
 
+
+
+# ใน productapp/models.py
+
+
+
+@receiver(post_delete, sender=Product1)
+def delete_product_image(sender, instance, **kwargs):
+    if instance.image:
+        instance.image.delete(save=False)
+
+
 def search_products(request):
     query = request.GET.get("q", "").strip()  # ลบช่องว่างใน query
+    
+    
+
     if query:
         products = Product1.objects.filter(name__icontains=query).values("id", "name", "price", "image")
         products_list = list(products)
@@ -112,3 +129,4 @@ class  BlogDetail(APIView):
         blog=Product1.objects.get(pk=id) #ประกาศเท่ากับ Blog เท่ากับ Blogเลือกตาม iD
         blog.delete()
         return Response(status=status.HTTP_204_NO_CONTENT) 
+    
