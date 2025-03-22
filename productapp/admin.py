@@ -27,7 +27,7 @@ class ManageProduct2(admin.ModelAdmin):
     
 
     
-    list_display = ["id","name", "price","is_trending","stock","profitprice","barcode","image_preview"]
+    list_display = ["id","image_preview","name", "price","stock","profitprice","barcode","is_trending",]
     list_editable = [ "is_trending", "stock","profitprice",]
     list_per_page = 20  # แสดงข้อมูล 20 รายการต่อหน้า
     search_fields = ["name","barcode","id"]  # เพิ่มช่องค้นหา

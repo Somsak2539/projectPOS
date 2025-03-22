@@ -220,6 +220,8 @@ fetch(apiUrl)
     const row24 = document.getElementById("row24");
     const row25 = document.getElementById("row25");
     const row26 = document.getElementById("row26");
+    const ShowRecipe = document.getElementById("ShowRecipe");
+
 
     //---------------------------------------ทำการทดสอบ API สำหรับการทำงานผ่าน django   -----------------------------------------------
 
@@ -1436,6 +1438,8 @@ fetch(apiUrl)
           .then((response) => {
             if (!response.ok) {
               throw new Error(`HTTP error! Status: ${response.status}`);
+              
+             
             }
             return response.json();
           })
@@ -1549,6 +1553,9 @@ fetch(apiUrl)
           })
           .catch((error) => {
             console.error("Error updating stock:", error);
+            console.error("❌ Error updating stock:", error);
+            alert("⚠️ ไม่สามารถอัปเดตสต็อกได้! กรุณาลองใหม่อีกครั้ง เนื่องจากสต็อกของคุณไม่เพียงพอที่จะขาย");
+
           });
         console.log("CSRF Token:", csrfToken);
 
@@ -2102,16 +2109,6 @@ fetch(apiUrl)
 
 
 
-
-
-
-
-
-
-
-
-
-
     console.log("📤 กำลังส่งข้อมูลไป ajaxStockAdjustments API:", JSON.stringify({ updates: ajaxStockAdjustments }));
     console.log("📦 ค่า ajaxStockAdjustments ก่อนส่ง:", ajaxStockAdjustments);
 
@@ -2581,6 +2578,17 @@ fetch(apiUrl)
     const csrfToken = getCookie('csrftoken');*/ // ดึงค่า CSRF Token จาก Cookie
 
 
+
+   
+
+
+
+  
+
+
+  //------------------------------------------------------------------------------------------
+
+
     }
 
     if (row22) {
@@ -2627,6 +2635,20 @@ fetch(apiUrl)
     console.error("Error fetching data:", error);
   });
 
+
+// ------------------------------------------แสดงค่าใบเสร็จเพื่อดูรายการว่าถูกต้องไหม--------------------------------------------------------------------
+
+  function ShowItemTable1() {
+    console.log("ShowItemTable");
+
+    
+         
+
+  }
+
+  if (ShowRecipe) {
+    ShowRecipe.addEventListener("click", () => ShowItemTable1()); // ใช้เป็น id แทนระบุแต่ล่ะตัวไปเลย
+  }
 
 
 

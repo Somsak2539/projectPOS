@@ -589,7 +589,7 @@ td {
               <table class="styled-table" id="itemTable">
                 <thead>
                   <tr>
-                    <th>รายการ</th>
+                    <th>id</th>
                     <th>barcode</th>
                     <th>ชื่อสินค้า</th>
                     <th>หน่อยนับ</th>
@@ -641,8 +641,8 @@ td {
             <button class="custom-button2" id="row17#">- <!--ไหล่หมู--></button>
             <button class="custom-button2" id="row18#">- <!--สันนอก--></button>
             <button class="custom-button2" id="row19#">- <!--สามชั้น--></button>
-            <button class="custom-button2" id="row20#">- <!--กระดูกหมูชูป--></button>
-            <button class="custom-button2" id="row21#">แสดงรายการ</button>
+            <button class="custom-button2" id="row20">- <!--กระดูกหมูชูป--></button>
+            <button class="custom-button2" id="ShowRecipe">แสดงรายการ</button>
             <button class="custom-button2" id="row22">Clean</button>
           </div>
         </div>
@@ -768,7 +768,7 @@ td {
 
 
 
-       <button id="receiptBtn" class="print-btn" onclick="openModal()" style="display: none;"> Click
+        <button id="receiptBtn" class="print-btn" onclick="openModal()" style="display: none;"> Click
        </button>
     
     <!-- ✅ ป๊อปอัปใบเสร็จ -->
@@ -809,6 +809,29 @@ td {
 
 
     
+
+
+
+
+<!--****************************************** แสดงค่าที่อยู่เฉยๆๆ*************************************************-->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
      <script src="{% static 'assets/dadhBoard/js/script.js' %}"></script>
     <link rel="stylesheet" href="{% static "assets/dadhBoard/css/style1.css"%}">
 
@@ -826,9 +849,11 @@ td {
 
     function openModal() {
         document.getElementById("receiptModal").style.display = "flex";
-        //document.getElementById("modal-date").innerText = new Date().toLocaleDateString();
+     
 
-        
+        //document.getElementById("modal-date").innerText = new Date().toLocaleDateString();
+      
+      
     }
     
     function closeModal() {
@@ -853,6 +878,27 @@ td {
       }, 500);
   }
   
+
+
+  //-----------------------สำหรับเรียกใช้การดูใบเสร็จเฉยๆๆ--------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     
 </script>
