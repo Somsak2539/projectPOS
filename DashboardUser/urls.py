@@ -21,7 +21,9 @@ path("login_cover/",views.login_cover, name="login_cover"),
 path('logout_cover', views.logout_cover, name='logout_cover'),
 path('eror404/', views.eror404, name='eror404'),
 
-
+path('apps-invoiceList/', views.appsinvoiceList, name='apps-invoiceList'),
+path('apps_ecommerceCart/', views.apps_ecommerceCart, name='apps_ecommerceCart'),
+path("apps-ecommerceCartAjax/",views.apps_ecommerceCartAjax,name="apps-ecommerceCartAjax"),
 
 
  

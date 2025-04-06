@@ -50,11 +50,146 @@ def is_special_admin(user):
     print(f"User Groups: {user.groups.all()}")
     return user.is_authenticated and user.groups.filter(name='SpecialAdmin').exists()
 
+# ✅ สำหรับการเรียกใช้หน้าเพจ AJax
+def apps_ecommerceCartAjax(request):
+    
+    return render(request, 'apps-ecommerceCartAjax.html')
 
 
+def apps_ecommerceCart(request):
+    
+
+     # เพิ่มสำหรับการแจ้งเตือน
+   #Product1.objects.filter(stock__lt=10).values("id", "name", "stock","updated_at")
+    # ✅ ดึงสินค้ายอดนิยม (Trending Products)
+    Products = Product1.objects.filter(is_trending=True)
+    
+    # ✅ ดึงข้อมูลหมวดหมู่ทั้งหมด
+    filter2 = Category.objects.all()
+    
+    # ✅ รับค่าพารามิเตอร์จาก `GET` Request
+    category_id = request.GET.get('category', None)
+    min_price = request.GET.get('min_price', None)
+    max_price = request.GET.get('max_price', None)
+    sort_by = request.GET.get('sort', 'default')
+  
+    search = request.GET.get('search', None)  # ค่าจาก input 'searchBarcode'
+    
+    # ✅ Debug: แสดงค่าที่ได้รับจาก Query Parameters
+    print(f"🟢 Category ID: {category_id}, Min Price: {min_price}, Max Price: {max_price}, Sort: {sort_by}")
 
 
+    # ✅ ดึงข้อมูลสินค้าทั้งหมด
+    products = Product1.objects.all()
+    
+    
+     #สำหรับการแจ้งเตือน
+    ProductStock = Product1.objects.filter(stock__lt=10)  
+    total_product_count = ProductStock.count()
+    print ("การนับข้อมูล",total_product_count);
+    
+    
+   
+    
+    
+    # ✅ทำการส่ง Ajax ไป
+    
+     # รับค่าพารามิเตอร์จาก `GET` Request
+    category_id = request.GET.get('category', None)
+    
+     # ✅ กรองสินค้าตามหมวดหมู่
+    if category_id and category_id.isdigit():
+        products = products.filter(category_id=int(category_id))
+        print(f"✅ Filtered by Category ({category_id}): {products.count()} items found")
+        
+    
+    # กรองตามช่วงราคา
+    if min_price:
+        products = products.filter(price__gte=min_price)
+    if max_price:
+        products = products.filter(price__lte=max_price)
+     
+     
+      # ค้นหาตาม ID หรือ Barcode
+ 
+        
+    if search:
+        # ตรวจสอบว่า search เป็นตัวเลข (หรือ id) หรือไม่
+        if search.isdigit():
+            # กรองสินค้าตาม id หรือ barcode
+            products = products.filter(id=search) | products.filter(barcode=search)
+            print(f"✅ Filtering by ID or Barcode: {products.count()} items found")
+        else:
+            # หากไม่ใช่ตัวเลข ก็อาจจะเป็นชื่อ หรือคำค้นหาอื่นๆ ที่สามารถกรองได้
+            products = products.filter(name__icontains=search)  # ตัวอย่างการค้นหาชื่อสินค้าด้วย `icontains`
+            print(f"✅ Filtering by Name or other: {products.count()} items found")
+    
+        
+        
+    # เรียงลำดับตามตัวเลือก
+    if sort_by == 'highest':
+        products = products.order_by('-price')
+    elif sort_by == 'lowest':
+        products = products.order_by('price')
+    elif sort_by == 'newest':
+        products = products.order_by('-created_at')
+        
+        
+    if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+        return render(request, 'apps-ecommerceCartAjax.html', {'products': products})  # ✅ แก้โค้ดปิด {} ค่อยมาไหล่ดูอีกทีหนึ่งแล้วกัน
+     
+        
+        
+    
+    # ✅ กรองสินค้าตามช่วงราคา (ตรวจสอบค่าก่อนแปลงเป็น `float`)
+    try:
+        if min_price:
+            min_price = float(min_price)
+            products = products.filter(price__gte=min_price)
+            print(f"✅ Filtered by Min Price ({min_price}): {products.count()} items found")
 
+        if max_price:
+            max_price = float(max_price)
+            products = products.filter(price__lte=max_price)
+            print(f"✅ Filtered by Max Price ({max_price}): {products.count()} items found")
+
+    except ValueError:
+        print("⚠️ Warning: ราคาไม่ใช่ตัวเลขที่ถูกต้อง")
+    
+    
+    
+    
+    
+    # ✅ เรียงลำดับสินค้าตามตัวเลือก
+    if sort_by == 'highest':
+        products = products.order_by('-price')  # ราคาสูงไปต่ำ
+        print("✅ Sorted by Highest Price")
+    elif sort_by == 'lowest':
+        products = products.order_by('price')  # ราคาต่ำไปสูง
+        print("✅ Sorted by Lowest Price")
+    elif sort_by == 'newest':
+        products = products.order_by('-created_at')  # สินค้าใหม่สุด
+        print("✅ Sorted by Newest")
+        
+     # ✅ Debug: ตรวจสอบจำนวนสินค้าหลังจากกรอง
+    print(f"🔵 Total Products After Filtering: {products.count()}")
+    
+
+    
+    return render (request,"apps-ecommerceCart.html",{
+        "Products": Products,  # ✅ สินค้ายอดนิยม
+        "products": products,  # ✅ สินค้าทั้งหมด (ที่ถูกกรองแล้ว)
+        "filter1": Product1.objects.all(),  # ✅ ข้อมูลสินค้าทั้งหมด
+        "filter2": filter2,    # ✅ หมวดหมู่ทั้งหมด
+        "categories": Category.objects.all(),  # ✅ หมวดหมู่ทั้งหมด (อีกตัว)
+        "ProductStock":ProductStock,
+        "total_product_count":total_product_count,
+        'search': search,
+        }) #ทำการดึงค่าตัวแปรมาเก็บไว้แล้ว Return กับไป
+    
+
+
+    
 
 def DashboardUser(request):
      return render (request,"dashboards-analytics.html") #ทำการดึงค่าตัวแปรมาเก็บไว้แล้ว Return กับไป
@@ -102,7 +237,11 @@ def LayoutDashbords(request):
     print("ดึงค่ารายการมา", ProductStock)
 
     return render(request, "LayoutDashbords.html", {"ProductStock": ProductStock, "total_product_count": total_product_count})
- 
+
+
+
+def appsinvoiceList(request):
+    return render (request,"apps-invoiceList.html")
  
 def eror404(request):
     return render (request,"404error.html")

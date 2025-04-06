@@ -16,6 +16,8 @@
 
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+
    <!-- Favicon -->
    <link rel="icon" type="image/x-icon" href="{% static 'favicon.png' %}">
 
@@ -375,7 +377,7 @@ td {
                       </div>
                       <div class="flex-1 pt-5 text-sm">
 
-                        <template x-if="tab === 'home'">
+                      <template x-if="tab === 'home'">
                           <div class="active">
                               <h3 class="mb-6 text-sm font-bold md:text-base">รายการสินค้าตามประเภทที่เลือก</h3>
                       
@@ -383,14 +385,6 @@ td {
                               <div id="productList" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
 
                                   
-
-
-
-
-
-
-
-
                                 <script>
                                   async function showAlert() {
                                       new window.Swal({
@@ -402,13 +396,9 @@ td {
                                   }
                               </script>
 
-
-
                       </template>
-                      
-                      
 
-
+                      
                           <template x-if="tab === 'profile'">
                               <div>
                                   <div class="flex items-start">
@@ -642,7 +632,53 @@ td {
             <button class="custom-button2" id="row18#">- <!--สันนอก--></button>
             <button class="custom-button2" id="row19#">- <!--สามชั้น--></button>
             <button class="custom-button2" id="row20">- <!--กระดูกหมูชูป--></button>
-            <button class="custom-button2" id="ShowRecipe">แสดงรายการ</button>
+            <div x-data="modal">
+
+
+
+
+              <!-- button -->
+              <button type="button" class="custom-button2" @click="toggle">แสดงรายการ</button>
+              <!-- modal -->
+              <div class="fixed inset-0 bg-[black]/60 z-[999] hidden overflow-y-auto" :class="open && '!block'">
+                  <div class="flex items-start justify-center min-h-screen px-4" @click.self="open = false">
+                      <div class="panel border-0 p-0 rounded-lg overflow-hidden w-full max-w-lg my-8 animate__animated animate__fadeInUp">
+                          <div class="p-5">
+                              <div class="dark:text-white-dark/70 text-base font-medium text-[#1f2937]">
+                                  <h5> ร้านค้าของคุณ</h5>
+                  
+                                  <h5>เวลาที่บันทึก: <span id="time">-</span></h5>
+          
+                                  <table class="receipt-table1">
+                                      <thead>
+                                          <tr>
+                                              <th>สินค้า</th>
+                                              <th class="price">จำนวน</th>
+                                              <th class="price">ราคา</th>
+                                          </tr>
+                                      </thead>
+                                      <tbody id="stockAdjustments1">
+                                          <tr><td colspan="3">🔄 กำลังโหลดข้อมูล...</td></tr>
+                                      </tbody>
+                                      <tfoot>
+                                          <tr>
+                                              <td colspan="2">รวม</td>
+                                              <td class="price" id="total-price">0.00 บาท</td>
+                                          </tr>
+                                      </tfoot>
+                                  </table>
+                              </div>
+                              <div class="flex justify-end items-center mt-8">
+                                  <button type="button" class="btn btn-outline-danger" @click="toggle">ปิดหน้าต่าง</button>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+           
+          
+
             <button class="custom-button2" id="row22">Clean</button>
           </div>
         </div>
@@ -652,12 +688,8 @@ td {
 
 
     
-
-
+     
           
-
-
-
 
 
 
@@ -753,12 +785,17 @@ td {
 
 
 
+   
 
 
 
 
 
 
+
+
+
+    
 
 
 
@@ -769,6 +806,8 @@ td {
 
 
         <button id="receiptBtn" class="print-btn" onclick="openModal()" style="display: none;"> Click
+       
+
        </button>
     
     <!-- ✅ ป๊อปอัปใบเสร็จ -->
@@ -800,9 +839,15 @@ td {
         </tr>
       </tfoot>
     </table>
-
+   
     <h2 class="thanks">ขอบคุณที่ใช้บริการร้านเหมยน่ะ</h2>
+   
+    
     <button class="print-btn" onclick="printReceipt()">พิมพ์ใบเสร็จ</button>
+    <button class="print-btn" onclick="closeModal()">ปิดหน้าต่าง</button>
+    
+
+    
   </div>
 </div>
     
@@ -880,27 +925,31 @@ td {
   
 
 
-  //-----------------------สำหรับเรียกใช้การดูใบเสร็จเฉยๆๆ--------------------------------
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  //-----------------------สำหรับเรียกใช้การดูใบเสร็จเฉยๆๆ----------------------------
 
 
 
     
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--*****************************************แสดงค่าดูรายการ receipt************************************************-->
+<script>
+
+
 </script>
 
 

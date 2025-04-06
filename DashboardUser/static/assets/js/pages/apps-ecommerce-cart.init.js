@@ -127,3 +127,7 @@ function handleRemoveClick(productsElement) {
         productsElement.remove();
     });
 }
+
+
+
+

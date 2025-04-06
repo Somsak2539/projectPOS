@@ -19,7 +19,7 @@ SECRET_KEY = 'django-insecure-t=278n2b3dn-ke#e&z_s0(kw8=gi47bcy50xx!ndy17peynb03
 DEBUG = True
 
 # ✅ ตั้งค่า Host ที่อนุญาต
-ALLOWED_HOSTS = ["*", "127.0.0.1", "[2001:44c8:4518:d5e5:50fb:df16:7172:726f]","0.0.0.0","172.20.10.5",  'somsaksonngai.duckdns.org', '182.232.184.157','somsaksonngai.site','localhost:8080',  ]
+ALLOWED_HOSTS = ["*", "127.0.0.1","[2001:44c8:4518:d5e5:50fb:df16:7172:726f]","0.0.0.0","172.20.10.5",  'somsaksonngai.duckdns.org', '182.232.184.157','somsaksonngai.site','localhost:8080',  ]
 
 # ✅ ติดตั้งแอปที่ต้องใช้
 INSTALLED_APPS = [
