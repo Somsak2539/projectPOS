@@ -1572,7 +1572,7 @@ fetch(apiUrl)
         //------------------------------------------------สำหรับการแสดง Qr โค้ดพร้อมเพย์---------------------------------------
 
 
-        const phone = "0624380985"; // เบอร์ PromptPay
+        const phone = "0937786120"; // เบอร์ PromptPay
         const amount = 100.00; // จำนวนเงิน
 
         fetch(`/generate-promptpay-qr/?phone_number=${phone}&amount=${All}`)
