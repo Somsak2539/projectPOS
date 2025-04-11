@@ -1,49 +1,48 @@
+document.addEventListener("DOMContentLoaded", function () {
+    var categorySelect = document.getElementById("categorySelect");
 
+    document
+        .getElementById("searchForm")
+        .addEventListener("submit", function (event) {
+            event.preventDefault(); // ✅ ป้องกันหน้าเว็บรีโหลด
 
+            var categoryId = categorySelect.value; // ✅ ดึงค่าหมวดหมู่ที่เลือก
+            var productList = document.getElementById("productList1"); // ✅ พื้นที่แสดงสินค้า
 
-    document.addEventListener("DOMContentLoaded", function() {
-      var categorySelect = document.getElementById("categorySelect");
-  
-      document.getElementById("searchForm").addEventListener("submit", function(event) {
-          event.preventDefault(); // ✅ ป้องกันหน้าเว็บรีโหลด
-  
-          var categoryId = categorySelect.value; // ✅ ดึงค่าหมวดหมู่ที่เลือก
-          var productList = document.getElementById("productList1"); // ✅ พื้นที่แสดงสินค้า
-  
-          fetch(`/apps_ecommerceCart/?category=${categoryId}`, {
-              headers: { "X-Requested-With": "XMLHttpRequest" } // ✅ แจ้ง Django ว่าเป็น AJAX Request
-          })
-          .then(response => response.text()) 
-          .then(data => {
-              productList.innerHTML = data; // ✅ อัปเดตรายการสินค้าแบบ Real-Time
-          })
-          .catch(error => console.error("เกิดข้อผิดพลาด: ", error));
-      });
-  });
-  
-
-// ----------------------------------สำหรีบเคียร์หน้าจอ---------------------------
-  document.getElementById("clearFilterButton").addEventListener("click", function(event) {
-    event.preventDefault();  // ป้องกันการรีโหลดหน้า
-    var productList = document.getElementById("productList1");  // พื้นที่แสดงสินค้า
-
-    fetch('/apps_ecommerceCart/', {
-        method: 'GET',  // ส่งคำขอ GET ไปยัง URL
-        headers: {
-            'X-Requested-With': 'XMLHttpRequest'  // แจ้ง Django ว่าเป็นคำขอ AJAX
-        }
-    })
-    .then(response => response.text())  // รับข้อมูลเป็น HTML
-    .then(data => {
-        productList.innerHTML = data;  // อัปเดตรายการสินค้า
-    })
-    .catch(error => console.error("เกิดข้อผิดพลาด: ", error));
+            fetch(`/apps_ecommerceCart/?category=${categoryId}`, {
+                headers: { "X-Requested-With": "XMLHttpRequest" }, // ✅ แจ้ง Django ว่าเป็น AJAX Request
+            })
+                .then((response) => response.text())
+                .then((data) => {
+                    productList.innerHTML = data; // ✅ อัปเดตรายการสินค้าแบบ Real-Time
+                })
+                .catch((error) => console.error("เกิดข้อผิดพลาด: ", error));
+        });
 });
 
+// ----------------------------------สำหรีบเคียร์หน้าจอ---------------------------
+document
+    .getElementById("clearFilterButton")
+    .addEventListener("click", function (event) {
+        event.preventDefault(); // ป้องกันการรีโหลดหน้า
+        var productList = document.getElementById("productList1"); // พื้นที่แสดงสินค้า
+
+        fetch("/apps_ecommerceCart/", {
+            method: "GET", // ส่งคำขอ GET ไปยัง URL
+            headers: {
+                "X-Requested-With": "XMLHttpRequest", // แจ้ง Django ว่าเป็นคำขอ AJAX
+            },
+        })
+            .then((response) => response.text()) // รับข้อมูลเป็น HTML
+            .then((data) => {
+                productList.innerHTML = data; // อัปเดตรายการสินค้า
+            })
+            .catch((error) => console.error("เกิดข้อผิดพลาด: ", error));
+    });
 
 // ----------------------------------สำหรับการค้นหาข้อมูล---------------------------
 
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
     const searchForm = document.getElementById("searchForm");
     const clearButton = document.getElementById("clearFilterButton");
     const productList = document.getElementById("productList1");
@@ -54,28 +53,28 @@ document.addEventListener("DOMContentLoaded", function() {
         const urlParams = new URLSearchParams(formData).toString(); // แปลงฟอร์มเป็น query string
 
         fetch(`/apps_ecommerceCart/?${urlParams}`, {
-            method: 'GET',
+            method: "GET",
             headers: {
-                'X-Requested-With': 'XMLHttpRequest'  // แจ้ง Django ว่าเป็นคำขอ AJAX
-            }
+                "X-Requested-With": "XMLHttpRequest", // แจ้ง Django ว่าเป็นคำขอ AJAX
+            },
         })
-        .then(response => response.text()) // รับข้อมูลเป็น HTML
-        .then(data => {
-            productList.innerHTML = data;
-            // แสดงผลลัพธ์สินค้า
-        })
-        .catch(error => console.error("เกิดข้อผิดพลาด: ", error));
+            .then((response) => response.text()) // รับข้อมูลเป็น HTML
+            .then((data) => {
+                productList.innerHTML = data;
+                // แสดงผลลัพธ์สินค้า
+            })
+            .catch((error) => console.error("เกิดข้อผิดพลาด: ", error));
     }
 
     // เรียกฟังก์ชันเมื่อฟอร์มถูก submit
-    searchForm.addEventListener("submit", function(event) {
-        event.preventDefault();  // ป้องกันการรีโหลดหน้า
-        fetchProducts();  // ส่งคำขอ AJAX
+    searchForm.addEventListener("submit", function (event) {
+        event.preventDefault(); // ป้องกันการรีโหลดหน้า
+        fetchProducts(); // ส่งคำขอ AJAX
     });
 
     // ฟังก์ชันสำหรับเคลียร์การกรอง
-    clearButton.addEventListener("click", function(event) {
-        event.preventDefault();  // ป้องกันการรีโหลดหน้า
+    clearButton.addEventListener("click", function (event) {
+        event.preventDefault(); // ป้องกันการรีโหลดหน้า
 
         // รีเซ็ตฟอร์ม
         searchForm.reset();
@@ -84,22 +83,17 @@ document.addEventListener("DOMContentLoaded", function() {
         fetchProducts();
     });
 
-
-
     // เพิ่ม event listener ให้กับการกรอกข้อมูลในช่องค้นหา
-    const searchBarcode = document.getElementById('searchBarcode');
-    searchBarcode.addEventListener('input', function() {
+    const searchBarcode = document.getElementById("searchBarcode");
+    searchBarcode.addEventListener("input", function () {
         fetchProducts(); // เรียกฟังก์ชันเมื่อมีการกรอกข้อมูลใหม่
     });
-
 
     // เรียกฟังก์ชันเริ่มต้นเมื่อโหลดหน้า (เพื่อแสดงสินค้าหลังจากกรองครั้งแรก)
     fetchProducts();
 });
 
-
-
-
+const cartItems = [];
 
 document.addEventListener("click", function (event) {
     if (event.target.classList.contains("add-to-cart")) {
@@ -112,28 +106,138 @@ document.addEventListener("click", function (event) {
         const productImage = event.target.getAttribute("data-image");
         const ProductStock = event.target.getAttribute("data-stock");
         const ProductBarcode = event.target.getAttribute("data-barcode");
+        const ProductProfitprice = event.target.getAttribute("data-profitprice");
 
-        console.log(`📌 ID=${productId}, Name=${productName}, Price=${productPrice}`);
+        console.log(
+            `📌 ID=${productId}, Name=${productName}, Price=${productPrice}`
+        );
 
         if (!productId || !productName || !productPrice) {
             console.error("❌ ข้อมูลสินค้าผิดพลาด");
             return;
         }
 
-        // ตรวจสอบว่ามีสินค้านี้อยู่แล้วหรือไม่
-        let existingProduct = document.querySelector(`.cart-item[data-id="${productId}"]`);
-        
-        if (existingProduct) {
-            // ถ้ามีอยู่แล้วให้เพิ่มจำนวน
-            let quantityInput = existingProduct.querySelector(".products-quantity");
-            quantityInput.value = parseInt(quantityInput.value) + 1;
+        const cartContainer = document.querySelector("#cart-items");
 
+        // รับค่าจำนวนจาก input ที่อยู่ในสินค้าเดียวกับปุ่มที่ถูกกด
+        const parent = event.target.closest("p"); // หรือเปลี่ยนตามโครงสร้างจริง
+        const quantityInput = parent?.previousElementSibling?.querySelector(".inputText");
+        // ✅ เปลี่ยนเป็น parseFloat เพื่อรองรับทศนิยม
+        let quantity = quantityInput ? parseFloat(quantityInput.value) : 1;
+        if (!quantity || quantity <= 0) quantity = 1;
+
+        const totalPrice = (parseFloat(productPrice) * quantity).toLocaleString(
+            "en-US",
+            {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+            }
+        );
+
+        console.log("แสดงรายการ1", cartItems);
+
+        console.log("รับค่า inputText", quantity);
+
+        // ตรวจสอบว่ามีสินค้านี้อยู่แล้วหรือไม่
+        let existingProduct = document.querySelector(
+            `.cart-item[data-id="${productId}"]`
+        );
+
+        if (existingProduct) {
+            // ถ้ามีสินค้าอยู่แล้ว ให้เพิ่มจำนวน
+            const existingQuantityInput = existingProduct.querySelector(".products-quantity");
+            const currentQuantity = parseFloat(existingQuantityInput.value) || 0;
+            const newQuantity = currentQuantity + quantity;
+            existingQuantityInput.value = newQuantity;
             // อัปเดตราคาสินค้ารวม
-            let linePriceElement = existingProduct.querySelector(".products-line-price");
-            linePriceElement.textContent = (parseFloat(quantityInput.value) * parseFloat(productPrice)).toFixed(2);
+            const newTotal = (parseFloat(productPrice) * newQuantity).toLocaleString("en-US", {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+            });
+
+            existingProduct.querySelector(".products-line-price").textContent =
+                newTotal;
+
+            // สำหรับการกรองสินค้า
+            const index = cartItems.findIndex((item) => item.id === productId);
+            if (index !== -1) {
+                cartItems[index].quantity += quantity;
+                cartItems[index].total =
+                    parseFloat(productPrice) * cartItems[index].quantity;
+            }
+
+
+            // ✅ อัปเดตแถวในตารางด้านขวา
+            
+    
+            // หลังจากอัปเดต existingProduct แล้วให้ใส่
+        
+      const allTotal = cartItems.reduce((sum, item) => sum + item.total, 0);
+      document.querySelector(".cart-total").textContent = `${allTotal.toLocaleString('en-US', { minimumFractionDigits: 2 })} บาท`;
+
+      const tableBody = document.querySelector(".table-total");
+      const existingRow = tableBody?.querySelector(`tr[data-id="${productId}"]`);
+      if (existingRow) {
+        const priceCell = existingRow.querySelector(".product-total-cell");
+        const oldTotal = parseFloat(priceCell.getAttribute("data-total")) || 0;
+        const newRowTotal = oldTotal + (parseFloat(productPrice) * quantity);
+        priceCell.setAttribute("data-total", newRowTotal);
+        priceCell.textContent = `${newRowTotal.toLocaleString('en-US', { minimumFractionDigits: 2 })} บาท`;
+      }
+
+
+    
         } else {
-            // เพิ่มสินค้าใหม่ลงในตะกร้า
-            const cartContainer = document.querySelector("#cart-items"); 
+            // สำหรับเพิ่มรายการเข้าไปใน array
+            cartItems.push({
+                id: productId,
+                stock: ProductStock,
+                name: productName,
+                barcode: ProductBarcode,
+                Profitprice: ProductProfitprice,
+                quantity: quantity,
+                unitPrice: parseFloat(productPrice),
+                total: parseFloat(productPrice) * quantity,
+            });
+
+
+            console.log("แสดงรายการ", cartItems);
+
+
+            // ตารางมุมขวาสุด
+            const tableBody = document.querySelector(".table-total");
+
+            if (tableBody) {
+
+              const totalRow = tableBody.querySelector(".cart-summary-row");
+              const newRow = document.createElement("tr");
+              newRow.setAttribute("data-id", productId); // ต้องมีด้วย เพื่อให้ค้นหาได้
+              newRow.innerHTML = `
+                <td class="py-2 text-slate-500 dark:text-zink-200">${productName}</td>
+                <td class="py-2 text-slate-500 dark:text-zink-200 product-total-cell" data-total="${parseFloat(productPrice) * quantity}">
+                  ${totalPrice} บาท
+                </td>
+              `;
+              
+            
+              if (totalRow) {
+                tableBody.insertBefore(newRow, totalRow); // ✅ แทรกก่อน totalRow
+              } else {
+                tableBody.appendChild(newRow);
+              }
+              // ✅ อัปเดตราคารวมทั้งหมดต้องมีทั้งด้านบนและด้านล่างด้วยกันน่ะเพราะว่า มันจะเรียกการอับเดท
+              const allTotal = cartItems.reduce((sum, item) => sum + item.total, 0);
+              document.querySelector(".cart-total").textContent = `${allTotal.toLocaleString('en-US', { minimumFractionDigits: 2 })} บาท`;
+            } else {
+              console.error("❌ ไม่พบ .table-total ใน DOM");
+            }
+            
+
+             console.log("totalProfit",totalPrice)
+             console.log("tableBody",tableBody);
+
+
+            // ถ้ายังไม่มีสินค้าในตะกร้า ให้เพิ่มใหม่
             const newItem = `
                 <div class="card products cart-item" data-id="${productId}">
                     <div class="card-body">
@@ -151,76 +255,68 @@ document.addEventListener("click", function (event) {
                                 </div>
                                 <div class="flex items-center gap-2 mt-auto">
                                     <div class="flex items-center">
-                                                <span class="inline-block px-3 py-2 border ltr:border-r-0 rtl:border-l-0 border-slate-200 dark:border-zink-500 ltr:rounded-l-md rtl:rounded-r-md">PCS/Kg</span>
-                                                <input type="number" id="inputText" class="ltr:rounded-l-none rtl:rounded-r-none form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200" placeholder="00.00">
+                                        <span class="inline-block px-3 py-2 border ltr:border-r-0 rtl:border-l-0 border-slate-200 dark:border-zink-500 ltr:rounded-l-md rtl:rounded-r-md">PCS/Kg</span>
+                                      <input type="number" class="inputText products-quantity ltr:rounded-l-none rtl:rounded-r-none form-input border-slate-200 dark:border-zink-500 bg-white dark:bg-zink-700 text-slate-900 dark:text-zink-100 focus:outline-none focus:border-custom-500" value="${quantity}">
+
                                     </div>
-                                        
-                                                    <button class="remove-btn text-white bg-red-500 border-red-500 btn">
-                                                                 ลบ
-                                                                    </button>
-
-
-
-
+                                    <button class="remove-btn text-white bg-red-500 border-red-500 btn">ลบ</button>
                                 </div>
                             </div>
                             <div class="flex justify-between w-full lg:flex-col lg:col-end-13 lg:col-span-2">
                                 <div class="mb-auto ltr:lg:text-right rtl:lg:text-left">
                                     <h6 class="text-16 products-price"><span>${productPrice}</span></h6>
                                 </div>
-                                <h6 class="mt-auto ltr:lg:text-right rtl:lg:text-left text-16">รวม <span class="products-line-price">${productPrice}</span></h6>
+                                <h6 class="mt-auto ltr:lg:text-right rtl:lg:text-left text-16">รวม <span class="products-line-price">${totalPrice}</span></h6>
                             </div>
                         </div>
                     </div>
                 </div>
             `;
             cartContainer.insertAdjacentHTML("beforeend", newItem);
+
+          
         }
     }
 });
 
-// ฟังก์ชันลบสินค้า
-document.querySelector("#cart-items").addEventListener("click", function (event) {
-    if (event.target.classList.contains("remove-btn")) {
-        const productCard = event.target.closest(".cart-item");
-        if (productCard) {
-            productCard.remove();
-        }
-    }
-});
+
+
+
 
 
 
 
 document.addEventListener("click", function (event) {
-    if (event.target.id === "sa-success") { 
+    if (event.target.id === "sa-success") {
         Swal.fire({
-            title: 'คุณได้ทำการเพิ่มรายการแล้ว!',
-            text: 'รายการถูกเพิ่มแล้ว!',
-            icon: 'success',
-            confirmButtonText: 'OK', // ตั้งชื่อปุ่ม OK
+            title: "คุณได้ทำการเพิ่มรายการแล้ว!",
+            text: "รายการถูกเพิ่มแล้ว!",
+            icon: "success",
+            confirmButtonText: "OK", // ตั้งชื่อปุ่ม OK
             customClass: {
-                confirmButton: 'text-white btn bg-custom-500 border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100 dark:ring-custom-400/20 ltr:mr-1 rtl:ml-1',
+                confirmButton:
+                    "text-white btn bg-custom-500 border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100 dark:ring-custom-400/20 ltr:mr-1 rtl:ml-1",
             },
             buttonsStyling: false,
-            showCloseButton: true // ถ้าไม่อยากให้มีปุ่ม X ปิด popup ให้ลบอันนี้ออก
+            showCloseButton: true, // ถ้าไม่อยากให้มีปุ่ม X ปิด popup ให้ลบอันนี้ออก
         });
     }
 });
 
-
-
-
-
 document.addEventListener("DOMContentLoaded", function () {
     const cartContainer = document.querySelector("#cart-items");
-    
+
     cartContainer.addEventListener("click", function (event) {
-        if (event.target.classList.contains("remove-btn")) {
+        const removeButton = event.target.closest(".remove-btn"); // ตรวจสอบปุ่มลบ
+
+        if (removeButton) {
             console.log("🛑 ปุ่มลบถูกคลิก");
-            const productCard = event.target.closest(".card.products");
-            
+
+            const productCard = removeButton.closest(".card.products");
+
             if (productCard) {
+                const productId = productCard.getAttribute("data-id");
+                // แสดงกล่องยืนยันก่อนลบ
                 Swal.fire({
                     title: "คุณแน่ใจหรือไม่?",
                     text: "คุณจะไม่สามารถกู้คืนรายการนี้ได้!",
@@ -229,18 +325,39 @@ document.addEventListener("DOMContentLoaded", function () {
                     confirmButtonText: "ใช่, ลบออกเลย!",
                     cancelButtonText: "ยกเลิก",
                     customClass: {
-                        confirmButton: 'text-white btn bg-custom-500 border-custom-500',
-                        cancelButton: 'text-white bg-red-500 border-red-500 btn'
+                        confirmButton: "text-white btn bg-custom-500 border-custom-500",
+                        cancelButton: "text-white bg-red-500 border-red-500 btn",
                     },
-                    buttonsStyling: false
+                    buttonsStyling: false,
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        console.log("🛑 ลบสินค้าออกจากตะกร้า");
+                        // ลบสินค้าเมื่อยืนยัน
                         productCard.remove();
+
+                        // ลบจาก array ด้วย
+                        const index = cartItems.findIndex((item) => item.id === productId);
+                        if (index !== -1) {
+                            cartItems.splice(index, 1);
+                            console.log("🧹 ลบจาก array แล้ว:", cartItems);
+                        }
+
+                         // ลบแถวในตารางด้านขวา
+                         const tableBody = document.querySelector(".table-total");
+                         const rowToRemove = tableBody?.querySelector(`tr[data-id="${productId}"]`);
+                         if (rowToRemove) {
+                             rowToRemove.remove();
+                             console.log("✅ ลบแถวในตารางแล้ว");
+                         }
+
+                        // อัปเดตราคารวม
+                        const newTotal = cartItems.reduce((sum, item) => sum + item.total, 0);
+                        document.querySelector(".cart-total").textContent = `${newTotal.toLocaleString('en-US', { minimumFractionDigits: 2 })} บาท`;
+
+                        // แจ้งเตือน
                         Swal.fire({
                             title: "ลบสำเร็จ!",
                             text: "สินค้าของคุณถูกลบแล้ว.",
-                            icon: "success"
+                            icon: "success",
                         });
                     }
                 });
@@ -251,8 +368,85 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 
+// ตัวแปรเก็บสถานะ
+let totalAmount = 0;
+let receivedAmount = 0;
+
+// ตั้งค่ายอดรวม
+function setTotal(amount) {
+  totalAmount = amount;
+  document.getElementById('totalDue').textContent = `฿${totalAmount.toFixed(2)}`;
+  calculateChange();
+}
+
+// ปุ่มตัวเลข
+document.querySelectorAll('.pos-key').forEach(button => {
+  button.addEventListener('click', () => {
+    const input = document.getElementById('received');
+    const key = button.textContent;
+    
+    if (key === 'C') {
+      input.textContent = '฿0.00';
+      receivedAmount = 0;
+    } else if (key === '⌫') {
+      receivedAmount = Math.floor(receivedAmount / 10);
+      input.textContent = `฿${receivedAmount.toFixed(2)}`;
+    } else if (key === '=') {
+      calculateChange();
+    } else if (key === '.') {
+      // ไม่ต้องทำอะไรหากมีจุดแล้ว
+      if (!input.textContent.includes('.')) {
+        input.textContent += '.';
+      }
+    } else {
+      receivedAmount = parseFloat((receivedAmount.toString() + key).replace(/^0+/, ''));
+      input.textContent = `฿${receivedAmount.toFixed(2)}`;
+    }
+    
+    calculateChange();
+  });
+});
+
+// ปุ่มเงินสดลัด
+document.querySelectorAll('.quick-bill').forEach(button => {
+  button.addEventListener('click', () => {
+    if (button.textContent === 'อื่นๆ') {
+      // เปิด dialog ป้อนจำนวนเงินเอง
+      const customAmount = prompt('กรุณาป้อนจำนวนเงิน:');
+      if (customAmount && !isNaN(customAmount)) {
+        receivedAmount = parseFloat(customAmount);
+        document.getElementById('received').textContent = `฿${receivedAmount.toFixed(2)}`;
+        calculateChange();
+      }
+    } else {
+      const value = parseFloat(button.dataset.value);
+      receivedAmount += value;
+      document.getElementById('received').textContent = `฿${receivedAmount.toFixed(2)}`;
+      calculateChange();
+    }
+  });
+});
+
+// คำนวณเงินทอน
+function calculateChange() {
+  const change = receivedAmount - totalAmount;
+  document.getElementById('change').textContent = `฿${change > 0 ? change.toFixed(2) : '0.00'}`;
+}
+
+// ปุ่มพิมพ์ใบเสร็จ
+document.getElementById('printReceipt').addEventListener('click', () => {
+  if (receivedAmount >= totalAmount) {
+    alert('พิมพ์ใบเสร็จเรียบร้อย!');
+    // Reset ระบบ
+    totalAmount = 0;
+    receivedAmount = 0;
+    document.getElementById('totalDue').textContent = '฿0.00';
+    document.getElementById('received').textContent = '฿0.00';
+    document.getElementById('change').textContent = '฿0.00';
+  } else {
+    alert('กรุณารับเงินให้ครบก่อนพิมพ์ใบเสร็จ');
+  }
+});
 
 
-
-
-
+  

@@ -115,30 +115,7 @@
         </div>
         <div class="p-4 border-t border-slate-200 dark:border-zink-500">
 
-            <table class="w-full mb-3 ">
-                <tbody class="table-total">
-                    <tr>
-                        <td class="py-2">Sub Total :</td>
-                        <td class="text-right cart-subtotal">$2,847.55</td>
-                    </tr>
-                    <tr>
-                        <td class="py-2">Discount <span class="text-muted">(starcode50)</span>:</td>
-                        <td class="text-right cart-discount">-$476.00</td>
-                    </tr>
-                    <tr>
-                        <td class="py-2">Shipping Charge :</td>
-                        <td class="text-right cart-shipping">$89.00</td>
-                    </tr>
-                    <tr>
-                        <td class="py-2">Estimated Tax (12.5%) : </td>
-                        <td class="text-right cart-tax">$70.62</td>
-                    </tr>
-                    <tr class="font-semibold">
-                        <td class="py-2">Total : </td>
-                        <td class="text-right cart-total">$2,531.17</td>
-                    </tr>
-                </tbody>
-            </table>
+        
             <div class="flex items-center justify-between gap-3">
                 <a href="apps-ecommerce-product-grid.html" class="w-full text-white btn bg-slate-500 border-slate-500 hover:text-white hover:bg-slate-600 hover:border-slate-600 focus:text-white focus:bg-slate-600 focus:border-slate-600 focus:ring focus:ring-slate-100 active:text-white active:bg-slate-600 active:border-slate-600 active:ring active:ring-slate-100 dark:ring-slate-400/10">Continue Shopping</a>
                 <a href="apps-ecommerce-checkout.html" class="w-full text-white bg-red-500 border-red-500 btn hover:text-white hover:bg-red-600 hover:border-red-600 focus:text-white focus:bg-red-600 focus:border-red-600 focus:ring focus:ring-red-100 active:text-white active:bg-red-600 active:border-red-600 active:ring active:ring-red-100 dark:ring-custom-400/20">Checkout</a>
@@ -324,78 +301,170 @@
 
 
 
+                
+
                 <div class="xl:col-span-3">
+
+
+
+
+                    <div class="flex gap-2 mt-5 shrink-0">
+
+
+
+
+                                    <button data-modal-target="largeModal" type="button" class="w-full text-white bg-red-500 border-red-500 btn hover:text-white hover:bg-red-600 hover:border-red-600 focus:text-white focus:bg-red-600 focus:border-red-600 focus:ring focus:ring-red-100 active:text-white active:bg-red-600 active:border-red-600 active:ring active:ring-red-100 dark:ring-red-400/20">ทำการจ่าย</button>
+                        <div id="largeModal" modal-center class="fixed inset-0 z-drawer hidden flex items-center justify-center bg-black bg-opacity-50">
+                                
+                            <div class="w-screen md:w-[40rem] bg-white dark:bg-zinc-800 shadow rounded-xl flex flex-col h-full">
+
+                        
+                                
+
+
+
+
+                                <div class="p-4 space-y-6">
+
+                                    <!-- Header -->
+                                    <div class="flex justify-between items-center">
+                                      <h2 class="text-xl font-bold text-slate-700 dark:text-white">ระบบรับเงิน (POS)</h2>
+                                      <button class="text-red-500 hover:text-red-700 font-semibold" data-modal-close="largeModal">✕ ปิด</button>
+                                    </div>
+                                  
+                                    <!-- ส่วนป้อนจำนวนเงินผ่าน Keypad -->
+                                    <div class="grid grid-cols-4 gap-2">
+                                      <input id="posInput" type="text" class="col-span-4 text-3xl text-right p-3 rounded-lg bg-white dark:bg-zinc-800 border border-slate-300 dark:border-zinc-600 focus:outline-none" placeholder="0.00" readonly>
+                                  
+             
+
+      <button type="button" class="text-xl text-orange-500 bg-orange-100 btn hover:text-white hover:bg-orange-600 focus:text-white focus:bg-orange-600 focus:ring focus:ring-orange-100 active:text-white active:bg-orange-600 active:ring active:ring-orange-100 dark:bg-orange-500/20 dark:text-orange-500 dark:hover:bg-orange-500 dark:hover:text-white dark:focus:bg-orange-500 dark:focus:text-white dark:active:bg-orange-500 dark:active:text-white dark:ring-orange-400/20">1</button>
+      <button type="button" class="text-xl text-orange-500 bg-orange-100 btn hover:text-white hover:bg-orange-600 focus:text-white focus:bg-orange-600 focus:ring focus:ring-orange-100 active:text-white active:bg-orange-600 active:ring active:ring-orange-100 dark:bg-orange-500/20 dark:text-orange-500 dark:hover:bg-orange-500 dark:hover:text-white dark:focus:bg-orange-500 dark:focus:text-white dark:active:bg-orange-500 dark:active:text-white dark:ring-orange-400/20">2</button>
+      <button type="button" class="text-xl text-orange-500 bg-orange-100 btn hover:text-white hover:bg-orange-600 focus:text-white focus:bg-orange-600 focus:ring focus:ring-orange-100 active:text-white active:bg-orange-600 active:ring active:ring-orange-100 dark:bg-orange-500/20 dark:text-orange-500 dark:hover:bg-orange-500 dark:hover:text-white dark:focus:bg-orange-500 dark:focus:text-white dark:active:bg-orange-500 dark:active:text-white dark:ring-orange-400/20">3</button>
+      <button type="button" class="text-xl text-red-500 bg-red-100 btn hover:text-white hover:bg-red-600 focus:text-white focus:bg-red-600 focus:ring focus:ring-red-100 active:text-white active:bg-red-600 active:ring active:ring-red-100 dark:bg-red-500/20 dark:text-red-500 dark:hover:bg-red-500 dark:hover:text-white dark:focus:bg-red-500 dark:focus:text-white dark:active:bg-red-500 dark:active:text-white dark:ring-red-400/20">C</button>
+      <button type="button" class="text-xl text-orange-500 bg-orange-100 btn hover:text-white hover:bg-orange-600 focus:text-white focus:bg-orange-600 focus:ring focus:ring-orange-100 active:text-white active:bg-orange-600 active:ring active:ring-orange-100 dark:bg-orange-500/20 dark:text-orange-500 dark:hover:bg-orange-500 dark:hover:text-white dark:focus:bg-orange-500 dark:focus:text-white dark:active:bg-orange-500 dark:active:text-white dark:ring-orange-400/20">4</button>
+      <button type="button" class="text-xl text-orange-500 bg-orange-100 btn hover:text-white hover:bg-orange-600 focus:text-white focus:bg-orange-600 focus:ring focus:ring-orange-100 active:text-white active:bg-orange-600 active:ring active:ring-orange-100 dark:bg-orange-500/20 dark:text-orange-500 dark:hover:bg-orange-500 dark:hover:text-white dark:focus:bg-orange-500 dark:focus:text-white dark:active:bg-orange-500 dark:active:text-white dark:ring-orange-400/20">5</button>
+      <button type="button" class="text-xl text-orange-500 bg-orange-100 btn hover:text-white hover:bg-orange-600 focus:text-white focus:bg-orange-600 focus:ring focus:ring-orange-100 active:text-white active:bg-orange-600 active:ring active:ring-orange-100 dark:bg-orange-500/20 dark:text-orange-500 dark:hover:bg-orange-500 dark:hover:text-white dark:focus:bg-orange-500 dark:focus:text-white dark:active:bg-orange-500 dark:active:text-white dark:ring-orange-400/20">6</button>
+      <button type="button" class="text-xl text-sky-500 btn bg-sky-100 hover:text-white hover:bg-sky-600 focus:text-white focus:bg-sky-600 focus:ring focus:ring-sky-100 active:text-white active:bg-sky-600 active:ring active:ring-sky-100 dark:bg-sky-500/20 dark:text-sky-400 dark:hover:bg-sky-500 dark:hover:text-white dark:focus:bg-sky-500 dark:focus:text-white dark:active:bg-sky-500 dark:active:text-white dark:ring-sky-400/20">.</button>
+      <button type="button" class="text-xl text-orange-500 bg-orange-100 btn hover:text-white hover:bg-orange-600 focus:text-white focus:bg-orange-600 focus:ring focus:ring-orange-100 active:text-white active:bg-orange-600 active:ring active:ring-orange-100 dark:bg-orange-500/20 dark:text-orange-500 dark:hover:bg-orange-500 dark:hover:text-white dark:focus:bg-orange-500 dark:focus:text-white dark:active:bg-orange-500 dark:active:text-white dark:ring-orange-400/20">7</button>
+      <button type="button" class="text-xl text-orange-500 bg-orange-100 btn hover:text-white hover:bg-orange-600 focus:text-white focus:bg-orange-600 focus:ring focus:ring-orange-100 active:text-white active:bg-orange-600 active:ring active:ring-orange-100 dark:bg-orange-500/20 dark:text-orange-500 dark:hover:bg-orange-500 dark:hover:text-white dark:focus:bg-orange-500 dark:focus:text-white dark:active:bg-orange-500 dark:active:text-white dark:ring-orange-400/20">8</button>
+      <button type="button" class="text-xl text-orange-500 bg-orange-100 btn hover:text-white hover:bg-orange-600 focus:text-white focus:bg-orange-600 focus:ring focus:ring-orange-100 active:text-white active:bg-orange-600 active:ring active:ring-orange-100 dark:bg-orange-500/20 dark:text-orange-500 dark:hover:bg-orange-500 dark:hover:text-white dark:focus:bg-orange-500 dark:focus:text-white dark:active:bg-orange-500 dark:active:text-white dark:ring-orange-400/20">9</button>
+      <button type="button" class="text-xl text-orange-500 bg-orange-100 btn hover:text-white hover:bg-orange-600 focus:text-white focus:bg-orange-600 focus:ring focus:ring-orange-100 active:text-white active:bg-orange-600 active:ring active:ring-orange-100 dark:bg-orange-500/20 dark:text-orange-500 dark:hover:bg-orange-500 dark:hover:text-white dark:focus:bg-orange-500 dark:focus:text-white dark:active:bg-orange-500 dark:active:text-white dark:ring-orange-400/20">0</button>
+      
+      
+      
+      
+      
+      
+                                    </div>
+                                  
+                                    <!-- ปุ่มแบงค์ลัด -->
+                                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
+                                        <button class="p-3 rounded-lg bg-custom-500 hover:bg-custom-600 text-white font-semibold quick-bill transition-all transform hover:scale-105 focus:outline-none shadow-lg" data-value="20">
+                                          <span class="mr-2">+ ฿20</span>
+                                          <i class="fas fa-money-bill-wave-alt"></i>
+                                        </button>
+                                        <button class="p-3 rounded-lg bg-custom-500 hover:bg-custom-600 text-white font-semibold quick-bill transition-all transform hover:scale-105 focus:outline-none shadow-lg" data-value="50">
+                                          <span class="mr-2">+ ฿50</span>
+                                          <i class="fas fa-money-bill-wave-alt"></i>
+                                        </button>
+                                        <button class="p-3 rounded-lg bg-custom-500 hover:bg-custom-600 text-white font-semibold quick-bill transition-all transform hover:scale-105 focus:outline-none shadow-lg" data-value="100">
+                                          <span class="mr-2">+ ฿100</span>
+                                          <i class="fas fa-money-bill-wave-alt"></i>
+                                        </button>
+                                        <button class="p-3 rounded-lg bg-custom-500 hover:bg-custom-600 text-white font-semibold quick-bill transition-all transform hover:scale-105 focus:outline-none shadow-lg" data-value="1000">
+                                          <span class="mr-2">+ ฿1000</span>
+                                          <i class="fas fa-money-bill-wave-alt"></i>
+                                        </button>
+                                      </div>
+                                      
+                                      
+                                      
+                                  
+                                    <!-- แสดงยอดถอน & รับเงิน -->
+                                    <div class="space-y-2">
+                                      <div class="flex justify-between">
+                                        <span class="text-slate-600 dark:text-zinc-300">ยอดที่ต้องจ่าย:</span>
+                                        <span class="font-bold text-lg text-red-600 dark:text-red-400" id="totalDue">฿0.00</span>
+                                      </div>
+                                      <div class="flex justify-between">
+                                        <span class="text-slate-600 dark:text-zinc-300">รับเงินมา:</span>
+                                        <span class="font-bold text-lg text-green-600 dark:text-green-400" id="received">฿0.00</span>
+                                      </div>
+                                      <div class="flex justify-between border-t pt-2">
+                                        <span class="text-slate-600 dark:text-zinc-300">เงินทอน:</span>
+                                        <span class="font-bold text-lg text-blue-600 dark:text-blue-400" id="change">฿0.00</span>
+                                      </div>
+                                    </div>
+                                  
+                                    <!-- ปุ่มด้านล่าง -->
+                                    <div class="flex justify-between gap-4 pt-4 border-t mt-4">
+                                      <button class="btn w-full text-white bg-red-500 hover:bg-red-600" data-modal-close="largeModal">ปิด</button>
+                                      <button class="btn w-full text-white bg-green-600 hover:bg-green-700" id="printReceipt">พิมพ์ใบเสร็จ</button>
+                                    </div>
+                                  </div>
+                                  
+
+
+
+
+
+
+
+                                  
+                            </div>
+
+
+                        </div>
+                      
+
+
+                        <a href="apps-ecommerce-checkout.html" class="w-full text-white btn bg-custom-500 border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100 dark:ring-custom-400/20">พิมพ์ใบกำกับภาษี</a>
+                    </div>
+
+
                     <div class="sticky top-[calc(theme('spacing.header')_*_1.3)] mb-5">
                         <div class="card ">
                             <div class="card-body">
-                                <h6 class="mb-4 text-15">สินค้าที่เหลือกทั้งหมด</h6>
+                                <h6 class="mb-4 text-15">สินค้าที่เลือกทั้งหมด</h6>
                                 <div class="overflow-x-auto">
                                     <table class="w-full">
                                         <tbody class="table-total">
-                                            <tr>
-                                                <td class="py-2 text-slate-500 dark:text-zink-200">
-                                                    รวมราคาทั้งหมด
-                                                </td>
-                                             
-                                            </tr>
-                                            <tr>
-                                            
-                                                
-                                            </tr>
-                                            <tr>
-                                                <td class="py-2 text-slate-500 dark:text-zink-200">
-                                                   ลดราคา (12%)
-                                                </td>
-                                                <td class="py-2 text-slate-500 dark:text-zink-200 cart-discount">
-                                                    -Bath111.86
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="py-2 text-slate-500 dark:text-zink-200">
-                                                    ค่าขนส่ง
-                                                </td>
-                                                <td class="py-2 text-slate-500 dark:text-zink-200 cart-shipping">
-                                                    Bath111.860
-                                                </td>
-                                            </tr>
-                                            <tr class="font-semibold">
-                                                <td class="pt-2">
-                                                     รวมทั้หมด(บาท)
-                                                </td>
-                                                <td class="pt-2 cart-total">
-                                                    bath988.09
-                                                </td>
-                                            </tr>
+                                          <!-- ✅ รายการสินค้าใหม่จะถูกแทรกก่อนบรรทัดนี้ -->
+                                          <tr class="cart-summary-row">
+                                            <td colspan="2">
+                                              <hr class="my-2 border-slate-300">
+                                            </td>
+                                          </tr>
+                              
+                                          <!-- ✅ บรรทัดแสดงราคารวม -->
+                                          <tr class="font-semibold">
+                                            <td class="pt-2">รวมทั้งหมด (บาท)</td>
+                                            <td class="pt-2 cart-total">0.00 บาท</td>
+                                          </tr>
                                         </tbody>
-                                    </table>
+                                      </table>
                                 </div>
                             </div>
                         </div>
-                        <div class="flex gap-2 mt-5 shrink-0">
-                            <a href="apps-ecommerce-product-list.html" class="w-full text-white bg-red-500 border-red-500 btn hover:text-white hover:bg-red-600 hover:border-red-600 focus:text-white focus:bg-red-600 focus:border-red-600 focus:ring focus:ring-red-100 active:text-white active:bg-red-600 active:border-red-600 active:ring active:ring-red-100 dark:ring-red-400/20">ทำการจ่ายตัง</a>
-                            <a href="apps-ecommerce-checkout.html" class="w-full text-white btn bg-custom-500 border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100 dark:ring-custom-400/20">พิมพ์ใบกำกับภาษี</a>
-                        </div>
 
-                        <div class="flex items-center gap-5 p-4 mt-5 card">
-                            <div class="flex items-center justify-center rounded-md size-12 bg-slate-100 dark:bg-zink-600">
-                                <i data-lucide="truck" class="size-6 text-slate-500 fill-slate-300 dark:text-zink-200 dark:fill-zink-500"></i>
-                            </div>
-                            <div>
-                                <h6 class="mb-1">Estimated Delivery</h6>
-                                <p class="text-slate-500">01 - 07 Dec, 2023</p>
-                            </div>
-                        </div>
-                        <div class="flex items-center gap-5 p-4 card">
-                            <div class="flex items-center justify-center rounded-md size-12 bg-slate-100 dark:bg-zink-600">
-                                <i data-lucide="container" class="size-6 text-slate-500 fill-slate-300 dark:text-zink-200 dark:fill-zink-500"></i>
-                            </div>
-                            <div>
-                                <h6 class="mb-1">Free Shipping & Returns</h6>
-                                <p class="text-slate-500 dark:text-zink-200">On all orders over $200.00</p>
-                            </div>
-                        </div>
+
+
+
+
+
+                        
+                        
+    
+
+
+
                     </div>
                 </div><!--end col-->
+
+
+
+
             </div><!--end row-->
 
         </div>
