@@ -39,15 +39,15 @@ def has_permission(user):
     in_special_admin = user.is_authenticated and user.groups.filter(name='SpecialAdmin').exists()
     
     # Debugging
-    print(f"🔍 Checking Permissions for {user.username}: Group1={in_group1}, SpecialAdmin={in_special_admin}")
+    #print(f"🔍 Checking Permissions for {user.username}: Group1={in_group1}, SpecialAdmin={in_special_admin}")
 
     return in_group1 or in_special_admin  # ✅ ถ้ามีสิทธิ์กลุ่มใดกลุ่มหนึ่งก็ให้ผ่าน
 
 
 def is_special_admin(user):
-    print(f"Checking access for: {user}")
-    print(f"User Authenticated: {user.is_authenticated}")
-    print(f"User Groups: {user.groups.all()}")
+    #print(f"Checking access for: {user}")
+    #print(f"User Authenticated: {user.is_authenticated}")
+    #print(f"User Groups: {user.groups.all()}")
     return user.is_authenticated and user.groups.filter(name='SpecialAdmin').exists()
 
 # ✅ สำหรับการเรียกใช้หน้าเพจ AJax
@@ -57,6 +57,47 @@ def apps_ecommerceCartAjax(request):
 
 
 def apps_ecommerceCart(request):
+    
+    
+    
+    if request.method == "POST":
+        try:
+            data = json.loads(request.body)
+            print("📦 Raw Data:", data)
+
+            items = data.get("items", [])
+            print(f"🧾 จำนวนรายการ: {len(items)}")
+
+            total = 0.0
+            for index, item in enumerate(items, start=1):
+                print(f"👉 รายการ {index}: {item}")
+                print("รายกาสำหรับแสดงค่าตัวแปล",item)
+               
+ 
+                raw_total = str(item.get("total", "0")).replace("บาท", "").replace(",", "").strip()
+                try:
+                    total += float(raw_total)
+                except ValueError:
+                    print(f"❌ ไม่สามารถแปลงค่า total เป็นตัวเลข: {raw_total}")
+
+            print(f"💰 ยอดรวมทั้งหมด: {total:.2f} บาท")
+
+            return JsonResponse({
+                "message": "✅ ได้รับข้อมูลแล้ว",
+                "total": f"{total:,.2f}", 
+                "item_count": len(items),
+            })
+
+        except Exception as e:
+            print("❌ Error:", str(e))
+            return JsonResponse({"error": "เกิดข้อผิดพลาด", "detail": str(e)}, status=400)
+    
+ 
+    
+    
+    
+    
+    
     
 
      # เพิ่มสำหรับการแจ้งเตือน
@@ -76,7 +117,7 @@ def apps_ecommerceCart(request):
     search = request.GET.get('search', None)  # ค่าจาก input 'searchBarcode'
     
     # ✅ Debug: แสดงค่าที่ได้รับจาก Query Parameters
-    print(f"🟢 Category ID: {category_id}, Min Price: {min_price}, Max Price: {max_price}, Sort: {sort_by}")
+    #print(f"🟢 Category ID: {category_id}, Min Price: {min_price}, Max Price: {max_price}, Sort: {sort_by}")
 
 
     # ✅ ดึงข้อมูลสินค้าทั้งหมด
@@ -86,7 +127,7 @@ def apps_ecommerceCart(request):
      #สำหรับการแจ้งเตือน
     ProductStock = Product1.objects.filter(stock__lt=10)  
     total_product_count = ProductStock.count()
-    print ("การนับข้อมูล",total_product_count);
+    #print ("การนับข้อมูล",total_product_count);
     
     
    
@@ -100,7 +141,7 @@ def apps_ecommerceCart(request):
      # ✅ กรองสินค้าตามหมวดหมู่
     if category_id and category_id.isdigit():
         products = products.filter(category_id=int(category_id))
-        print(f"✅ Filtered by Category ({category_id}): {products.count()} items found")
+        #print(f"✅ Filtered by Category ({category_id}): {products.count()} items found")
         
     
     # กรองตามช่วงราคา
@@ -118,11 +159,11 @@ def apps_ecommerceCart(request):
         if search.isdigit():
             # กรองสินค้าตาม id หรือ barcode
             products = products.filter(id=search) | products.filter(barcode=search)
-            print(f"✅ Filtering by ID or Barcode: {products.count()} items found")
+            #print(f"✅ Filtering by ID or Barcode: {products.count()} items found")
         else:
             # หากไม่ใช่ตัวเลข ก็อาจจะเป็นชื่อ หรือคำค้นหาอื่นๆ ที่สามารถกรองได้
             products = products.filter(name__icontains=search)  # ตัวอย่างการค้นหาชื่อสินค้าด้วย `icontains`
-            print(f"✅ Filtering by Name or other: {products.count()} items found")
+           # print(f"✅ Filtering by Name or other: {products.count()} items found")
     
         
         
@@ -146,12 +187,12 @@ def apps_ecommerceCart(request):
         if min_price:
             min_price = float(min_price)
             products = products.filter(price__gte=min_price)
-            print(f"✅ Filtered by Min Price ({min_price}): {products.count()} items found")
+           #print(f"✅ Filtered by Min Price ({min_price}): {products.count()} items found")
 
         if max_price:
             max_price = float(max_price)
             products = products.filter(price__lte=max_price)
-            print(f"✅ Filtered by Max Price ({max_price}): {products.count()} items found")
+            #print(f"✅ Filtered by Max Price ({max_price}): {products.count()} items found")
 
     except ValueError:
         print("⚠️ Warning: ราคาไม่ใช่ตัวเลขที่ถูกต้อง")
@@ -163,16 +204,16 @@ def apps_ecommerceCart(request):
     # ✅ เรียงลำดับสินค้าตามตัวเลือก
     if sort_by == 'highest':
         products = products.order_by('-price')  # ราคาสูงไปต่ำ
-        print("✅ Sorted by Highest Price")
+        #print("✅ Sorted by Highest Price")
     elif sort_by == 'lowest':
         products = products.order_by('price')  # ราคาต่ำไปสูง
-        print("✅ Sorted by Lowest Price")
+        #print("✅ Sorted by Lowest Price")
     elif sort_by == 'newest':
         products = products.order_by('-created_at')  # สินค้าใหม่สุด
-        print("✅ Sorted by Newest")
+        #print("✅ Sorted by Newest")
         
      # ✅ Debug: ตรวจสอบจำนวนสินค้าหลังจากกรอง
-    print(f"🔵 Total Products After Filtering: {products.count()}")
+    #print(f"🔵 Total Products After Filtering: {products.count()}")
     
 
     
@@ -226,15 +267,15 @@ def index(request):
 @user_passes_test(has_permission)
 
 def LayoutDashbords(request):
-    print(f"User: {request.user}, Authenticated: {request.user.is_authenticated}")
-    print(f"Checking Group: {request.user.groups.all()}")
+    #print(f"User: {request.user}, Authenticated: {request.user.is_authenticated}")
+    #print(f"Checking Group: {request.user.groups.all()}")
 
     # ✅ ดึง QuerySet ปกติ เพื่อให้ใช้ .image.url ได้
     ProductStock = Product1.objects.filter(stock__lt=10)  
     total_product_count = ProductStock.count()
 
-    print("การนับข้อมูล", total_product_count)
-    print("ดึงค่ารายการมา", ProductStock)
+    #print("การนับข้อมูล", total_product_count)
+   # print("ดึงค่ารายการมา", ProductStock)
 
     return render(request, "LayoutDashbords.html", {"ProductStock": ProductStock, "total_product_count": total_product_count})
 
@@ -270,7 +311,7 @@ def ItemProduct(request):
      #ทำการแจ้งเตือนสินค่า
     ProductStock = Product1.objects.filter(stock__lt=10)  
     total_product_count = ProductStock.count()
-    print ("การนับข้อมูล",total_product_count);
+   # print ("การนับข้อมูล",total_product_count);
     
     #เพิ่มสำหรับการแจ้งเตือน
     #ProductStock = Product1.objects.filter(stock__lt=10).values("id", "name", "stock","updated_at")
@@ -347,7 +388,7 @@ def ItemProduct(request):
 
 
 def logout_cover(request):
-    print(f"Before Logout - User: {request.user}")  # Debug ก่อน Logout
+   # print(f"Before Logout - User: {request.user}")  # Debug ก่อน Logout
     auth.logout(request)
     request.session.flush()  # ✅ ล้าง Session ให้หมด
     print(f"After Logout - User: {request.user}")  # Debug หลัง Logout
@@ -404,13 +445,13 @@ def EditAdd(request,id):
     #สำหรับการแจ้งเตือนสินค้า
     ProductStock = Product1.objects.filter(stock__lt=10)  
     total_product_count = ProductStock.count()
-    print ("การนับข้อมูล",total_product_count);
+   # print ("การนับข้อมูล",total_product_count);
     
     #เพิ่มสำหรับการแจ้งเตือน
    # ProductStock = Product1.objects.filter(stock__lt=10).values("id", "name", "stock","updated_at")
     
     if request.method == "POST":
-        print(request.POST)  # ✅ Debug ตรวจสอบข้อมูลที่ส่งมา
+       # print(request.POST)  # ✅ Debug ตรวจสอบข้อมูลที่ส่งมา
 
         # ✅ รับค่าจากฟอร์ม
         product_name = request.POST.get("product_name", "").strip()
@@ -489,7 +530,7 @@ def ProductPreview(request):
     sort_by = request.GET.get('sort', 'default')
 
     # ✅ Debug: แสดงค่าที่ได้รับจาก Query Parameters
-    print(f"🟢 Category ID: {category_id}, Min Price: {min_price}, Max Price: {max_price}, Sort: {sort_by}")
+    #print(f"🟢 Category ID: {category_id}, Min Price: {min_price}, Max Price: {max_price}, Sort: {sort_by}")
 
     # ✅ ดึงข้อมูลสินค้าทั้งหมด
     products = Product1.objects.all()
@@ -498,25 +539,25 @@ def ProductPreview(request):
     #สำหรับการแจ้งเตือน
     ProductStock = Product1.objects.filter(stock__lt=10)  
     total_product_count = ProductStock.count()
-    print ("การนับข้อมูล",total_product_count);
+   # print ("การนับข้อมูล",total_product_count);
     
 
     # ✅ กรองสินค้าตามหมวดหมู่
     if category_id and category_id.isdigit():
         products = products.filter(category_id=int(category_id))
-        print(f"✅ Filtered by Category ({category_id}): {products.count()} items found")
+        #print(f"✅ Filtered by Category ({category_id}): {products.count()} items found")
 
     # ✅ กรองสินค้าตามช่วงราคา (ตรวจสอบค่าก่อนแปลงเป็น `float`)
     try:
         if min_price:
             min_price = float(min_price)
             products = products.filter(price__gte=min_price)
-            print(f"✅ Filtered by Min Price ({min_price}): {products.count()} items found")
+            #print(f"✅ Filtered by Min Price ({min_price}): {products.count()} items found")
 
         if max_price:
             max_price = float(max_price)
             products = products.filter(price__lte=max_price)
-            print(f"✅ Filtered by Max Price ({max_price}): {products.count()} items found")
+           # print(f"✅ Filtered by Max Price ({max_price}): {products.count()} items found")
 
     except ValueError:
         print("⚠️ Warning: ราคาไม่ใช่ตัวเลขที่ถูกต้อง")
@@ -524,16 +565,16 @@ def ProductPreview(request):
     # ✅ เรียงลำดับสินค้าตามตัวเลือก
     if sort_by == 'highest':
         products = products.order_by('-price')  # ราคาสูงไปต่ำ
-        print("✅ Sorted by Highest Price")
+        #print("✅ Sorted by Highest Price")
     elif sort_by == 'lowest':
         products = products.order_by('price')  # ราคาต่ำไปสูง
-        print("✅ Sorted by Lowest Price")
+        #print("✅ Sorted by Lowest Price")
     elif sort_by == 'newest':
         products = products.order_by('-created_at')  # สินค้าใหม่สุด
-        print("✅ Sorted by Newest")
+        #print("✅ Sorted by Newest")
 
     # ✅ Debug: ตรวจสอบจำนวนสินค้าหลังจากกรอง
-    print(f"🔵 Total Products After Filtering: {products.count()}")
+    #print(f"🔵 Total Products After Filtering: {products.count()}")
 
     # ✅ ส่งข้อมูลไปยัง Template
     return render(request, "ProductPreview.html", {
@@ -650,11 +691,11 @@ def Circulation2(request):
     
     # ค่าที่แสดงในการรวมมูลล่ะค่าของร้าน
     TotlalShop = list(Product1.objects.values("name", "price", "stock"))
-    print("รวมมูลค่าของที่อยู่ในร้านทั้งหมด:",TotlalShop);
+    #print("รวมมูลค่าของที่อยู่ในร้านทั้งหมด:",TotlalShop);
     total_valueShop = round(sum(item["price"] * item["stock"] for item in TotlalShop), 2)
 
 
-    print("ราคารวมทั้งหมด:",total_valueShop)
+    #print("ราคารวมทั้งหมด:",total_valueShop)
 
 
     
@@ -665,10 +706,10 @@ def Circulation2(request):
     end_date = today.replace(hour=23, minute=59, second=59, microsecond=999999)
 
     
-    print(f"🟢 filter_type: {filter_type}")
-    print(f"🕒 start_date: {start_date} → end_date: {end_date}")
-    print(f"🟢 filter_type: {filter_type}")
-    print(f"🕒 start_date: {start_date}")
+    #print(f"🟢 filter_type: {filter_type}")
+    #print(f"🕒 start_date: {start_date} → end_date: {end_date}")
+    #print(f"🟢 filter_type: {filter_type}")
+    #print(f"🕒 start_date: {start_date}")
     
     # ✅ ดึงข้อมูลที่อยู่ในช่วงเวลาที่เลือก
     records1 = SaleRecord.objects.filter(timestamp__gte=start_date).order_by('-timestamp')
@@ -727,9 +768,9 @@ def Circulation2(request):
     monthly_profit_list = [{"month": month, "total": total} for month, total in monthly_profit.items()]
 
 # ✅ DEBUG แสดงค่า JSON ที่ได้
-    print("✅ [DEBUG] แสดงค่ารายวัน (sum):", daily_profit_list)
-    print("✅ [DEBUG] แสดงค่ารายสัปดาห์ (sum):", weekly_profit_list)
-    print("✅ [DEBUG] แสดงค่ารายเดือน (sum):", monthly_profit_list)
+    #print("✅ [DEBUG] แสดงค่ารายวัน (sum):", daily_profit_list)
+    #print("✅ [DEBUG] แสดงค่ารายสัปดาห์ (sum):", weekly_profit_list)
+    #print("✅ [DEBUG] แสดงค่ารายเดือน (sum):", monthly_profit_list)
     
     #--------------------------------------------------------------------------------endingกราฟ-------------------------------------------------
     
@@ -737,7 +778,7 @@ def Circulation2(request):
    # สำหรับการแสดงการแจ้งเตือน
     ProductStock = Product1.objects.filter(stock__lt=10)  
     total_product_count = ProductStock.count()
-    print ("การนับข้อมูล",total_product_count);
+    #print ("การนับข้อมูล",total_product_count);
     
      
     
@@ -764,7 +805,7 @@ def Circulation2(request):
     # ✅ จัดกลุ่มสินค้าให้รวมยอดขายของสินค้าที่ชื่อเดียวกัน
     product_sales = defaultdict(float)
     
-    print(f"✅ จำนวน Record ที่ดึงมา: {len(records1)}")
+    #print(f"✅ จำนวน Record ที่ดึงมา: {len(records1)}")
 
     for record in records1:
          
