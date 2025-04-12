@@ -1,3 +1,4 @@
+from rest_framework.response import Response
 from django.shortcuts import render
 from django.urls import path
 from productapp.models import Product1,Category #ทำการดึกข้อมูลจาก folder product ของไฟค์ models แล้วดึงข้อมูล product 1 เข้ามาทำงาน 
@@ -16,7 +17,7 @@ from decimal import Decimal, InvalidOperation
 import pytz
 import json  # ✅ ใช้ json.loads() ถ้าข้อมูลเก็บเป็น string
 from django.db.models.functions import TruncDate, TruncWeek, TruncMonth  #ตัด timestamp เป็น รายวัน,ตัด timestamp เป็น รายสัปดาห์,ตัด timestamp เป็น รายเดือน
-
+from rest_framework.views import APIView # เรียกเข้า API View
 #สำหรับการเข้าสู่ระบบการใช้งาน---------------------------------
 from django.shortcuts import render,redirect #
 from django.contrib import messages,auth         #import messages ออกมาเพื่อแสดงการเตือน
@@ -24,10 +25,21 @@ from django.contrib.auth.models import  User,auth # การ import User เข
 #------------------------กำหนดสิทธิ์เฉพราะคนที่อยู่ใน groping เท่านั้นที่จะสามารถเข้ากลุ่มได้
 from django.contrib.auth.models import User, Group
 from django.contrib.auth.decorators import login_required,user_passes_test
-
+from rest_framework.permissions import AllowAny
+from django.http import JsonResponse
 from django.contrib import messages,auth
 from itertools import groupby
 from django.utils import timezone
+from django.shortcuts import get_object_or_404
+from rest_framework import status  # เรียกเข้า API View
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
+
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication 
+from rest_framework.permissions import IsAuthenticated
+
+
+
 #@user_passes_test(is_special_admin)
 
 
@@ -54,6 +66,124 @@ def is_special_admin(user):
 def apps_ecommerceCartAjax(request):
     
     return render(request, 'apps-ecommerceCartAjax.html')
+
+
+
+
+
+#------------------------------------------สำหรับการลด stock ----------------------------------------------------
+
+def reduce_stock(request, product_id):
+    if request.method == 'POST':
+        product = get_object_or_404(Product1, id=product_id)
+        quantity = int(request.POST.get('quantity', 1))  # จำนวนที่จะลดจาก stock
+        if product.stock >= quantity:
+            product.stock -= quantity
+            product.save()
+            return JsonResponse({'success': True, 'message': f'ลดสต็อกสำเร็จ! สินค้าเหลือ {product.stock}'})
+        else:
+            return JsonResponse({'success': False, 'message': 'จำนวนสินค้าไม่เพียงพอ'})
+    return JsonResponse({'success': False, 'message': 'Invalid request'})
+
+
+
+
+class UpdateStockAPIView(APIView):
+    permission_classes = [AllowAny]  # ✅ ปิดการตรวจสอบสิทธิ์ (ใช้ AllowAny แทนได้)
+
+    def put(self, request, *args, **kwargs):
+        updates = request.data.get("updates", [])
+       
+        print("📥 ได้รับข้อมูล:", request.data)
+
+
+        if not updates:
+            return Response({"error": "No updates provided"}, status=status.HTTP_400_BAD_REQUEST)
+
+        response_data = []
+        for update in updates:
+            try:
+                product = Product1.objects.filter(name=update["product"]).first()  # ✅ ใช้ `.filter().first()` ป้องกัน MultipleObjectsReturned
+                if not product:
+                    return Response({"error": f"Product {update['product']} not found"}, status=status.HTTP_404_NOT_FOUND)
+
+                product.stock -= Decimal(update["quantity"])  # ✅ แปลงเป็น Decimal product.stock=product.stock-quantity  เกิดจากการนำไปลบกัน
+                if product.stock < 0:
+                    return Response(
+                        {"error": f"Not enough stock for product {product.name}"},
+                        status=status.HTTP_400_BAD_REQUEST,
+                    )
+                product.save()
+                response_data.append({
+                    "product": product.name,
+                    "updated_stock": product.stock,
+                })
+
+            except Exception as e:
+                return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+        return Response({"updated": response_data}, status=status.HTTP_200_OK)
+    
+
+
+
+
+
+class SaveSaleRecordAPIView(APIView):
+    
+
+    #authentication_classes = [SessionAuthentication, BasicAuthentication]
+    permission_classes = [IsAuthenticated]  # ✅ ผู้เข้าระหัสจึงสามารถที่จะทำการเข้าได้เท่านั้น 
+   
+
+    def post(self, request):
+        try:
+            data = request.data
+
+            # ✅ ตรวจสอบ JSON
+            stock_adjustments = data.get("stockAdjustments")
+            if isinstance(stock_adjustments, str):
+                try:
+                    stock_adjustments = json.loads(stock_adjustments)
+                except json.JSONDecodeError:
+                    return Response({"error": "Invalid JSON format for stock_adjustments"}, status=status.HTTP_400_BAD_REQUEST)
+
+            # ✅ บันทึกข้อมูลลง SaleRecord
+            sale_record = SaleRecord.objects.create(
+                total_amount=data["totalAmount"],
+                entered_amount=data["enteredAmount"],
+                change=data["change"],
+                timestamp=datetime.fromisoformat(data["timestamp"]),
+                stock_adjustments=data["stockAdjustments"],
+                cashier=request.user
+            )
+
+            # ✅ รีเฟรชจากฐานข้อมูลให้แน่ใจว่าข้อมูลล่าสุด
+            sale_record.refresh_from_db()
+
+            # ✅ ส่งข้อมูลกลับไปให้ JavaScript ใช้งาน
+            return Response({
+                "message": "Sale record saved successfully!",
+                "totalAmount": sale_record.total_amount,
+                "enteredAmount": sale_record.entered_amount,
+                "change": sale_record.change,
+                "timestamp": sale_record.timestamp.isoformat(),
+                "stockAdjustments": sale_record.stock_adjustments
+            }, status=status.HTTP_201_CREATED)
+
+        except KeyError as e:
+            return Response({"error": f"Missing key: {str(e)}"}, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+
+
+#------------------------------------------------------------------------------------------------------------------------
+
+
+
+
 
 
 def apps_ecommerceCart(request):
@@ -357,7 +487,7 @@ def ItemProduct(request):
         total_sum = records.aggregate(total=Sum("total_amount"))["total"] or 0
         
           # ดึกข้อมูลจาก Stockadjustment เพื่อที่จะทำการรวม Total ของจำนวณ
-        total_profit_sum = sum(sum(item.get("totalProfit", 0) for item in record.stock_adjustments or [])for record in records if record.stock_adjustments )
+        total_profit_sum = sum(sum(float(item.get("totalProfit", 0)) for item in record.stock_adjustments or [])for record in records if record.stock_adjustments)
 
        
 
@@ -791,14 +921,13 @@ def Circulation2(request):
   
     # ✅ รวมยอดขายทั้งหมด
     total_profit = sum([
-        sum(item.get("totalProfit", 0) for item in record.stock_adjustments)
-        for record in sale_records
-    ])
+    sum(float(item.get("totalProfit", 0)) for item in record.stock_adjustments)
+    for record in sale_records if record.stock_adjustments
+])
 
     total_price = sum([
         sum(item.get("TotalPrice", 0) for item in record.stock_adjustments)
-        for record in sale_records
-    ])
+        for record in sale_records])
 
     # ✅ กรองข้อมูลยอดขายเป็นรายวัน รายสัปดาห์ และรายเดือน ของยอดขายดี
     # ✅ กรองยอดขายรวมตามวัน, สัปดาห์, เดือน

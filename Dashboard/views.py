@@ -25,7 +25,7 @@ from datetime import datetime
 import qrcode
 import base64
 from io import BytesIO
-from django.http import JsonResponse
+
 import io
 from django.contrib.auth.decorators import login_required,user_passes_test # สำหรับการส่งให้กับให้กับ user.ใน dashboard ต้องมีตัวนี้
 
