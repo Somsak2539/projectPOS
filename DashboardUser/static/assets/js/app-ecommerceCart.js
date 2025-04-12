@@ -1,5 +1,23 @@
 
-let totalAmountFromDjango = 0; // ✅ ตัวแปร global สำหรับเก็บยอดรวม
+
+let totalAmountFromDjango = 0.00; // กำหนดเป็น float ชัดเจน
+const csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]')?.value || "";
+const savedResults = []; // ถ้าต้องการเก็บผลทั้งหมดไว้
+console.log("ค่าจาก dejango5555",totalAmountFromDjango)
+let blogArray = [];
+
+
+
+// ✅ โหลดข้อมูลสินค้าจาก API
+fetch("http://localhost:8080/blog/list/")
+    .then((response) => response.json())
+    .then((data) => {
+        blogArray = data; // กำหนดค่าให้ตัวแปร
+        console.log("✅ API Data Loaded:", blogArray);
+    })
+    .catch((error) => console.error("❌ Error fetching data:", error));
+
+
 
 
 
@@ -150,17 +168,20 @@ document.addEventListener("click", function (event) {
       // ถ้ามีสินค้าอยู่แล้ว ให้เพิ่มจำนวน
       const existingQuantityInput =existingProduct.querySelector(".products-quantity");
       const currentQuantity = parseFloat(existingQuantityInput.value) || 0;
-      const newQuantity = currentQuantity + quantity;existingQuantityInput.value = newQuantity;
+      const newQuantity = currentQuantity + quantity;
+      existingQuantityInput.value = newQuantity;
       // อัปเดตราคาสินค้ารวม
       const newTotal = (parseFloat(productPrice) * newQuantity).toLocaleString("en-US",{minimumFractionDigits: 2,maximumFractionDigits: 2,});
       existingProduct.querySelector(".products-line-price").textContent =newTotal;
 
       // สำหรับการกรองสินค้า
       const index = cartItems.findIndex((item) => item.id === productId);
+  
        
       if (index !== -1) {
         cartItems[index].quantity += quantity;
         cartItems[index].total = cartItems[index].unitPrice * cartItems[index].quantity;
+        cartItems[index].Profitprice = parseFloat(ProductProfitprice || 0) * cartItems[index].quantity;
       }
     
       // ✅ อัปเดตตารางด้านขวา (Total)
@@ -180,6 +201,8 @@ document.addEventListener("click", function (event) {
       }
 
       //------------------------------------ตัวนี้ต้องเพิ่มสำหรับการ อับเดทด้วย -------------------------------------------------
+    
+
       function updateTotal() {
         console.log("📦 ข้อมูลที่ส่งไปยัง Django:", cartItems);
       
@@ -192,10 +215,11 @@ document.addEventListener("click", function (event) {
         })
           .then(response => response.json())
           .then(data => {
-            console.log("📈 Response:", data);
-      
-            // ✅ เก็บ total จาก Django ไว้ใช้งานภายหลัง
-            totalAmountFromDjango = parseFloat(data.total);
+
+            console.log("📈 Response จาก Django:", data);
+            
+            totalAmountFromDjango = parseFloat(data.total.replace(/,/g, ''));
+
       
             // อัปเดตใน DOM ก็ได้เช่นกัน
             const totalElement = document.getElementById("totalDisplay");
@@ -209,24 +233,27 @@ document.addEventListener("click", function (event) {
             console.error("❌ Error calculating total:", error);
           });
       }
-      updateTotal();
-  
+        updateTotal();
+        
+
+ 
+
     } else {
-      // สำหรับเพิ่มรายการเข้าไปใน array
+
       cartItems.push({
         id: productId,
         stock: ProductStock,
         name: productName,
         barcode: ProductBarcode,
-        Profitprice: ProductProfitprice,
+        Profitprice: parseFloat(ProductProfitprice || 0) * quantity,
         quantity: quantity,
         unitPrice: parseFloat(productPrice),
         total: parseFloat(productPrice) * quantity,
       });
 
-   
+    
       updateTotal();
-
+    
       //------------------------------แสดงค่าที่ส่งไปยังserver ------------------------------------------
 
       console.log("📦 ข้อมูลที่ส่งไปยัง Django:", cartItems); // ตรวจสอบข้อมูลก่อนส่ง
@@ -249,8 +276,8 @@ document.addEventListener("click", function (event) {
             console.log("📈 Response:", data);
       
             // ✅ เก็บ total จาก Django ไว้ใช้งานภายหลัง
-            totalAmountFromDjango = parseFloat(data.total);
-      
+            totalAmountFromDjango = parseFloat(data.total.replace(/,/g, ''));
+
             // อัปเดตใน DOM ก็ได้เช่นกัน
             const totalElement = document.getElementById("totalDisplay");
             if (totalElement) {
@@ -264,43 +291,12 @@ document.addEventListener("click", function (event) {
           });
       }
 
-      
-    
-
-   
-
-
-
-
-
 
       console.log("แสดงรายการ1", cartItems);
       console.log("รับค่า inputText", quantity);
 
-      //--------------------------------------------------------------------------------
+    
 
-      // ------------------------------------------------------------------------------เดี่ยวรับค่าจาก django ง่ายกว่า-------------------------------------------------------------
-
-      /*function updateTotal() {
-        const allTotal = cartItems.reduce((sum, item) => sum + item.total, 0);
-        const formattedTotal = allTotal.toLocaleString("en-US", {
-          minimumFractionDigits: 2,
-        });
-
-        const cartTotalElement = document.querySelector(".cart-total");
-        const totalDueElement = document.getElementById("totalDue");
-
-        if (cartTotalElement) {
-          cartTotalElement.textContent = `${formattedTotal} บาท`;
-        }
-
-        if (totalDueElement) {
-          totalDueElement.textContent = `฿${formattedTotal}`;
-        }
-
-        console.log("สำหรับรายการที่แสดงในนี้", formattedTotal);
-      }
-*/
       // -------------------------------------------------------------------------------ตารางมุมขวาสุด-------------------------------------------------------------
       const tableBody = document.querySelector(".table-total");
 
@@ -331,7 +327,7 @@ document.addEventListener("click", function (event) {
         console.error("❌ ไม่พบ .table-total ใน DOM");
       }
 
-      console.log("totalProfit", totalPrice);
+      console.log("ราคารวม", totalPrice);
       console.log("tableBody", tableBody);
 
       // ---------------------------------------------------------------------------------------------------------------------------------------------------
@@ -376,22 +372,74 @@ document.addEventListener("click", function (event) {
   }
 });
 
+
+
+
+//-----------------------------------------------------------------------ปุ่มโอเคสำหรับเลือกรายการของ-----------------------------------------
+
+
+// ✅ ตรวจสอบเมื่อคลิกปุ่ม
 document.addEventListener("click", function (event) {
   if (event.target.id === "sa-success") {
+    const button = event.target;
+    const productId = button.dataset.id; // ดึง ID จาก data-id
+
+    const quantityInput = document.querySelector("#input-quantity");
+    const quantity = parseInt(quantityInput?.value || "0");
+
+    // ✅ หา stock จริงจาก API ด้วย ID
+    const product = blogArray.find((item) => item.id.toString() === productId);
+
+    if (!product) {
+      Swal.fire({
+        icon: "error",
+        title: "ไม่พบข้อมูลสินค้า",
+        text: "ไม่สามารถตรวจสอบสต็อกได้ค่ะ",
+      });
+      return;
+    }
+
+    const stock = parseInt(product.stock);
+    const productName = product.name;
+
+    if (quantity > stock) {
+      Swal.fire({
+        icon: "error",
+        title: "❌ สินค้าไม่เพียงพอ!",
+        text: `สินค้า "${productName}" มีในสต็อก ${stock} ชิ้น แต่คุณเลือก ${quantity} ชิ้นค่ะ`,
+        confirmButtonText: "รับทราบ",
+      });
+      return;
+    }
+
+    // ✅ ถ้าไม่เกิน stock ให้แสดง success
     Swal.fire({
       title: "คุณได้ทำการเพิ่มรายการแล้ว!",
       text: "รายการถูกเพิ่มแล้ว!",
       icon: "success",
-      confirmButtonText: "OK", // ตั้งชื่อปุ่ม OK
+      confirmButtonText: "OK",
       customClass: {
         confirmButton:
           "text-white btn bg-custom-500 border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100 dark:ring-custom-400/20 ltr:mr-1 rtl:ml-1",
       },
       buttonsStyling: false,
-      showCloseButton: true, // ถ้าไม่อยากให้มีปุ่ม X ปิด popup ให้ลบอันนี้ออก
+      showCloseButton: true,
     });
   }
 });
+
+
+
+
+//---------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
 
 document.addEventListener("DOMContentLoaded", function () {
   const cartContainer = document.querySelector("#cart-items");
@@ -470,7 +518,8 @@ document.addEventListener("DOMContentLoaded", function () {
                     console.log("📈 Response:", data);
               
                     // ✅ เก็บ total จาก Django ไว้ใช้งานภายหลัง
-                    totalAmountFromDjango = parseFloat(data.total);
+                    totalAmountFromDjango = parseFloat(data.total.replace(/,/g, ''));
+
               
                     // อัปเดตใน DOM ก็ได้เช่นกัน
                     const totalElement = document.getElementById("totalDisplay");
@@ -587,9 +636,7 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 //่-------------------------------------------------------สำหรับ event การรับเงิน -----------------------------------------------------
-const csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]')?.value || "";
-const savedResults = []; // ถ้าต้องการเก็บผลทั้งหมดไว้
-console.log("ค่าจาก dejango5555",totalAmountFromDjango)
+
 
 document.addEventListener("DOMContentLoaded", function () {
     const recipeButton = document.getElementById("RecipeMony");
@@ -604,6 +651,13 @@ document.addEventListener("DOMContentLoaded", function () {
   function handleReceiveMoney() {
     const input = document.getElementById("posInput");
     const inputValue = parseFloat(input.value);
+
+
+     // ตรวจสอบค่าของ inputValue และ totalAmountFromDjango
+    console.log("💰 ป้อนเงิน:", inputValue);
+    console.log("ยอดรวมจาก Django:", totalAmountFromDjango);
+
+    
   
     if (isNaN(inputValue)) {
       alert("⚠️ ค่าที่ป้อนไม่ถูกต้อง");
@@ -614,10 +668,12 @@ document.addEventListener("DOMContentLoaded", function () {
   
     if (inputValue < totalAmountFromDjango) {
 
-      alert(`❌ คุณป้อนเงินน้อยกว่ายอดรวม กรุณาตรวจสอบอีกครั้ง ${totalAmountFromDjango.toFixed(2)} `);
+      alert(`❌ คุณป้อนเงินน้อยกว่ายอดรวม กรุณาตรวจสอบอีกครั้ง ${totalAmountFromDjango.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`);
+
 
     } else {
-      const change = inputValue - totalAmountFromDjango;
+        const change = inputValue - totalAmountFromDjango;
+
   
       const receivedDisplay = document.getElementById("received");
       if (receivedDisplay) {

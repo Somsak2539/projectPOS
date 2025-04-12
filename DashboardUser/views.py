@@ -487,7 +487,8 @@ def ItemProduct(request):
         total_sum = records.aggregate(total=Sum("total_amount"))["total"] or 0
         
           # ดึกข้อมูลจาก Stockadjustment เพื่อที่จะทำการรวม Total ของจำนวณ
-        total_profit_sum = sum(sum(float(item.get("totalProfit", 0)) for item in record.stock_adjustments or [])for record in records if record.stock_adjustments)
+        total_profit_sum = sum(sum(float(item.get("totalProfit") or 0) for item in record.stock_adjustments or [])for record in records if record.stock_adjustments)
+
 
        
 
@@ -816,7 +817,7 @@ def Circulation2(request):
         start_date = today - timedelta(days=365)
         
 
-   # ProductStock = Product1.objects.filter(stock__lt=10).values("id", "name", "stock","updated_at")
+    ProductStock = Product1.objects.filter(stock__lt=10).values("id", "name", "stock","updated_at")
     
     
     # ค่าที่แสดงในการรวมมูลล่ะค่าของร้าน
@@ -884,7 +885,7 @@ def Circulation2(request):
         # ✅ รวมกำไรของวันนั้น (ไม่สะสมวันก่อนหน้า)
             for item in stock_adjustments:
                 if isinstance(item, dict):
-                    total_profit = float(item.get("totalProfit", 0))
+                    total_profit = float(item.get("totalProfit") or 0)
                     total_profit_per_day += total_profit  # ✅ รวมกำไรของวันนั้น
 
     # ✅ บันทึกค่าแบบรายวัน (ไม่สะสม)
@@ -920,10 +921,8 @@ def Circulation2(request):
     
   
     # ✅ รวมยอดขายทั้งหมด
-    total_profit = sum([
-    sum(float(item.get("totalProfit", 0)) for item in record.stock_adjustments)
-    for record in sale_records if record.stock_adjustments
-])
+    total_profit = sum([sum(float(item.get("totalProfit") or 0.0) for item in record.stock_adjustments) for record in sale_records if record.stock_adjustments])
+
 
     total_price = sum([
         sum(item.get("TotalPrice", 0) for item in record.stock_adjustments)
@@ -953,7 +952,7 @@ def Circulation2(request):
         sales_data = [
         {   
          
-            "totalProfit": sum(float(item.get("totalProfit", 0.0)) for item in record.stock_adjustments),  # ✅ รวม totalProfit
+            "totalProfit": sum(float(item.get("totalProfit") if item.get("totalProfit") is not None else 0.0) for item in record.stock_adjustments),
             "TotalPrice": sum(float(item.get("TotalPrice", 0.0)) for item in record.stock_adjustments),  # ✅ รวม TotalPriceต่อจากนี้เดียวทำการแก้ไขอยู่ในนี้------------------
             "timestamp": record.timestamp.astimezone(bangkok_tz).strftime("%d-%m-%y %H:%M:%S"),  # ✅ แปลงเป็นเวลาไทย
             "total_amount": float(record.total_amount),  # ✅ แปลงเป็น float
@@ -961,7 +960,7 @@ def Circulation2(request):
                 {
                     "product": item["product"],
                     "quantity": float(item["quantity"]),  # ✅ แปลงเป็น float
-                    "totalProfit": float(item.get("totalProfit", 0.0)), 
+                    "totalProfit": float(item.get("totalProfit") if item.get("totalProfit") is not None else 0.0),
                     "TotalPrice": float(item.get("TotalPrice", 0.0)),                                    
                 }
                 for item in record.stock_adjustments
@@ -1042,6 +1041,14 @@ def Circulation2(request):
         "total_valueShop":total_valueShop,
        
     })
+    
+    
+   
+    
+    
+    
+    
+    
     
     
    
