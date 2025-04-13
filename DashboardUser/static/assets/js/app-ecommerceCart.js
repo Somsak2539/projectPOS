@@ -131,9 +131,7 @@ document.addEventListener("click", function (event) {
     const ProductBarcode = event.target.getAttribute("data-barcode");
     const ProductProfitprice = event.target.getAttribute("data-profitprice");
 
-    console.log(
-      `📌 ID=${productId}, Name=${productName}, Price=${productPrice}`
-    );
+    console.log(`📌 ID=${productId}, Name=${productName}, Price=${productPrice}`);
     
     console.log("ค่าที่ได้จากการเก็บไว้ใน array",cartItems)
 
@@ -142,28 +140,56 @@ document.addEventListener("click", function (event) {
       return;
     }
 
+     
     const cartContainer = document.querySelector("#cart-items");
 
     // รับค่าจำนวนจาก input ที่อยู่ในสินค้าเดียวกับปุ่มที่ถูกกด
     const parent = event.target.closest("p"); // หรือเปลี่ยนตามโครงสร้างจริง
-    const quantityInput =
-      parent?.previousElementSibling?.querySelector(".inputText");
+    const quantityInput =parent?.previousElementSibling?.querySelector(".inputText");
     // ✅ เปลี่ยนเป็น parseFloat เพื่อรองรับทศนิยม
     let quantity = quantityInput ? parseFloat(quantityInput.value) : 1;
+
     if (!quantity || quantity <= 0) quantity = 1;
-
-    const totalPrice = (parseFloat(productPrice) * quantity).toLocaleString(
-      "en-US",
-      {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2,
-      }
-    );
-
+    const totalPrice = (parseFloat(productPrice) * quantity).toLocaleString("en-US",{minimumFractionDigits: 2,maximumFractionDigits: 2,});
     // ตรวจสอบว่ามีสินค้านี้อยู่แล้วหรือไม่
-    let existingProduct = document.querySelector(`.cart-item[data-id="${productId}"]`
-    );
+    let existingProduct = document.querySelector(`.cart-item[data-id="${productId}"]`);
 
+   //--------------------------------------------------ตรวจสอบเงื่อนไขเพื่อที่จะไม่ให้มันไปทำต่อถ้าป้อนค่าที่มากกว่าจำนวณ Stock ค่าจะไม่ถูกคำนวณ------------------------------------------------------
+    const product = blogArray.find(item => item.id.toString() === productId);
+
+    if (!product) {
+      console.error("❌ ไม่พบสินค้านี้ใน API");
+      return;
+    }
+
+    
+    const availableStock = parseFloat(product.stock); // ค่า stock จริงจาก API
+    const inputEl = document.querySelector(`.input-quantity[data-id="${productId}"]`);
+   
+    // ❗ เช็กว่ามีสินค้าอยู่ในตารางรึยัง
+  
+    let totalQuantity = quantity;
+    
+    if (existingProduct) {
+      const existingQuantityInput = existingProduct.querySelector(".products-quantity");
+      const currentQuantity = parseFloat(existingQuantityInput.value) || 0;
+      totalQuantity = currentQuantity + quantity;
+    }
+    
+    // ❗ ตรวจสอบว่าเกิน stock หรือเปล่า
+    if (totalQuantity > availableStock) {
+      Swal.fire({
+        icon: "error",
+        title: "❌ สินค้าไม่เพียงพอ!",
+        text: `สินค้า "${product.name}" มีในสต็อกแค่ ${availableStock} หน่วย แต่คุณเลือก ${totalQuantity} หน่วยค่ะ`,
+        confirmButtonText: "โอเคค่ะ"
+      });
+ 
+      return;
+    }
+
+  
+//--------------------------------------------------------------------------------------------------------------------------
     if (existingProduct) {
       // ถ้ามีสินค้าอยู่แล้ว ให้เพิ่มจำนวน
       const existingQuantityInput =existingProduct.querySelector(".products-quantity");
@@ -186,10 +212,7 @@ document.addEventListener("click", function (event) {
     
       // ✅ อัปเดตตารางด้านขวา (Total)
       const allTotal = cartItems.reduce((sum, item) => sum + item.total, 0);
-      document.querySelector(".cart-total").textContent = `${allTotal.toLocaleString("en-US", {
-        minimumFractionDigits: 2,
-      })} บาท`;
-    
+      document.querySelector(".cart-total").textContent = `${allTotal.toLocaleString("en-US", {minimumFractionDigits: 2,})} บาท`;
       // ✅ อัปเดตแถวในตารางด้านขวา
       const tableBody = document.querySelector(".table-total");
       const existingRow = tableBody?.querySelector(`tr[data-id="${productId}"]`);
@@ -252,6 +275,10 @@ document.addEventListener("click", function (event) {
       });
 
     
+        // ✅ รีเซ็ตช่อง posInput ด้วย
+      const posInput = document.getElementById("posInput");
+                if (posInput) {posInput.value = "0.00";}
+
       updateTotal();
     
       //------------------------------แสดงค่าที่ส่งไปยังserver ------------------------------------------
@@ -378,53 +405,61 @@ document.addEventListener("click", function (event) {
 //-----------------------------------------------------------------------ปุ่มโอเคสำหรับเลือกรายการของ-----------------------------------------
 
 
-// ✅ ตรวจสอบเมื่อคลิกปุ่ม
 document.addEventListener("click", function (event) {
   if (event.target.id === "sa-success") {
     const button = event.target;
-    const productId = button.dataset.id; // ดึง ID จาก data-id
+    const productId = button.dataset.id;
+    const productName = button.dataset.name;
 
-    const quantityInput = document.querySelector("#input-quantity");
-    const quantity = parseInt(quantityInput?.value || "0");
+    // ดึง input ที่อยู่ในบรรทัดเดียวกัน (หรือใช้ class/data-id ก็ได้)
+    const quantityInput = document.querySelector(`.input-quantity[data-id="${productId}"]`);
+    const quantity = parseFloat(quantityInput?.value || "0");
 
-    // ✅ หา stock จริงจาก API ด้วย ID
-    const product = blogArray.find((item) => item.id.toString() === productId);
+    if (quantity <= 0) {
+      Swal.fire({
+        icon: "warning",
+        title: "กรุณากรอกจำนวน",
+        text: "จำนวนต้องมากกว่า 0",
+      });
+      quantityInput.value = "1.00";
+      return;
+    }
+
+    // ✅ ดึงข้อมูลสินค้าจาก blogArray โดยใช้ id
+    const product = blogArray.find(item => item.id.toString() === productId);
 
     if (!product) {
       Swal.fire({
         icon: "error",
-        title: "ไม่พบข้อมูลสินค้า",
-        text: "ไม่สามารถตรวจสอบสต็อกได้ค่ะ",
+        title: "ไม่พบสินค้า",
+        text: "ไม่สามารถตรวจสอบ stock ได้ค่ะ",
       });
       return;
     }
 
-    const stock = parseInt(product.stock);
-    const productName = product.name;
+    const stock = parseFloat(product.stock);
 
     if (quantity > stock) {
       Swal.fire({
         icon: "error",
         title: "❌ สินค้าไม่เพียงพอ!",
-        text: `สินค้า "${productName}" มีในสต็อก ${stock} ชิ้น แต่คุณเลือก ${quantity} ชิ้นค่ะ`,
-        confirmButtonText: "รับทราบ",
+        text: `สินค้า "${product.name}" มีในสต็อก ${stock} แต่คุณเลือก ${quantity} ค่ะ`,
+        confirmButtonText: "ทำการลบด้วยน่ะ รายการที่เพิ่มจะไม่ถูกตัด stock ",
       });
+      quantityInput.value = "1.00";
       return;
     }
 
-    // ✅ ถ้าไม่เกิน stock ให้แสดง success
+    // ถ้า stock เพียงพอ
     Swal.fire({
-      title: "คุณได้ทำการเพิ่มรายการแล้ว!",
-      text: "รายการถูกเพิ่มแล้ว!",
       icon: "success",
+      title: "เพิ่มรายการสำเร็จ!",
+      text: `เพิ่ม "${product.name}" จำนวน ${quantity} ชิ้นเรียบร้อยแล้วค่ะ`,
       confirmButtonText: "OK",
-      customClass: {
-        confirmButton:
-          "text-white btn bg-custom-500 border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100 dark:ring-custom-400/20 ltr:mr-1 rtl:ml-1",
-      },
-      buttonsStyling: false,
-      showCloseButton: true,
     });
+       // ✅ รีเซ็ต input กลับเป็น 1.00
+    quantityInput.value = "1.00";
+    // ที่นี่สามารถส่งข้อมูลเพิ่มเข้า "รายการสั่งซื้อ" หรือ "ตะกร้า" ได้เลย
   }
 });
 
@@ -765,4 +800,6 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
 
-  
+  //-----------------------------------------------------------------เพิ่มสำหรับปุ่ม scroll -----------------------------------------------
+
+
